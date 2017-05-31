@@ -12,7 +12,7 @@ JAVA: 1.8.0_91
 ## Q&A
 +	How to Package the Project?  
 	Run `mvn clean package`
-+	How to Generate Class/XML from Database?
++	How to Generate Class/XML from Database?  
 	Run `mybatis-generator:generate`    
 
 ## Reference
