@@ -13,7 +13,7 @@ JAVA: 1.8.0_91
 +	How to Package the Project?  
 	Run `mvn clean package`
 +	How to Generate Class/XML from Database?  
-	Run `mybatis-generator:generate`    
+	Run `mvn mybatis-generator:generate`    
 
 ## Reference
 *	https://docs.spring.io/spring-boot/docs/current/reference/html/howto-database-initialization.html  
