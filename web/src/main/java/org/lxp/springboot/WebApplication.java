@@ -34,15 +34,17 @@ public class WebApplication {
     @Bean(name = AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME)
     public FilterChainProxy getFilterChainProxy() throws ServletException, Exception {
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter("UTF-8", true);
+        SwaggerFilter swaggerFilter = new SwaggerFilter(swaggerAllowed);
+
         List<SecurityFilterChain> listOfFilterChains = new ArrayList<>();
         listOfFilterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/swagger-ui.html"),
-                new SwaggerFilter(swaggerAllowed), encodingFilter));
+                swaggerFilter, encodingFilter));
         listOfFilterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/swagger-resources/**"),
-                new SwaggerFilter(swaggerAllowed), encodingFilter));
-        listOfFilterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/v2/api-docs"),
-                new SwaggerFilter(swaggerAllowed), encodingFilter));
-        listOfFilterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/webjars/**"),
-                new SwaggerFilter(swaggerAllowed), encodingFilter));
+                swaggerFilter, encodingFilter));
+        listOfFilterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/v2/api-docs"), swaggerFilter,
+                encodingFilter));
+        listOfFilterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/webjars/**"), swaggerFilter,
+                encodingFilter));
         listOfFilterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/**"), encodingFilter));
         return new FilterChainProxy(listOfFilterChains);
     }
