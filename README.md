@@ -1,5 +1,5 @@
 # springboot-demo
 Demos base on springboot.  
 
-*study-springboot*
+*non-web*
 + Test CommandLineRunner base on spring-boot.  

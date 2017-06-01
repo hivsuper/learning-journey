@@ -1,4 +1,4 @@
-# study-springboot
+# non-web
 Test CommandLineRunner base on spring-boot.  
 1. spring-boot  
 2. mybatis + HikariCP

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.lxp.study</groupId>
-    <artifactId>study-springboot</artifactId>
+    <artifactId>non-web</artifactId>
     <version>develop-SNAPSHOT</version>
     <packaging>jar</packaging>
 
