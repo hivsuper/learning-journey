@@ -15,9 +15,9 @@
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
             connectionURL="jdbc:mysql://192.168.68.24:3306/springboot-test?characterEncoding=UTF-8" userId="test"
             password="test" />
-        <javaModelGenerator targetPackage="org.lxp.study.springboot.model" targetProject="src/main/java" />
-        <sqlMapGenerator targetPackage="org.lxp.study.springboot.dao" targetProject="src/main/resources" />
-        <javaClientGenerator targetPackage="org.lxp.study.springboot.dao" targetProject="src/main/java"
+        <javaModelGenerator targetPackage="org.lxp.springboot.model" targetProject="src/main/java" />
+        <sqlMapGenerator targetPackage="org.lxp.springboot.dao" targetProject="src/main/resources" />
+        <javaClientGenerator targetPackage="org.lxp.springboot.dao" targetProject="src/main/java"
             type="XMLMAPPER" />
 
         <table tableName="customer" domainObjectName="CustomerBase" alias="customer">

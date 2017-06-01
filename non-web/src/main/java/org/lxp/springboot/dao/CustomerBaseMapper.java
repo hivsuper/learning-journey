@@ -1,9 +1,9 @@
-package org.lxp.study.springboot.dao;
+package org.lxp.springboot.dao;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.lxp.study.springboot.model.CustomerBase;
-import org.lxp.study.springboot.model.CustomerBaseExample;
+import org.lxp.springboot.model.CustomerBase;
+import org.lxp.springboot.model.CustomerBaseExample;
 
 public interface CustomerBaseMapper {
     long countByExample(CustomerBaseExample example);

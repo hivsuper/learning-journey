@@ -1,4 +1,4 @@
-package org.lxp.study.springboot.model;
+package org.lxp.springboot.model;
 
 import java.util.ArrayList;
 import java.util.Date;

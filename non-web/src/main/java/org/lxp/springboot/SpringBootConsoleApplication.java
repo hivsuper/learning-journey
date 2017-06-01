@@ -1,8 +1,8 @@
-package org.lxp.study.springboot;
+package org.lxp.springboot;
 
 import javax.annotation.Resource;
 
-import org.lxp.study.springboot.service.CustomerService;
+import org.lxp.springboot.service.CustomerService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @SpringBootApplication
-@MapperScan("org.lxp.study.springboot.dao")
+@MapperScan("org.lxp.springboot.dao")
 public class SpringBootConsoleApplication implements CommandLineRunner {
     private static final Logger LOG = LoggerFactory.getLogger(SpringBootConsoleApplication.class);
     @Resource

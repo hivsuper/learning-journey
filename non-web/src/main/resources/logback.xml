@@ -18,7 +18,7 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <logger name="org.lxp.study.springboot" level="info" additivity="false">
+    <logger name="org.lxp.springboot" level="info" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 

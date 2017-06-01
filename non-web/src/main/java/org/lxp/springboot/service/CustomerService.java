@@ -1,13 +1,13 @@
-package org.lxp.study.springboot.service;
+package org.lxp.springboot.service;
 
 import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.lxp.study.springboot.dao.CustomerBaseMapper;
-import org.lxp.study.springboot.model.CustomerBase;
-import org.lxp.study.springboot.model.CustomerBaseExample;
+import org.lxp.springboot.dao.CustomerBaseMapper;
+import org.lxp.springboot.model.CustomerBase;
+import org.lxp.springboot.model.CustomerBaseExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
