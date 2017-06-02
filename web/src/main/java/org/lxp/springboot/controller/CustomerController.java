@@ -10,7 +10,6 @@ import org.lxp.springboot.model.CustomerBase;
 import org.lxp.springboot.service.CustomerService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +19,6 @@ public class CustomerController {
     @Resource
     private CustomerService customerService;
 
-    @ResponseBody
     @RequestMapping(value = "/add.json", method = POST)
     @ApiOperation(value = "Add Customer")
     public boolean add(@RequestParam String name, @RequestParam String email) {
@@ -28,7 +26,6 @@ public class CustomerController {
         return true;
     }
 
-    @ResponseBody
     @RequestMapping(value = "/list.json", method = POST)
     @ApiOperation(value = "Query All Customers")
     public List<CustomerBase> list() {

@@ -6,20 +6,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Controller
+@RestController
 @ControllerAdvice
 public class ExceptionController implements ErrorController {
     private static final Logger LOG = LoggerFactory.getLogger(ExceptionController.class);
@@ -29,7 +28,6 @@ public class ExceptionController implements ErrorController {
         MAPPER.setSerializationInclusion(Include.NON_NULL);
     }
 
-    @ResponseBody
     @RequestMapping(value = ERROR_PATH)
     public ModelAndView handleError() {
         return resolveException(HttpStatus.NOT_FOUND);
