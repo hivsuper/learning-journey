@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.web.DefaultSecurityFilterChain;
@@ -24,8 +23,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 @EnableTransactionManagement
-/** disable auto web security and error page **/
-@SpringBootApplication(exclude = { SecurityAutoConfiguration.class, ErrorMvcAutoConfiguration.class })
+/** disable auto web security **/
+@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @MapperScan("org.lxp.springboot.dao")
 public class WebApplication {
     @Value("${web.swagger.enabled}")
