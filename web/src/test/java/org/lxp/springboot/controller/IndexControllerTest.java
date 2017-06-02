@@ -1,6 +1,8 @@
 package org.lxp.springboot.controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.lxp.springboot.controller.IndexController.INDEX_PATH;
+import static org.lxp.springboot.controller.IndexController.INDEX_RESPONSE_BODY;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,22 +43,24 @@ public class IndexControllerTest {
         this.mvc.perform(post("/WERUIOPIUYGRFDGFHGKJLKJHGTYI")).andExpect(status().isNotFound());
         this.mvc.perform(get("/WERUIOPIUYGRFDGFHGKJLKJHGTYI")).andExpect(status().isNotFound());
 
-        rtn = this.mvc.perform(post("/")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        rtn = this.mvc.perform(post(INDEX_PATH)).andExpect(status().isOk()).andReturn().getResponse()
+                .getContentAsString();
         baseVO = objectMapper.readValue(rtn, BaseVO.class);
         assertEquals(405, baseVO.getResCode());
 
-        rtn = this.mvc.perform(get("/")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        baseVO = objectMapper.readValue(rtn, BaseVO.class);
-        assertEquals(400, baseVO.getResCode());
-
-        rtn = this.mvc.perform(get("/").param("sessionId", "aaa")).andExpect(status().isOk()).andReturn().getResponse()
+        rtn = this.mvc.perform(get(INDEX_PATH)).andExpect(status().isOk()).andReturn().getResponse()
                 .getContentAsString();
         baseVO = objectMapper.readValue(rtn, BaseVO.class);
         assertEquals(400, baseVO.getResCode());
 
-        rtn = this.mvc.perform(get("/").param("sessionId", "111")).andExpect(status().isOk()).andReturn().getResponse()
-                .getContentAsString();
-        assertEquals(IndexController.INDEX, rtn);
+        rtn = this.mvc.perform(get(INDEX_PATH).param("sessionId", "aaa")).andExpect(status().isOk()).andReturn()
+                .getResponse().getContentAsString();
+        baseVO = objectMapper.readValue(rtn, BaseVO.class);
+        assertEquals(400, baseVO.getResCode());
+
+        rtn = this.mvc.perform(get(INDEX_PATH).param("sessionId", "111")).andExpect(status().isOk()).andReturn()
+                .getResponse().getContentAsString();
+        assertEquals(INDEX_RESPONSE_BODY, rtn);
     }
 
 }

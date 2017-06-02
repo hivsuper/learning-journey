@@ -11,12 +11,13 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class IndexController {
-    static final String INDEX = "This is index page";
+    static final String INDEX_PATH = "/";
+    static final String INDEX_RESPONSE_BODY = "This is index page";
 
     @ResponseBody
-    @RequestMapping(value = "/", method = GET)
+    @RequestMapping(value = INDEX_PATH, method = GET)
     @ApiOperation(value = "Index Page")
     public String index(@RequestParam int sessionId) {
-        return INDEX;
+        return INDEX_RESPONSE_BODY;
     }
 }
