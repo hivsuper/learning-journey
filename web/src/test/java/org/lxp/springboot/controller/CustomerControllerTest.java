@@ -7,8 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,10 +16,8 @@ import org.lxp.springboot.service.CustomerService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,20 +25,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Transactional
-public class CustomerControllerTest {
-    private MockMvc mvc;
-    @Resource
-    private WebApplicationContext context;
+public class CustomerControllerTest extends BaseControllerTest {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
     public void setUp() {
-        this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        super.mvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
     @Test
     public void testAdd() throws Exception {
-        this.mvc.perform(post("/add.json").param("name", "555").param("email", "555@555.com"))
+        super.mvc.perform(post("/add.json").param("name", "555").param("email", "555@555.com"))
                 .andExpect(status().isOk()).andExpect(content().string("true"));
     }
 
@@ -54,7 +47,7 @@ public class CustomerControllerTest {
             customerService.addCustomer("444", "444@444.com");
         }
 
-        String rtn = this.mvc.perform(post("/list.json")).andExpect(status().isOk()).andReturn().getResponse()
+        String rtn = super.mvc.perform(post("/list.json")).andExpect(status().isOk()).andReturn().getResponse()
                 .getContentAsString();
         final TypeReference<List<CustomerBase>> REFERENCE = new TypeReference<List<CustomerBase>>() {
         };

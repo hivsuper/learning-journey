@@ -1,5 +1,8 @@
 package org.lxp.springboot.controller;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 import org.lxp.springboot.vo.BaseVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -28,7 +32,8 @@ public class ExceptionController implements ErrorController {
         MAPPER.setSerializationInclusion(Include.NON_NULL);
     }
 
-    @RequestMapping(value = ERROR_PATH)
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = ERROR_PATH, method = { GET, POST })
     public ModelAndView handleError() {
         return resolveException(HttpStatus.NOT_FOUND);
     }

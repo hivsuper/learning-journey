@@ -7,8 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.annotation.Resource;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,23 +14,18 @@ import org.lxp.springboot.vo.BaseVO;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class IndexControllerTest {
-    private MockMvc mvc;
-    @Resource
-    private WebApplicationContext context;
+public class IndexControllerTest extends BaseControllerTest {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
     public void setUp() {
-        this.mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        super.mvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
     @Test
@@ -40,25 +33,22 @@ public class IndexControllerTest {
         String rtn = null;
         BaseVO baseVO = null;
 
-        this.mvc.perform(post("/WERUIOPIUYGRFDGFHGKJLKJHGTYI")).andExpect(status().isNotFound());
-        this.mvc.perform(get("/WERUIOPIUYGRFDGFHGKJLKJHGTYI")).andExpect(status().isNotFound());
-
-        rtn = this.mvc.perform(post(INDEX_PATH)).andExpect(status().isOk()).andReturn().getResponse()
+        rtn = super.mvc.perform(post(INDEX_PATH)).andExpect(status().isOk()).andReturn().getResponse()
                 .getContentAsString();
         baseVO = objectMapper.readValue(rtn, BaseVO.class);
         assertEquals(405, baseVO.getResCode());
 
-        rtn = this.mvc.perform(get(INDEX_PATH)).andExpect(status().isOk()).andReturn().getResponse()
+        rtn = super.mvc.perform(get(INDEX_PATH)).andExpect(status().isOk()).andReturn().getResponse()
                 .getContentAsString();
         baseVO = objectMapper.readValue(rtn, BaseVO.class);
         assertEquals(400, baseVO.getResCode());
 
-        rtn = this.mvc.perform(get(INDEX_PATH).param("sessionId", "aaa")).andExpect(status().isOk()).andReturn()
+        rtn = super.mvc.perform(get(INDEX_PATH).param("sessionId", "aaa")).andExpect(status().isOk()).andReturn()
                 .getResponse().getContentAsString();
         baseVO = objectMapper.readValue(rtn, BaseVO.class);
         assertEquals(400, baseVO.getResCode());
 
-        rtn = this.mvc.perform(get(INDEX_PATH).param("sessionId", "111")).andExpect(status().isOk()).andReturn()
+        rtn = super.mvc.perform(get(INDEX_PATH).param("sessionId", "111")).andExpect(status().isOk()).andReturn()
                 .getResponse().getContentAsString();
         assertEquals(INDEX_RESPONSE_BODY, rtn);
     }
