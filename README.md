@@ -1,5 +1,5 @@
 # dubbo-demo
-Demo base on dubbo and zookeeper.  
+Demo base on dubbo and zookeeper. Please refer to http://www.cnblogs.com/hiver/p/7521522.html for more details.  
 
 *dubbo-demo-api*
 + This module defines common APIs and POJOs.  
