@@ -1,0 +1,9 @@
+dubbo-demo-provider/.settings/
+*.project
+*.classpath
+dubbo-demo-parent/.settings/
+dubbo-demo-api/.settings/
+dubbo-demo-api/target/
+dubbo-demo-consumer/.settings/
+dubbo-demo-consumer/target/
+dubbo-demo-provider/target/
