@@ -1,0 +1,6 @@
+*.project
+*.versionsBackup
+*.classpath
+.settings/
+target/
+web/logs/
