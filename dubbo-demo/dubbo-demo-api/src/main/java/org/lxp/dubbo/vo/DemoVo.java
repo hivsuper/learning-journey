@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * 必须实现Serializable对象传输可能出错
+ * implement Serializable to avoid exception during data exchange  
  */
 public class DemoVo implements Serializable {
     private static final long serialVersionUID = 1L;
