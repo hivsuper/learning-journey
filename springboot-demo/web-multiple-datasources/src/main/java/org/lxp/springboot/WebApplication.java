@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import org.lxp.springboot.swagger.SwaggerFilter;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +22,6 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 
 /** disable auto web security **/
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@MapperScan("org.lxp.springboot.dao")
 public class WebApplication {
     @Value("${web.swagger.enabled}")
     private boolean swaggerAllowed;
