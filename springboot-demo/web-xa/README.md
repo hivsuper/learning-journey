@@ -1,5 +1,5 @@
-# web-multiple-datasources
-Clone web module and expand multiple datasources.
+# web-xa
+Clone web-non-web module and support XA transactions.
 	
 ## Environment 
 MySQL: 5.6.31-0ubuntu0.15.10.1  
@@ -12,6 +12,6 @@ JAVA: 1.8.0_91
 	Run `mvn mybatis-generator:generate`  
 
 ## Reference
-http://www.jianshu.com/p/34730e595a8c  
-https://gitee.com/didispace/SpringBoot-Learning/blob/master/Chapter3-2-4/src/main/java/com/didispace/DataSourceConfig.java  
-http://guobinwu.leanote.com/post/springboot-mybatis-multidatasource  
+https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-jta.html  
+http://fabiomaffioletti.me/blog/2014/04/15/distributed-transactions-multiple-databases-spring-boot-spring-data-jpa-atomikos/  
+http://z-xiaofei168.iteye.com/blog/1044843  

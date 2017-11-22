@@ -7,5 +7,8 @@ Demos base on springboot.
 *web*
 + Test web application base on spring-boot.  
 
-*web-multiple-datasources*
-+ Test web application base on spring-boot with multiple datasources.
+*web-non-xa*
++ Test web application base on spring-boot with multiple datasources.  
+
+*web-xa*
++ Test web application base on spring-boot with multiple datasources and XA transactions.
