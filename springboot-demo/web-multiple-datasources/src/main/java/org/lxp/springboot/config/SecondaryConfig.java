@@ -17,14 +17,16 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@MapperScan(basePackages = SecondaryConfig.BASE_PACKAGES, sqlSessionTemplateRef = "sqlSessionTemplateSecondary")
+@MapperScan(basePackages = SecondaryConfig.BASE_PACKAGES, sqlSessionTemplateRef = SecondaryConfig.SQL_SESSION_TEMPLATE_SECONDARY)
 public class SecondaryConfig {
     public static final String BASE_PACKAGES = "org.lxp.springboot.dao.secondary";
     public static final String MAPPER_XML_PATH = "classpath:org/lxp/springboot/dao/secondary/*.xml";
+    public static final String SQL_SESSION_TEMPLATE_SECONDARY = "sqlSessionTemplateSecondary";
+    private static final String SQL_SESSION_FACTORY_SECONDARY = "sqlSessionFactorySecondary";
     @Resource
     private DataSource secondaryDataSource;
 
-    @Bean(name = "sqlSessionFactorySecondary")
+    @Bean(name = SQL_SESSION_FACTORY_SECONDARY)
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(secondaryDataSource);
@@ -37,9 +39,9 @@ public class SecondaryConfig {
         return new DataSourceTransactionManager(secondaryDataSource);
     }
 
-    @Bean(name = "sqlSessionTemplateSecondary")
+    @Bean(name = SQL_SESSION_TEMPLATE_SECONDARY)
     public SqlSessionTemplate sqlSessionTemplate(
-            @Qualifier("sqlSessionFactorySecondary") SqlSessionFactory sqlSessionFactory) throws Exception {
+            @Qualifier(SQL_SESSION_FACTORY_SECONDARY) SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 }

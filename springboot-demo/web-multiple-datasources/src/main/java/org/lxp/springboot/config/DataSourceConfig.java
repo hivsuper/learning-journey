@@ -17,21 +17,46 @@ import com.zaxxer.hikari.HikariDataSource;
  * http://guobinwu.leanote.com/post/springboot-mybatis-multidatasource
  */
 @Configuration
+@ConfigurationProperties(prefix = "spring.datasource.hikari")
 public class DataSourceConfig {
+    private int connectionTimeout;
+    private int maximumPoolSize;
+    private int minimumIdle;
 
     @Primary
     @Bean(name = "primaryDataSource")
     @Qualifier("primaryDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.primary")
     public DataSource primaryDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+        HikariDataSource dataSource = (HikariDataSource) DataSourceBuilder.create().type(HikariDataSource.class)
+                .build();
+        dataSource.setConnectionTimeout(connectionTimeout);
+        dataSource.setMaximumPoolSize(maximumPoolSize);
+        dataSource.setMinimumIdle(minimumIdle);
+        return dataSource;
     }
 
     @Bean(name = "secondaryDataSource")
     @Qualifier("secondaryDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.secondary")
     public DataSource secondaryDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+        HikariDataSource dataSource = (HikariDataSource) DataSourceBuilder.create().type(HikariDataSource.class)
+                .build();
+        dataSource.setConnectionTimeout(connectionTimeout);
+        dataSource.setMaximumPoolSize(maximumPoolSize);
+        dataSource.setMinimumIdle(minimumIdle);
+        return dataSource;
     }
 
+    public void setConnectionTimeout(int connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
+
+    public void setMaximumPoolSize(int maximumPoolSize) {
+        this.maximumPoolSize = maximumPoolSize;
+    }
+
+    public void setMinimumIdle(int minimumIdle) {
+        this.minimumIdle = minimumIdle;
+    }
 }
