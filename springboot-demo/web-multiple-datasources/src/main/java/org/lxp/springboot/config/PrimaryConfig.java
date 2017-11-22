@@ -18,15 +18,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@MapperScan(basePackages = PrimaryConfig.BASE_PACKAGES, sqlSessionTemplateRef = "sqlSessionTemplatePrimary")
+@MapperScan(basePackages = PrimaryConfig.BASE_PACKAGES, sqlSessionTemplateRef = PrimaryConfig.SQL_SESSION_TEMPLATE_PRIMARY)
 public class PrimaryConfig {
     public static final String BASE_PACKAGES = "org.lxp.springboot.dao.primary";
     public static final String MAPPER_XML_PATH = "classpath:org/lxp/springboot/dao/primary/*.xml";
+    public static final String SQL_SESSION_TEMPLATE_PRIMARY = "sqlSessionTemplatePrimary";
+    private static final String SQL_SESSION_FACTORY_PRIMARY = "sqlSessionFactoryPrimary";
     @Resource
     private DataSource primaryDataSource;
 
     @Primary
-    @Bean(name = "sqlSessionFactoryPrimary")
+    @Bean(name = SQL_SESSION_FACTORY_PRIMARY)
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(primaryDataSource);
@@ -41,9 +43,9 @@ public class PrimaryConfig {
     }
 
     @Primary
-    @Bean(name = "sqlSessionTemplatePrimary")
+    @Bean(name = SQL_SESSION_TEMPLATE_PRIMARY)
     public SqlSessionTemplate sqlSessionTemplate(
-            @Qualifier("sqlSessionFactoryPrimary") SqlSessionFactory sqlSessionFactory) throws Exception {
+            @Qualifier(SQL_SESSION_FACTORY_PRIMARY) SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 }
