@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.lxp</groupId>
-    <artifactId>web-multiple-datasources</artifactId>
+    <artifactId>web-non-xa</artifactId>
     <version>develop-SNAPSHOT</version>
     <packaging>jar</packaging>
 
