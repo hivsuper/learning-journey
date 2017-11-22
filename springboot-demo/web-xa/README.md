@@ -13,5 +13,5 @@ JAVA: 1.8.0_91
 
 ## Reference
 https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-jta.html  
-http://fabiomaffioletti.me/blog/2014/04/15/distributed-transactions-multiple-databases-spring-boot-spring-data-jpa-atomikos/  
+http://blog.csdn.net/u011493599/article/details/66973138  
 http://z-xiaofei168.iteye.com/blog/1044843  
