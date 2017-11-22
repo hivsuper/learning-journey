@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.lxp.springboot.model.primary.CustomerBase;
 import org.lxp.springboot.service.CustomerService;
+import org.lxp.springboot.vo.BaseVO;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -36,8 +37,14 @@ public class CustomerControllerTest extends BaseControllerTest {
 
     @Test
     public void testAdd() throws Exception {
-        super.mvc.perform(post("/add.json").param("name", "555").param("email", "555@555.com"))
+        super.mvc
+                .perform(
+                        post("/add.json").param("name", "555").param("email", "555@555.com").param("rollback", "false"))
                 .andExpect(status().isOk()).andExpect(content().string("true"));
+        String rtn = super.mvc
+                .perform(post("/add.json").param("name", "555").param("email", "555@555.com").param("rollback", "true"))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        Assert.assertEquals(500, objectMapper.readValue(rtn, BaseVO.class).getResCode());
     }
 
     @Test
