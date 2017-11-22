@@ -1,4 +1,4 @@
-# web-multiple-datasources
+# web-non-xa
 Clone web module and expand multiple datasources.
 	
 ## Environment 
