@@ -4,3 +4,5 @@
 .settings/
 target/
 web/logs/
+*.epoch
+*.lck
