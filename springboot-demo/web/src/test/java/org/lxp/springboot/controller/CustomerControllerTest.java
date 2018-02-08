@@ -44,7 +44,7 @@ public class CustomerControllerTest extends BaseControllerTest {
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         CustomerService customerService = context.getBean(CustomerService.class);
         if (customerService.findAll().isEmpty()) {
-            customerService.addCustomer("444", "444@444.com");
+            customerService.addCustomer("444", "444@444.com", false);
         }
 
         String rtn = super.mvc.perform(post("/list.json")).andExpect(status().isOk()).andReturn().getResponse()

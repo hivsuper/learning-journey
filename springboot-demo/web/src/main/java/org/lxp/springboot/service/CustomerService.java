@@ -20,13 +20,20 @@ public class CustomerService {
     private CustomerBaseMapper customerBaseMapper;
 
     @Transactional
-    public void addCustomer(String name, String email) {
+    public void addCustomer(String name, String email, boolean isSleep) {
         LOG.info("add name={} email={}", name, email);
         CustomerBase customer = new CustomerBase();
         customer.setName(name);
         customer.setEmail(email);
         customer.setCreatedDate(Calendar.getInstance().getTime());
         customerBaseMapper.insert(customer);
+        if (isSleep) {
+            try {
+                Thread.sleep(10000L);
+            } catch (InterruptedException e) {
+                LOG.error(e.getMessage(), e);
+            }
+        }
     }
 
     public List<CustomerBase> findAll() {

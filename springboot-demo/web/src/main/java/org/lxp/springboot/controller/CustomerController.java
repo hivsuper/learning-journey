@@ -21,8 +21,8 @@ public class CustomerController {
 
     @RequestMapping(value = "/add.json", method = POST)
     @ApiOperation(value = "Add Customer")
-    public boolean add(@RequestParam String name, @RequestParam String email) {
-        customerService.addCustomer(name, email);
+    public boolean add(@RequestParam String name, @RequestParam String email, @RequestParam boolean isSleep) {
+        customerService.addCustomer(name, email, isSleep);
         return true;
     }
 
