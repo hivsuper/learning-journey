@@ -1,0 +1,4 @@
+*.classpath
+*.project
+develop-tools/.settings/
+develop-tools/target/
