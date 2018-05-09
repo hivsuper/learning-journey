@@ -25,10 +25,28 @@ public class RSAHelper {
         return keyPairGenerator.generateKeyPair();
     }
 
-    public static String decrypt(String content) throws Exception {
+    public static String decryptWithPublicKey(String content) throws Exception {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, getPublicKey());
+        return new String(cipher.doFinal(Base64.getDecoder().decode(content)));
+    }
+
+    public static String decryptWithPrivateKey(String content) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, getPrivateKey());
         return new String(cipher.doFinal(Base64.getDecoder().decode(content)));
+    }
+
+    public static String encryptWithPrivateKey(String content) throws Exception {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey());
+        return new String(Base64.getEncoder().encode(cipher.doFinal(content.getBytes())));
+    }
+
+    public static String encryptWithPublicKey(String content) throws Exception {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, getPublicKey());
+        return new String(Base64.getEncoder().encode(cipher.doFinal(content.getBytes())));
     }
 
     private static PrivateKey getPrivateKey() throws Exception {
@@ -36,12 +54,6 @@ public class RSAHelper {
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyCode);
         KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
         return keyFactory.generatePrivate(keySpec);
-    }
-
-    public static String encrypt(String content) throws Exception {
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.ENCRYPT_MODE, getPublicKey());
-        return new String(Base64.getEncoder().encode(cipher.doFinal(content.getBytes())));
     }
 
     private static PublicKey getPublicKey() throws Exception {
