@@ -26,7 +26,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <env></env>
+                <env>dev</env>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>

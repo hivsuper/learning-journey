@@ -1,6 +1,11 @@
 package org.lxp.springboot.controller;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,13 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.ApiOperation;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
 public class VersionController {
@@ -22,7 +21,7 @@ public class VersionController {
     private static final ThreadLocal<DateFormat> DATE_FORMAT = new ThreadLocal<DateFormat>() {
         public DateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        };
+        }
     };
     @Value("${project.version}")
     private String version;
@@ -30,6 +29,8 @@ public class VersionController {
     private String builtAt;
     @Value("${project.format}")
     private String format;
+    @Value("${project.env}")
+    private String env;
 
     @RequestMapping(value = "/version", method = GET)
     @ApiOperation(value = "查看版本信息")
@@ -37,6 +38,7 @@ public class VersionController {
         LOG.info("version接口被调用！");
         Map<String, String> map = new HashMap<String, String>();
         map.put("version", version);
+        map.put("env", env);
         map.put("builtAt", DATE_FORMAT.get().format(new SimpleDateFormat(format).parse(builtAt)));
         return map;
     }
