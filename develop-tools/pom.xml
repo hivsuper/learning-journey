@@ -8,10 +8,17 @@
   <packaging>jar</packaging>
 
   <name>develop-tools</name>
-  <url>http://maven.apache.org</url>
+  <repositories>
+    <repository>
+      <id>mvnrepository</id>
+      <name>mvnrepository for Maven</name>
+      <url>http://mvnrepository.com/</url>
+    </repository>
+  </repositories>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jackson-version>2.9.5</jackson-version>
   </properties>
 
   <dependencies>
@@ -49,6 +56,23 @@
       <version>0.1.1</version>
     </dependency>
     <!-- log end -->
+    
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson-version}</version>
+      </dependency>
+    
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
