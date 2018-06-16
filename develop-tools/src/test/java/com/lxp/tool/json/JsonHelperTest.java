@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +21,16 @@ public class JsonHelperTest {
         testJsonVo.setPropertyBoolean(false);
         testJsonVo.setPropertyInt(1);
         testJsonVo.setPropertyDouble(0.56D);
+    }
+
+    @Test
+    public void testConvertValue() throws Exception {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("propertyString", testJsonVo.getPropertyString());
+        map.put("propertyBoolean", testJsonVo.isPropertyBoolean());
+        map.put("propertyInt", testJsonVo.getPropertyInt());
+        map.put("propertyDouble", testJsonVo.getPropertyDouble());
+        assertEquals(testJsonVo.toString(), JsonHelper.convertValue(TestJsonVo.class, map).toString());
     }
 
     @Test

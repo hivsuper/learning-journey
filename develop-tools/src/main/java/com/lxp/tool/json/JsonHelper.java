@@ -5,6 +5,7 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,10 @@ public class JsonHelper {
         OBJECT_MAPPER.setSerializationInclusion(NON_NULL);
     }
 
+    public static <T> T convertValue(Class<T> clazz, Object obj) {
+        return OBJECT_MAPPER.convertValue(obj, clazz);
+    }
+
     public static String toString(Object obj) {
         String rtn = null;
         try {
@@ -32,13 +37,15 @@ public class JsonHelper {
     }
 
     public static <T> T toObject(Class<T> clazz, String content) {
-        T rtn = null;
-        try {
-            rtn = OBJECT_MAPPER.readValue(content, clazz);
-        } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
-        }
-        return rtn;
+        return Optional.of(content).map(string -> {
+            T rtn = null;
+            try {
+                rtn = OBJECT_MAPPER.readValue(string, clazz);
+            } catch (IOException e) {
+                LOG.error(e.getMessage(), e);
+            }
+            return rtn;
+        }).orElse(null);
     }
 
     public static <T> T toObject(Class<T> clazz, InputStream inputStream) {
