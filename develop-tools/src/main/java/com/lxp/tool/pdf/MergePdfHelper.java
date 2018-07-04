@@ -12,33 +12,27 @@ import org.slf4j.LoggerFactory;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PdfSmartCopy;
 
 public class MergePdfHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(MergePdfHelper.class);
 
-    public static void mergePdfViaIText(List<InputStream> inputStreams) {
-        Document document = null;
-        try (OutputStream mergeOutputStream = new FileOutputStream(new File("D:/result.pdf"))) {
-            document = new Document();
-            PdfWriter pdfWriter = PdfWriter.getInstance(document, mergeOutputStream);
+    public static void mergePdfViaIText(List<InputStream> inputStreams, String destinationPath) {
+        try (OutputStream mergeOutputStream = new FileOutputStream(new File(destinationPath))) {
+            Document document = new Document();
+            PdfCopy copy = new PdfSmartCopy(document, mergeOutputStream);
             document.open();
-            PdfContentByte pdfContentByte = pdfWriter.getDirectContent();
             for (InputStream tempInputStream : inputStreams) {
-                PdfReader pdfReader = null;
-                pdfReader = new PdfReader(tempInputStream);
-                for (int i = 1; i <= pdfReader.getNumberOfPages(); i++) {
-                    document.newPage();
-                    PdfImportedPage page = pdfWriter.getImportedPage(pdfReader, i);
-                    pdfContentByte.addTemplate(page, 0, 0);
-                }
+                PdfReader pdfReader = new PdfReader(tempInputStream);
+                copy.addDocument(pdfReader);
                 LOGGER.info("Merging completed");
+                pdfReader.close();
                 tempInputStream.close();
             }
             document.close();
+            copy.close();
         } catch (DocumentException | IOException e) {
             LOGGER.error(e.getMessage(), e);
         }

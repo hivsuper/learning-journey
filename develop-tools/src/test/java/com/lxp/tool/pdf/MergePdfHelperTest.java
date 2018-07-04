@@ -16,6 +16,6 @@ public class MergePdfHelperTest {
         List<InputStream> inputStreams = Arrays.stream(array).map(
                 fileName -> MergePdfHelper.class.getClassLoader().getResourceAsStream(packageName.concat(fileName)))
                 .filter(Objects::nonNull).collect(Collectors.toList());
-        MergePdfHelper.mergePdfViaIText(inputStreams);
+        MergePdfHelper.mergePdfViaIText(inputStreams, "D:/result.pdf");
     }
 }
