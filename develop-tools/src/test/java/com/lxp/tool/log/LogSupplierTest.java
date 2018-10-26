@@ -25,12 +25,12 @@ public class LogSupplierTest {
     private ExecutorService executorService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         executorService = Executors.newFixedThreadPool(2);
     }
 
     @Test
-    public void testGet() throws Exception {
+    public void testGet() {
         Supplier<String> supplier = () -> {
             LOGGER.info("This is supplier.");
             return "1";

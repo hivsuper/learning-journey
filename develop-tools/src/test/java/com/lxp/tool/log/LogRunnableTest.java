@@ -24,12 +24,12 @@ public class LogRunnableTest {
     private ExecutorService executorService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         executorService = Executors.newFixedThreadPool(2);
     }
 
     @Test
-    public void testRun() throws Exception {
+    public void testRun() {
         Runnable runnable = () -> {
             LOGGER.info("This is runnable.");
         };
