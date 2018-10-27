@@ -3,9 +3,7 @@ package com.lxp.tool.log;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.slf4j.Logger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -18,12 +16,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.spy;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LogRunnableTest {
+public class LogAndCatchExceptionRunnableTest {
     private ExecutorService executorService;
 
     @Before
@@ -33,10 +30,10 @@ public class LogRunnableTest {
 
     @Test
     public void testRun() {
-        LogRunnable logRunnable = Mockito.spy(new LogRunnable(RunnabeTestHelper.getRunnable()));
+        LogAndCatchExceptionRunnable logRunnable = spy(new LogAndCatchExceptionRunnable(RunnabeTestHelper.getRunnable()));
         Set<String> set = new HashSet<>();
-        Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logRunnable).setLogContext();
-        Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logRunnable).clearLogContext();
+        doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logRunnable).setLogContext();
+        doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logRunnable).clearLogContext();
 
         List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(logRunnable, executorService)).collect(Collectors.toList());
         futures.forEach(CompletableFuture::join);
@@ -45,22 +42,16 @@ public class LogRunnableTest {
 
     @Test
     public void testRunnableWithoutCatchException() {
-        Logger logger = Mockito.mock(Logger.class);
         AtomicInteger counter = new AtomicInteger(0);
-        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(new LogRunnable(RunnabeTestHelper.getRunnable(counter)), executorService)).collect(Collectors.toList());
-        try {
-            futures.forEach(CompletableFuture::join);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-        assertEquals(2, counter.get());
-        verify(logger, Mockito.times(1)).error(anyString(), any(Throwable.class));
+        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(new LogAndCatchExceptionRunnable(RunnabeTestHelper.getRunnable(counter)), executorService)).collect(Collectors.toList());
+        futures.forEach(CompletableFuture::join);
+        assertEquals(5, counter.get());
     }
 
     @Test
     public void testRunnableWithCatchException() {
         AtomicInteger counter = new AtomicInteger(0);
-        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(new LogRunnable(RunnabeTestHelper.getRunnableWithCatchException(counter)), executorService)).collect(Collectors.toList());
+        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(new LogAndCatchExceptionRunnable(RunnabeTestHelper.getRunnableWithCatchException(counter)), executorService)).collect(Collectors.toList());
         futures.forEach(CompletableFuture::join);
         assertEquals(5, counter.get());
     }
