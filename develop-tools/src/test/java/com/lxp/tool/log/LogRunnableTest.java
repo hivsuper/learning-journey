@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +26,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LogRunnableTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogRunnableTest.class);
     private ExecutorService executorService;
 
     @Before
@@ -33,14 +36,21 @@ public class LogRunnableTest {
 
     @Test
     public void testRun() {
-        LogRunnable logRunnable = Mockito.spy(new LogRunnable(RunnabeTestHelper.getRunnable()));
-        Set<String> set = new HashSet<>();
-        Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logRunnable).setLogContext();
-        Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logRunnable).clearLogContext();
+        try {
+            MDC.put("method", "testRun");
+            LOGGER.info("test start");
+            LogRunnable logRunnable = Mockito.spy(new LogRunnable(RunnabeTestHelper.getRunnable()));
+            Set<String> set = new HashSet<>();
+            Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logRunnable).setLogContext();
+            Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logRunnable).clearLogContext();
 
-        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(logRunnable, executorService)).collect(Collectors.toList());
-        futures.forEach(CompletableFuture::join);
-        assertEquals("[setLogContext, clearLogContext]", set.toString());
+            List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(logRunnable, executorService)).collect(Collectors.toList());
+            futures.forEach(CompletableFuture::join);
+            assertEquals("[setLogContext, clearLogContext]", set.toString());
+            LOGGER.info("test finish");
+        } finally {
+            MDC.clear();
+        }
     }
 
     @Test

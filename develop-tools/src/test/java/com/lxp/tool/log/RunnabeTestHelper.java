@@ -2,14 +2,19 @@ package com.lxp.tool.log;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 class RunnabeTestHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(RunnabeTestHelper.class);
+    private static final String RUNNABLE = "runnable";
 
     static Runnable getRunnable() {
-        return () -> LOGGER.info("This is runnable.");
+        return () -> {
+            MDC.put(RUNNABLE, "getRunnable=".concat(String.valueOf(System.currentTimeMillis())));
+            LOGGER.info("This is runnable.");
+        };
     }
 
     static Runnable getRunnable(AtomicInteger counter) {
