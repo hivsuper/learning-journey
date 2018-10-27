@@ -41,9 +41,7 @@ public class LogSupplierTest {
         Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logSupplier).setLogContext();
         Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logSupplier).clearLogContext();
 
-        List<CompletableFuture<String>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> {
-            return CompletableFuture.supplyAsync(logSupplier, executorService);
-        }).collect(Collectors.toList());
+        List<CompletableFuture<String>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.supplyAsync(logSupplier, executorService)).collect(Collectors.toList());
         futures.forEach(CompletableFuture::join);
         Assert.assertEquals("[setLogContext, clearLogContext]", set.toString());
     }

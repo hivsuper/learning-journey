@@ -5,14 +5,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class RunnabeTestHelper {
+class RunnabeTestHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(RunnabeTestHelper.class);
 
-    public static Runnable getRunnable() {
+    static Runnable getRunnable() {
         return () -> LOGGER.info("This is runnable.");
     }
 
-    public static Runnable getRunnable(AtomicInteger counter) {
+    static Runnable getRunnable(AtomicInteger counter) {
         return () -> {
             try {
                 Thread.sleep(1000);
@@ -26,7 +26,7 @@ public class RunnabeTestHelper {
         };
     }
 
-    public static Runnable getRunnableWithCatchException(AtomicInteger counter) {
+    static Runnable getRunnableWithCatchException(AtomicInteger counter) {
         return () -> {
             try {
                 Thread.sleep(1000);
