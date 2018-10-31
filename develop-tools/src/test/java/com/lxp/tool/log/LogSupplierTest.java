@@ -1,15 +1,5 @@
 package com.lxp.tool.log;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +8,18 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LogSupplierTest {
@@ -31,9 +33,12 @@ public class LogSupplierTest {
 
     @Test
     public void testGet() {
+        AtomicInteger counter = new AtomicInteger(0);
         Supplier<String> supplier = () -> {
-            LOGGER.info("This is supplier.");
-            return "1";
+            String rtn = String.valueOf(counter.incrementAndGet());
+            MDC.put(RunnabeTestHelper.RUNNABLE, rtn);
+            LOGGER.info("This is {} supplier.", rtn);
+            return rtn;
         };
 
         LogSupplier<String> logSupplier = Mockito.spy(new LogSupplier<>(supplier));

@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 class RunnabeTestHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(RunnabeTestHelper.class);
-    private static final String RUNNABLE = "runn_able";
+    static final String RUNNABLE = "runn_able";
 
     static Runnable getRunnable() {
         return () -> {
