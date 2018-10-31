@@ -8,11 +8,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 class RunnabeTestHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(RunnabeTestHelper.class);
-    private static final String RUNNABLE = "runnable";
+    private static final String RUNNABLE = "runn_able";
 
     static Runnable getRunnable() {
         return () -> {
-            MDC.put(RUNNABLE, "getRunnable=".concat(String.valueOf(System.currentTimeMillis())));
+            MDC.put(RUNNABLE, String.valueOf(System.currentTimeMillis()));
             LOGGER.info("This is runnable.");
         };
     }
