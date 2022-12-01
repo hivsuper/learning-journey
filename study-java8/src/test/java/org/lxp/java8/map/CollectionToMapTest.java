@@ -1,8 +1,7 @@
 package org.lxp.java8.map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.lxp.vo.Student;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,8 +10,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.junit.Test;
-import org.lxp.vo.Student;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @see https://www.cnblogs.com/hiver/p/9156147.html
@@ -44,26 +43,20 @@ public class CollectionToMapTest {
                 + "4=Student [studentNo=4, name=name4, gender=true, age=2]}", map.toString());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldThrowNPEWhenToMapNullValue() {
-        fakeStudent().stream().collect(Collectors.toMap(Student::getStudentNo, Student::getGender));
+        assertThatThrownBy(() -> fakeStudent().stream().collect(Collectors.toMap(Student::getStudentNo, Student::getGender))).isInstanceOf(NullPointerException.class);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnMapWhenPartitioningByNullKey() {
-        fakeStudent().stream().collect(Collectors.partitioningBy(Student::getGender));
+        assertThatThrownBy(() -> fakeStudent().stream().collect(Collectors.partitioningBy(Student::getGender))).isInstanceOf(NullPointerException.class);
     }
 
     @Test
     public void shouldThrowIllegalStateExceptionWhenToMapDuplicateKey() {
-        Map<String, Student> map = null;
-        try {
-            map = fakeStudent().stream().collect(Collectors.toMap(Student::getName, Function.identity()));
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalStateException);
-            assertEquals("Duplicate key Student [studentNo=2, name=name2, gender=false, age=2]", e.getMessage());
-        }
-        assertNull(map);
+        assertThatThrownBy(() -> fakeStudent().stream().collect(Collectors.toMap(Student::getName, Function.identity())))
+                .isInstanceOf(IllegalStateException.class).hasMessageContaining("Student [studentNo=2, name=name2, gender=false, age=2]");
     }
 
     @Test
