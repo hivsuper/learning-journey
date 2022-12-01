@@ -9,6 +9,8 @@ All the projects are built on Java 8 and apache maven 3.3.9
 
 ## mockito-demos
 +	Demos for mockito2/powermock  
++	Demos for hamcrest(org.hamcrest.MatcherAssert#assertThat)
++	Demos for assertj(org.assertj.core.api.Assertions#assertThat)
 
 ## multiple-thread
 +	Study Java multiple threads  
@@ -18,6 +20,8 @@ All the projects are built on Java 8 and apache maven 3.3.9
 
 ## study-java8
 +	Learn more about new features in java8  
++	Demos for assertj(org.assertj.core.api.Assertions#assertThat)
++	Demos for mockito4(org.mockito.Mockito#mockStatic)
 
 ## study-parent
 <table>
