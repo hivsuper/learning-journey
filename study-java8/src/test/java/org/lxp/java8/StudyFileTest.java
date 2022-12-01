@@ -3,19 +3,30 @@ package org.lxp.java8;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mockStatic;
 
+@RunWith(MockitoJUnitRunner.class)
 public class StudyFileTest {
     private File file;
+    @Captor
+    private ArgumentCaptor<byte[]> byteCaptor;
 
     @Before
     public void setUp() throws Exception {
@@ -51,5 +62,15 @@ public class StudyFileTest {
     @Test
     public void testLines() throws Exception {
         assertThat(StudyFile.lines(file.getPath())).containsExactly("1", "1", "2", "2", "3", "3");
+    }
+
+    @Test
+    public void testWrite() throws Exception {
+        try (MockedStatic<Files> mocked = mockStatic(Files.class)) {
+            ArgumentCaptor<Path> pathArgumentCaptor = ArgumentCaptor.forClass(Path.class);
+            Path path = Mockito.mock(Path.class);
+            mocked.when(() -> Files.write(pathArgumentCaptor.capture(), byteCaptor.capture())).thenReturn(path);
+            assertThat(StudyFile.write("asd", "1".getBytes())).isEqualTo(path);
+        }
     }
 }
