@@ -1,14 +1,22 @@
 package org.lxp.java8;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-
 import org.apache.commons.lang3.tuple.Pair;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public class StudyCompletableFutureTest {
+    private final int ROUND = 1000;
 
     @Test
     public void testExecutorService() throws Exception {
@@ -85,5 +93,56 @@ public class StudyCompletableFutureTest {
             sb.append(x + 3);
         }).join();
         Assert.assertEquals("4", sb.toString());
+    }
+
+    @Test
+    public void notAllTasksAreDoneUnlessShutDownThreadPool() throws InterruptedException {
+        AtomicInteger counter = new AtomicInteger(0);
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(1, ROUND).mapToObj(index -> CompletableFuture.runAsync(() -> {
+            throw new IllegalStateException(String.valueOf(counter.incrementAndGet()));
+        }, executorService)).collect(Collectors.toList());
+        try {
+            futures.forEach(CompletableFuture::join);
+        } catch (Exception e) {
+            System.out.println(counter.get());
+        }
+        Assertions.assertThat(counter.get()).isLessThan(ROUND);
+        executorService.shutdown();
+        executorService.awaitTermination(1, TimeUnit.HOURS);
+        Assertions.assertThat(counter.get()).isEqualTo(ROUND);
+    }
+
+    @Test
+    public void allTasksGetDone() {
+        AtomicInteger counter = new AtomicInteger(0);
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(1, ROUND).mapToObj(index -> CompletableFuture.runAsync(() -> {
+            throw new IllegalStateException(String.valueOf(counter.incrementAndGet()));
+        }, executorService)).collect(Collectors.toList());
+        CompletableFuture<Void> headerFuture = CompletableFuture.allOf(futures.toArray(new CompletableFuture[]{}));
+        try {
+            headerFuture.join();
+        } catch (Exception e) {
+            System.out.println(counter.get());
+        }
+        Assertions.assertThat(counter.get()).isEqualTo(ROUND);
+    }
+
+    @Test
+    public void notAllTasksAreDoneWithThreadPool() {
+        AtomicInteger counter = new AtomicInteger(0);
+        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(1, ROUND).mapToObj(index -> CompletableFuture.runAsync(() ->
+                new Thread(() -> {
+                    throw new IllegalStateException(String.valueOf(counter.incrementAndGet()));
+                }, "Thread-" + index).start()
+        )).collect(Collectors.toList());
+        CompletableFuture<Void> headerFuture = CompletableFuture.allOf(futures.toArray(new CompletableFuture[]{}));
+        try {
+            headerFuture.join();
+        } catch (Exception e) {
+            System.out.println(counter.get());
+        }
+        Assertions.assertThat(counter.get()).isLessThan(ROUND);
     }
 }
