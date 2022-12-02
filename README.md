@@ -22,6 +22,7 @@ All the projects are built on Java 8 and apache maven 3.3.9
 +	Learn more about new features in java8  
 +	Demos for assertj(org.assertj.core.api.Assertions#assertThat)
 +	Demos for mockito4(org.mockito.Mockito#mockStatic)
++	Demos of how to ensure all sub tasks are done when using CompletableFuture
 
 ## study-parent
 <table>
