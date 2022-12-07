@@ -46,7 +46,16 @@ All the projects are built on Java 8 and apache maven 3.3.9
 		</td>
 	</tr>
 	<tr><td>study-activemq</td><td>学习activemq</td></tr>
-	<tr><td>rw-splitting</td><td>test read/write splitting approach</td></tr>
+	<tr>
+		<td rowspan="3">rw-splitting</td>
+		<td>test read/write splitting approach</td>
+	</tr>
+	<tr>
+		<td>Use hsqldb for unit test in memory DB</td>
+	</tr>
+	<tr>
+		<td>Use json-path-assert for API response verification</td>
+	</tr>
 	<tr><td>study-redis</td><td>test publish/subscribe base on redis</td></tr>
 </table>
 

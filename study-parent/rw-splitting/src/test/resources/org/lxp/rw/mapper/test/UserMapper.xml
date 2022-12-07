@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lxp.rw.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="org.lxp.rw.model.User">
+    <id column="id" property="id" />
+    <result column="name" property="name" />
+    <result column="create_time" property="createTime" />
+    <result column="modify_time" property="modifyTime" />
+  </resultMap>
+  <insert id="insert" parameterType="org.lxp.rw.model.User" statementType="PREPARED">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+      CALL IDENTITY()
+    </selectKey>
+    INSERT INTO t_user (name, create_time, modify_time) VALUES (#{name}, #{createTime}, #{modifyTime});
+  </insert>
+  <select id="selectById" parameterType="int" statementType="PREPARED" resultMap="BaseResultMap">
+    SELECT id, name,
+    create_time, modify_time FROM t_user WHERE id=#{id};
+  </select>
+  <delete id="deleteById" parameterType="int" statementType="PREPARED">
+    DELETE FROM t_user WHERE id=#{id};
+  </delete>
+  <update id="updateById" parameterType="org.lxp.rw.model.User" statementType="PREPARED">
+    UPDATE t_user SET name=#{name}, create_time=#{createTime}, modify_time=#{modifyTime} WHERE id=#{id};
+  </update>
+</mapper>

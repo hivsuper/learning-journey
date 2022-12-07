@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd">
+
+
+  <context:property-placeholder location="classpath:rw-splitting.properties" />
+  <context:component-scan base-package="org.lxp.rw.service" />
+
+  <jdbc:embedded-database id="dataSource" generate-name="true" type="HSQL" separator=";" database-name="rw-test">
+    <jdbc:script location="classpath:sql/schema.sql" encoding="UTF-8"/>
+  </jdbc:embedded-database>
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="mapperLocations" value="classpath:org/lxp/rw/mapper/test/*.xml" />
+  </bean>
+  <bean id='sqlSessionTemplate' class="org.mybatis.spring.SqlSessionTemplate">
+    <constructor-arg ref="sqlSessionFactory" />
+  </bean>
+  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource" />
+  </bean>
+  <!-- enable autowired for mapper -->
+  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="org.lxp.rw.mapper" />
+  </bean>
+
+  <tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <tx:attributes>
+      <tx:method name="add*" propagation="REQUIRED" isolation="DEFAULT" read-only="false" />
+      <tx:method name="update*" propagation="REQUIRED" isolation="DEFAULT" read-only="false" />
+      <tx:method name="delete*" propagation="REQUIRED" isolation="DEFAULT" read-only="false" />
+      <tx:method name="get*" propagation="REQUIRED" isolation="DEFAULT" read-only="true" />
+      <tx:method name="load*" propagation="REQUIRED" isolation="DEFAULT" read-only="true" />
+      <tx:method name="find*" propagation="REQUIRED" isolation="DEFAULT" read-only="true" />
+      <tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" read-only="true" />
+    </tx:attributes>
+  </tx:advice>
+  <aop:config>
+    <aop:pointcut id="pc" expression="execution(public * org.lxp.rw.service.*.*(..))" />
+    <aop:advisor pointcut-ref="pc" advice-ref="txAdvice" />
+  </aop:config>
+</beans>
