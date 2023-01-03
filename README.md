@@ -24,6 +24,9 @@ All the projects are built on Java 8 and apache maven 3.3.9
 +	Demos for mockito4(org.mockito.Mockito#mockStatic)
 +	Demos of how to ensure all sub tasks are done when using CompletableFuture
 
+## study-java11
++	Learn more about new features in java11(HttpClient). Tested in Open JDK 11
+
 ## study-parent
 <table>
 	<tr><td>study-jsoup</td><td>Set timer jobs to capture useful content with Jsoup.</td></tr>
