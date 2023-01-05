@@ -13,10 +13,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>study-java11</name>
 	<description>Demo project for Java 11</description>
-	<properties>
-		<java.version>11</java.version>
-		<maven.compiler.release>${java.version}</maven.compiler.release>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -28,19 +24,133 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+    <properties>
+        <java.version>11</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+        <jacocoArgLine1>-Xmx64m</jacocoArgLine1>
+        <jacocoArgLine2>-Xmx128m</jacocoArgLine2>
+    </properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.10.1</version>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Unit test with Maven Surefire plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <parallel>method</parallel>
+                    <threadCountMethods>10</threadCountMethods>
+                    <argLine>${surefireArgLine}</argLine>
+                    <excludes>
+                        <exclude>**/*IT.java</exclude>
+                        <exclude>**/IT*.java</exclude>
+                    </excludes>
+                    <systemPropertyVariables>
+                        <listener>org.sonar.java.jacoco.JUnitListener</listener>
+                    </systemPropertyVariables>
+                    <excludedGroups>${test.excluded.groups}</excludedGroups>
+                </configuration>
+            </plugin>
+            <!-- Integration test with Maven failsafe plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <argLine>${failsafeArgLine}</argLine>
+                            <excludes>
+                                <exclude>**/Test*.java</exclude>
+                                <exclude>**/*Test.java</exclude>
+                            </excludes>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>
+                                    ${project.build.directory}/${project.artifactId}-${project.version}.jar.original
+                                </additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <systemPropertyVariables>
+                                <listener>org.sonar.java.jacoco.JUnitListener</listener>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
+    <profiles>
+        <profile>
+            <!-- enables unit test coverage. This will only run when we are doing sonar, otherwise it slows down the build -->
+            <id>coverage</id>
+            <activation>
+                <property>
+                    <name>coverage</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <properties>
+                <test.listeners>org.sonar.java.jacoco.JUnitListener</test.listeners>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>pre-unit-test</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                                <configuration>
+                                    <propertyName>jacocoArgLine1</propertyName>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>pre-integration-test</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>prepare-agent-integration</goal>
+                                </goals>
+                                <configuration>
+                                    <propertyName>jacocoArgLine2</propertyName>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

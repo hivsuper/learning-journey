@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class HelloControllerIT {
+public class HelloControllerIT {
 
     @Autowired
     private TestRestTemplate template;
 
     @Test
-    void get() throws Exception {
+    void get() {
         ResponseEntity<String> response = template.getForEntity("/?param=afdafd", String.class);
         assertThat(response.getBody()).isEqualTo("get afdafd");
     }
