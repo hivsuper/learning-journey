@@ -127,6 +127,10 @@
                                 <goals>
                                     <goal>report</goal>
                                 </goals>
+                                <configuration>
+                                    <dataFile>target/jacoco.exec</dataFile>
+                                    <outputDirectory>target/jacoco-ut</outputDirectory>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>pre-integration-test</id>
