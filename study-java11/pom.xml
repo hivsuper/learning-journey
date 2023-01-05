@@ -28,8 +28,6 @@
         <java.version>11</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
-        <jacocoArgLine1>-Xmx64m</jacocoArgLine1>
-        <jacocoArgLine2>-Xmx128m</jacocoArgLine2>
     </properties>
 
     <build>
@@ -58,7 +56,6 @@
                 <configuration>
                     <parallel>method</parallel>
                     <threadCountMethods>10</threadCountMethods>
-                    <argLine>${surefireArgLine}</argLine>
                     <excludes>
                         <exclude>**/*IT.java</exclude>
                         <exclude>**/IT*.java</exclude>
@@ -66,7 +63,6 @@
                     <systemPropertyVariables>
                         <listener>org.sonar.java.jacoco.JUnitListener</listener>
                     </systemPropertyVariables>
-                    <excludedGroups>${test.excluded.groups}</excludedGroups>
                 </configuration>
             </plugin>
             <!-- Integration test with Maven failsafe plugin -->
@@ -82,7 +78,6 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <argLine>${failsafeArgLine}</argLine>
                             <excludes>
                                 <exclude>**/Test*.java</exclude>
                                 <exclude>**/*Test.java</exclude>
@@ -127,9 +122,6 @@
                                 <goals>
                                     <goal>prepare-agent</goal>
                                 </goals>
-                                <configuration>
-                                    <propertyName>jacocoArgLine1</propertyName>
-                                </configuration>
                             </execution>
                             <execution>
                                 <id>report</id>
@@ -143,9 +135,6 @@
                                 <goals>
                                     <goal>prepare-agent-integration</goal>
                                 </goals>
-                                <configuration>
-                                    <propertyName>jacocoArgLine2</propertyName>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
