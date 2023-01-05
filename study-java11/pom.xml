@@ -99,7 +99,6 @@
 
     <profiles>
         <profile>
-            <!-- enables unit test coverage. This will only run when we are doing sonar, otherwise it slows down the build -->
             <id>coverage</id>
             <activation>
                 <property>
