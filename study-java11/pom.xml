@@ -28,6 +28,10 @@
         <java.version>11</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+
+        <app.name>${project.artifactId}</app.name>
+        <min.heap>64m</min.heap>
+        <max.heap>128m</max.heap>
     </properties>
 
     <build>
@@ -140,6 +144,39 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>package</id>
+            <activation>
+                <file>
+                    <exists>config/application.properties</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>${maven-assembly-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <delimiters>
+                                <delimiter>${*}</delimiter>
+                            </delimiters>
+                            <tarLongFileMode>posix</tarLongFileMode>
+                            <descriptors>
+                                <descriptor>assembly/assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

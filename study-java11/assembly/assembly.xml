@@ -1,0 +1,36 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.1 https://maven.apache.org/xsd/assembly-2.1.1.xsd">
+    <id>archive</id>
+    <formats>
+        <format>tgz</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <files>
+        <file>
+            <source>assembly/start-app-template.sh</source>
+            <destName>start-${app.name}.sh</destName>
+            <fileMode>755</fileMode>
+            <outputDirectory/>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>assembly/stop-app-template.sh</source>
+            <destName>stop-${app.name}.sh</destName>
+            <fileMode>755</fileMode>
+            <outputDirectory/>
+            <filtered>true</filtered>
+        </file>
+        <!-- config/application.properties will be loaded as per
+            https://docs.spring.io/spring-boot/docs/1.0.1.RELEASE/reference/html/boot-features-external-config.html
+        -->
+        <file>
+            <source>config/application.properties</source>
+            <destName>application.properties</destName>
+            <fileMode>600</fileMode>
+            <outputDirectory>config</outputDirectory>
+        </file>
+    </files>
+
+
+</assembly>
