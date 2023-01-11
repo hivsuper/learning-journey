@@ -5,6 +5,7 @@ USER demo
 ARG JAR_FILE
 ARG MIN_HEAP
 ARG MAX_HEAP
+# JAVA_OPTS is for test here. Environmental variables shouldn't be bind with docker image itself
 ENV JAVA_OPTS="${MIN_HEAP} ${MAX_HEAP}"
 ADD ${JAR_FILE} app.jar
 CMD ["java", "-version"]
