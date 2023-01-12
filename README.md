@@ -28,6 +28,7 @@ All the projects are built on Java 8 and apache maven 3.3.9
 +	Learn more about new features in java11(HttpClient). Tested in Open JDK 11
 +	Use jacoco-maven-plugin/maven-surefire-plugin/maven-failsafe-plugin to create test coverage report
 +	Use maven-assembly-plugin/spring-boot-maven-plugin to create artifact package with Jar, outer configuration and scripts
++	Use dockerfile-maven-plugin/docker-maven-plugin to build docker image
 
 ## study-parent
 <table>
