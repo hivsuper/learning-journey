@@ -29,6 +29,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
+        <docker-maven-plugin.version>1.2.2</docker-maven-plugin.version>
 
         <app.name>${project.artifactId}</app.name>
         <min.heap>64m</min.heap>
@@ -42,6 +43,11 @@
                     <groupId>com.spotify</groupId>
                     <artifactId>dockerfile-maven-plugin</artifactId>
                     <version>${dockerfile-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${docker-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -216,6 +222,70 @@
                                 <MAX_HEAP>-Xmx${max.heap}</MAX_HEAP>
                             </buildArgs>
                         </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <!-- The original creator recommend dockerfile-maven-plugin as per https://github.com/spotify/docker-maven-plugin -->
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <imageName>${project.groupId}/${project.artifactId}:${project.version}</imageName>
+                            <!-- location of Dockerfile -->
+                            <dockerDirectory>${basedir}</dockerDirectory>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.build.directory}</directory>
+                                    <include>${project.build.finalName}.${project.packaging}</include>
+                                </resource>
+                            </resources>
+                            <!-- Comment out for local test -->
+<!--                            <dockerHost>xxxx://xxxxxxxxx:2375</dockerHost>-->
+                            <imageTags>
+                                <imageTag>latest</imageTag>
+                            </imageTags>
+                            <buildArgs>
+                                <JAR_FILE>/${project.build.finalName}.${project.packaging}</JAR_FILE>
+                                <MIN_HEAP>-Xms${min.heap}</MIN_HEAP>
+                                <MAX_HEAP>-Xmx${max.heap}</MAX_HEAP>
+                            </buildArgs>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>tag-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>tag</goal>
+                                </goals>
+                                <configuration>
+                                    <image>${project.groupId}/${project.artifactId}:latest</image>
+                                    <newName>${project.groupId}/${project.artifactId}:test-tag</newName>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>push-image</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                                <configuration>
+                                    <imageName>${project.groupId}/${project.artifactId}:${project.version}</imageName>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
