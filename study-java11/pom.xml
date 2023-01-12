@@ -198,6 +198,7 @@
                 </plugins>
             </build>
         </profile>
+        <!-- refer to https://juejin.cn/post/7031712674400436254 about docker image -->
         <profile>
             <id>dockerfile</id>
             <build>
@@ -240,6 +241,8 @@
                         </executions>
                         <configuration>
                             <repository>${project.groupId}/${project.artifactId}</repository>
+                            <!-- https://github.com/spotify/dockerfile-maven/pull/89. Need maven-resources-plugin if Dockerfile is in a different folder -->
+                            <dockerfile>Dockerfile</dockerfile>
                             <buildArgs>
                                 <JAR_FILE>target/${app.name}-${project.version}.${project.packaging}</JAR_FILE>
                                 <MIN_HEAP>-Xms${min.heap}</MIN_HEAP>
