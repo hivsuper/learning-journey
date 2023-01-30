@@ -1,4 +1,4 @@
-All the projects are built on Java 8 and apache maven 3.3.9
+All the projects are built on Java 8 and apache maven 3.3.9 unless otherwise stated
 
 ----------------------------------------------------
 # bcp-test
@@ -25,6 +25,15 @@ All the projects are built on Java 8 and apache maven 3.3.9
 +	Demos of how to ensure all sub tasks are done when using CompletableFuture
 
 ## study-java11
+### JDK
+```
+openjdk version "11" 2018-09-25
+OpenJDK Runtime Environment 18.9 (build 11+28)
+OpenJDK 64-Bit Server VM 18.9 (build 11+28, mixed mode)
+```
+### Maven
+Maven 3.8.1
+### Features 
 +	Learn more about new features in java11(HttpClient). Tested in Open JDK 11
 +	Use jacoco-maven-plugin/maven-surefire-plugin/maven-failsafe-plugin to create test coverage report
 +	Use maven-assembly-plugin/spring-boot-maven-plugin to create artifact package with Jar, outer configuration and scripts
