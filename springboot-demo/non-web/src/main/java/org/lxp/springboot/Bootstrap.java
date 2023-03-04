@@ -14,14 +14,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @SpringBootApplication
 @MapperScan("org.lxp.springboot.dao")
-public class SpringBootConsoleApplication implements CommandLineRunner {
-    private static final Logger LOG = LoggerFactory.getLogger(SpringBootConsoleApplication.class);
+public class Bootstrap implements CommandLineRunner {
+    private static final Logger LOG = LoggerFactory.getLogger(Bootstrap.class);
     @Resource
     private CustomerService customerService;
 
     public static void main(String[] args) throws Exception {
-        // SpringApplication.run(SpringBootConsoleApplication.class, "display");
-        SpringApplication.run(SpringBootConsoleApplication.class, "insert", "1", "1@2.com");
+        // SpringApplication.run(Bootstrap.class, "display");
+        SpringApplication.run(Bootstrap.class, "insert", "1", "1@2.com");
     }
 
     @Override

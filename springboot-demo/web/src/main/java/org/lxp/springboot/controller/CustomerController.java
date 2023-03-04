@@ -1,18 +1,16 @@
 package org.lxp.springboot.controller;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
-import java.util.List;
-
-import javax.annotation.Resource;
-
+import io.swagger.annotations.ApiOperation;
 import org.lxp.springboot.model.CustomerBase;
 import org.lxp.springboot.service.CustomerService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.ApiOperation;
+import javax.annotation.Resource;
+import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 public class CustomerController {
@@ -21,7 +19,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/add.json", method = POST)
     @ApiOperation(value = "Add Customer")
-    public boolean add(@RequestParam String name, @RequestParam String email, @RequestParam boolean isSleep) {
+    public boolean add(@RequestParam String name, @RequestParam String email, @RequestParam(defaultValue = "true") boolean isSleep) {
         customerService.addCustomer(name, email, isSleep);
         return true;
     }

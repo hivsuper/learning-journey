@@ -1,4 +1,8 @@
 # dubbo-demo
+
+This project is built on Java 8 and apache maven 3.3.9
+
+----------------------------------------------------
 Demo base on dubbo and zookeeper. Please refer to http://www.cnblogs.com/hiver/p/7521522.html for more details.  
 
 *dubbo-demo-api*

@@ -26,7 +26,7 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 /** disable auto web security **/
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @MapperScan("org.lxp.springboot.dao")
-public class WebApplication {
+public class Bootstrap {
     @Value("${web.swagger.enabled}")
     private boolean swaggerAllowed;
 
@@ -59,6 +59,6 @@ public class WebApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(WebApplication.class, args);
+        SpringApplication.run(Bootstrap.class, args);
     }
 }
