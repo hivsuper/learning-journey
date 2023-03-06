@@ -17,15 +17,15 @@ resource "aws_iam_instance_profile" "iam-instance-profile-assume-role-flask" {
   path = "/service-role/"
 }
 
-# custom/inline policy. THIS IS JUST FOR TEST BUT NOT MANDATORY FOR flask
-resource aws_iam_role_policy iam-role-policy-permissions {
+# custom/inline policy
+resource aws_iam_role_policy "flask-permissions" {
   name   = local.ecs-instance-role-prefix
   role   = aws_iam_role.iam-role-flask.name
-  policy = templatefile("${path.module}/templates/role-policy-app.tpl", {})
+  policy = templatefile("${path.module}/templates/role-policy-flask.tpl", {})
 }
 
 # AWS managed policies
-resource "aws_iam_role_policy_attachment" "role-policy-attachment" {
+resource "aws_iam_role_policy_attachment" "flask-permissions" {
   for_each = toset([
     "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
   ])

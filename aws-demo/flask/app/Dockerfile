@@ -1,5 +1,9 @@
 # syntax=docker/dockerfile:1.4
-FROM --platform=$BUILDPLATFORM python:3.10-alpine AS builder
+FROM alpine:3.7 AS builder
+RUN apk add --no-cache \
+        uwsgi-python3 \
+        python3
+EXPOSE 80
 
 WORKDIR /app
 
@@ -7,21 +11,8 @@ COPY requirements.txt /app
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
 
+RUN addgroup -S python && adduser -S 999 -G python
+USER 999
+
 COPY . /app
-
-ENTRYPOINT ["python3"]
-CMD ["app.py"]
-
-FROM builder as dev-envs
-
-RUN <<EOF
-apk update
-apk add git
-EOF
-
-RUN <<EOF
-addgroup -S docker
-adduser -S --shell /bin/bash --ingroup docker vscode
-EOF
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
+CMD [ "uwsgi", "--ini", "/app/uwsgi.ini" ]

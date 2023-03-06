@@ -60,7 +60,7 @@ variable "memory" {
 }
 
 variable "flask-port" {
-  default = 1234
+  default = 80
 }
 
 locals {

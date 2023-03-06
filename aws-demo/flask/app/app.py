@@ -29,12 +29,14 @@ dictConfig({
 
 
 @app.route('/', methods=['GET'])
-def hello():
-    return "Hello World!"
+def health_check():
+    app.logger.info("call health_check")
+    return "Welcome!"
 
 
 @app.route('/s3-bucket/<name>', methods=['POST'])
 def create_s3_bucket(name):
+    app.logger.info("create %s", name)
     s3 = boto3.resource('s3')
     s3.create_bucket(Bucket=name)
     return name
@@ -42,16 +44,18 @@ def create_s3_bucket(name):
 
 @app.route('/s3-bucket/<name>', methods=['GET'])
 def get_s3_bucket(name):
+    app.logger.info("get %s", name)
     s3 = boto3.resource('s3')
     return s3.Bucket(name).creation_date
 
 
 @app.route('/s3-bucket/<name>', methods=['DELETE'])
 def delete_s3_bucket(name):
+    app.logger.info("delete %s", name)
     s3 = boto3.resource('s3')
     s3.delete_bucket(Bucket=name)
     return name
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', port=80)
