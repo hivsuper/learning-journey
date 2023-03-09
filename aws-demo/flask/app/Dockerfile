@@ -3,7 +3,7 @@ FROM alpine:3.7 AS builder
 RUN apk add --no-cache \
         uwsgi-python3 \
         python3
-EXPOSE 80
+EXPOSE 8000
 
 WORKDIR /app
 

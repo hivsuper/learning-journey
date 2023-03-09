@@ -1,4 +1,4 @@
-resource "aws_lb" "lb-flask-web" {
+resource "aws_lb" "lb-flask" {
   name               = "${local.flask-web}-lb"
   internal           = false
   load_balancer_type = "application"
@@ -9,9 +9,9 @@ resource "aws_lb" "lb-flask-web" {
   tags                       = module.flask-tags.tags
 }
 
-resource "aws_lb_target_group" "alb-tg-flask-web" {
+resource "aws_lb_target_group" "alb-tg-flask" {
   name        = "${local.flask-web}-alb-tg"
-  target_type = "ip"
+  target_type = "instance"
   port        = var.flask-port
   protocol    = "HTTP"
   vpc_id      = module.common-vpc.default_vpc
@@ -31,25 +31,25 @@ resource "aws_lb_target_group" "alb-tg-flask-web" {
   tags = module.flask-tags.tags
 }
 
-resource "aws_lb_listener" "lb-listener-flask-web" {
-  load_balancer_arn = aws_lb.lb-flask-web.arn
+resource "aws_lb_listener" "lb-listener-flask" {
+  load_balancer_arn = aws_lb.lb-flask.arn
   port              = var.flask-port
-  protocol          = aws_lb_target_group.alb-tg-flask-web.protocol
+  protocol          = aws_lb_target_group.alb-tg-flask.protocol
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.alb-tg-flask-web.arn
+    target_group_arn = aws_lb_target_group.alb-tg-flask.arn
   }
   tags = module.flask-tags.tags
 }
 
-resource "aws_lb_listener_rule" "lb-listener-rule-flask-web" {
-  listener_arn = aws_lb_listener.lb-listener-flask-web.arn
+resource "aws_lb_listener_rule" "lb-listener-rule-flask" {
+  listener_arn = aws_lb_listener.lb-listener-flask.arn
   priority     = 100
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.alb-tg-flask-web.arn
+    target_group_arn = aws_lb_target_group.alb-tg-flask.arn
   }
 
   condition {

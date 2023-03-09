@@ -56,7 +56,7 @@ variable "memory" {
 }
 
 variable "container-port" {
-  default = 80
+  default = 8000
 }
 
 variable "flask-port" {

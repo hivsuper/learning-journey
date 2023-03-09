@@ -16,14 +16,8 @@ resource aws_ecs_service "service-ec2-no-scaling" {
   deployment_minimum_healthy_percent = 0
   tags                               = module.flask-tags.tags
   propagate_tags                     = "SERVICE"
-  network_configuration {
-    security_groups = [
-      aws_security_group.security_group.id
-    ]
-    subnets = module.common-vpc.default_subnet_ids
-  }
   load_balancer {
-    target_group_arn = aws_lb_target_group.alb-tg-flask-web.arn
+    target_group_arn = aws_lb_target_group.alb-tg-flask.arn
     container_port   = var.container-port
     container_name   = local.service-name
   }
@@ -43,7 +37,7 @@ resource "aws_ecs_task_definition" "common-ecs-task-definition-flask" {
     tags                  = module.flask-tags.tags
   })
   family        = local.service-name
-  network_mode  = "awsvpc"
+  network_mode  = null
   cpu           = var.cpu
   memory        = var.memory
   tags          = module.flask-tags.tags
