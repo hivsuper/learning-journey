@@ -19,17 +19,10 @@ locals {
   rules = {
     # inbound rules
     flask : {
-      from_port   = var.flask-port
-      to_port     = var.flask-port
-      cidr_blocks = "${chomp(data.http.my-ip.response_body)}/32"
-      protocol    = "tcp"
-      type        = "ingress"
-    },
-    ssh : {
-      from_port   = 22
-      to_port     = 22
+      from_port   = -1
+      to_port     = -1
       cidr_blocks = "0.0.0.0/0"
-      protocol    = "tcp"
+      protocol    = "all"
       type        = "ingress"
     },
     # outbound rules
@@ -51,11 +44,11 @@ locals {
 }
 
 resource "aws_security_group_rule" "security-group-flask" {
-  for_each    = local.rules
-  from_port   = each.value.from_port
-  to_port     = each.value.to_port
-  cidr_blocks = [each.value.cidr_blocks]
-  protocol    = each.value.protocol
-  type        = each.value.type
+  for_each          = local.rules
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+  cidr_blocks       = [each.value.cidr_blocks]
+  protocol          = each.value.protocol
+  type              = each.value.type
   security_group_id = aws_security_group.security_group.id
 }

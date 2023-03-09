@@ -22,10 +22,6 @@ module "common-ec2-userdata" {
   service_name = local.service-name
 }
 
-data "http" "my-ip" {
-  url = "https://ipv4.icanhazip.com"
-}
-
 data aws_region current {}
 
 variable aws_instance_type {
@@ -59,6 +55,10 @@ variable "memory" {
   default = 768
 }
 
+variable "container-port" {
+  default = 80
+}
+
 variable "flask-port" {
   default = 80
 }
@@ -67,5 +67,5 @@ locals {
   cluster-name   = format("%s-cluster", var.flask)
   service-name   = format("%s-service", var.flask)
   security-group = format("%s-sg", var.flask)
-  flask-web = format("%s-web", var.flask)
+  flask-web      = format("%s-web", var.flask)
 }

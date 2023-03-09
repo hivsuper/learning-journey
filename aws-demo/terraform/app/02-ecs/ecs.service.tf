@@ -22,6 +22,11 @@ resource aws_ecs_service "service-ec2-no-scaling" {
     ]
     subnets = module.common-vpc.default_subnet_ids
   }
+  load_balancer {
+    target_group_arn = aws_lb_target_group.alb-tg-flask-web.arn
+    container_port   = var.container-port
+    container_name   = local.service-name
+  }
 }
 
 resource "aws_ecs_task_definition" "common-ecs-task-definition-flask" {
@@ -30,7 +35,7 @@ resource "aws_ecs_task_definition" "common-ecs-task-definition-flask" {
     image                 = module.common-ecs-ecr.path
     cpu                   = var.cpu
     memory                = var.memory
-    containerPort         = var.flask-port
+    containerPort         = var.container-port
     hostPort              = var.flask-port
     awslogs-group         = local.cluster-name
     awslogs-region        = data.aws_region.current.id
