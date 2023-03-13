@@ -1,5 +1,5 @@
 resource aws_iam_role "iam-role-flask" {
-  name               = local.ecs-instance-role-prefix
+  name_prefix        = local.ecs-instance-role-prefix
   path               = var.path
   assume_role_policy = templatefile("${path.module}/templates/assume-role-policy-service.tpl", {
     aws_services = [
@@ -34,5 +34,5 @@ resource "aws_iam_role_policy_attachment" "flask-permissions" {
 }
 
 locals {
-  ecs-instance-role-prefix = "${local.service-name}-ecsInstanceRole"
+  ecs-instance-role-prefix = "${local.service-name}-role"
 }

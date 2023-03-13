@@ -70,33 +70,5 @@ resource "aws_launch_template" "aws-launch-template-flask" {
       user_data,
     ]
   }
-}
-
-resource "aws_autoscaling_group" "asg-flask" {
-  name               = local.service-name
-  availability_zones = var.aws_availability_zones
-  desired_capacity   = 1
-  max_size           = 1
-  min_size           = 1
-  dynamic "tag" {
-    for_each = [
-      for k, v in module.flask-tags.tags : {
-        key   = k
-        value = v
-      }
-    ]
-    iterator = _tag
-    content {
-      key                 = _tag.value.key
-      value               = _tag.value.value
-      propagate_at_launch = true
-    }
-  }
-  launch_template {
-    id      = aws_launch_template.aws-launch-template-flask.id
-    version = aws_launch_template.aws-launch-template-flask.latest_version
-  }
-  lifecycle {
-    create_before_destroy = true
-  }
+  disable_api_termination = var.terminate_protection
 }

@@ -63,6 +63,10 @@ variable "flask-port" {
   default = 80
 }
 
+variable "terminate_protection" {
+  default = false
+}
+
 locals {
   cluster-name   = format("%s-cluster", var.flask)
   service-name   = format("%s-service", var.flask)
