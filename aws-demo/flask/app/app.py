@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from logging.config import dictConfig
 
 import boto3
@@ -37,24 +38,22 @@ def health_check():
 @app.route('/s3-bucket/<name>', methods=['POST'])
 def create_s3_bucket(name):
     app.logger.info("create %s", name)
-    s3 = boto3.resource('s3')
-    s3.create_bucket(Bucket=name)
-    return name
+    s3 = boto3.client('s3')
+    return s3.create_bucket(Bucket=name)
 
 
 @app.route('/s3-bucket/<name>', methods=['GET'])
 def get_s3_bucket(name):
     app.logger.info("get %s", name)
-    s3 = boto3.resource('s3')
-    return s3.Bucket(name).creation_date
+    s3 = boto3.client('s3')
+    return s3.get_bucket_location(Bucket='my-2023-test-bucket')
 
 
 @app.route('/s3-bucket/<name>', methods=['DELETE'])
 def delete_s3_bucket(name):
     app.logger.info("delete %s", name)
-    s3 = boto3.resource('s3')
-    s3.delete_bucket(Bucket=name)
-    return name
+    s3 = boto3.client('s3')
+    return s3.delete_bucket(Bucket=name)
 
 
 if __name__ == '__main__':
