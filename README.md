@@ -1,4 +1,4 @@
-All the projects are built on Java 8 and apache maven 3.3.9 unless otherwise stated
+All the projects are built on [Java 8](https://learn.microsoft.com/en-us/java/openjdk/download) and apache maven 3.3.9
 
 ----------------------------------------------------
 # bcp-test
@@ -9,8 +9,6 @@ All the projects are built on Java 8 and apache maven 3.3.9 unless otherwise sta
 
 ## mockito-demos
 +	Demos for mockito2/powermock  
-+	Demos for hamcrest(org.hamcrest.MatcherAssert#assertThat)
-+	Demos for assertj(org.assertj.core.api.Assertions#assertThat)
 
 ## multiple-thread
 +	Study Java multiple threads  
@@ -20,24 +18,6 @@ All the projects are built on Java 8 and apache maven 3.3.9 unless otherwise sta
 
 ## study-java8
 +	Learn more about new features in java8  
-+	Demos for assertj(org.assertj.core.api.Assertions#assertThat)
-+	Demos for mockito4(org.mockito.Mockito#mockStatic)
-+	Demos of how to ensure all sub tasks are done when using CompletableFuture
-
-## study-java11
-### JDK
-```
-openjdk version "11" 2018-09-25
-OpenJDK Runtime Environment 18.9 (build 11+28)
-OpenJDK 64-Bit Server VM 18.9 (build 11+28, mixed mode)
-```
-### Maven
-Maven 3.8.1
-### Features 
-+	Learn more about new features in java11(HttpClient). Tested in Open JDK 11
-+	Use jacoco-maven-plugin/maven-surefire-plugin/maven-failsafe-plugin to create test coverage report
-+	Use maven-assembly-plugin/spring-boot-maven-plugin to create artifact package with Jar, outer configuration and scripts
-+	Use dockerfile-maven-plugin/docker-maven-plugin to build docker image(Need [docker](https://www.cnblogs.com/hiver/p/13543739.html#2-%E4%B8%8B%E8%BD%BDdocker%E5%AE%89%E8%A3%85%E7%A8%8B%E5%BA%8F%E7%A1%AE%E8%AE%A4hyper-v%E5%B7%B2%E7%BB%8F%E5%BC%80%E5%90%AF))
 
 ## study-parent
 <table>
@@ -61,16 +41,7 @@ Maven 3.8.1
 		</td>
 	</tr>
 	<tr><td>study-activemq</td><td>学习activemq</td></tr>
-	<tr>
-		<td rowspan="3">rw-splitting</td>
-		<td>test read/write splitting approach</td>
-	</tr>
-	<tr>
-		<td>Use hsqldb for unit test in memory DB</td>
-	</tr>
-	<tr>
-		<td>Use json-path-assert for API response verification</td>
-	</tr>
+	<tr><td>rw-splitting</td><td>test read/write splitting approach</td></tr>
 	<tr><td>study-redis</td><td>test publish/subscribe base on redis</td></tr>
 </table>
 
