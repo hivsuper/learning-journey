@@ -1,7 +1,7 @@
 # pythonStudy
 *This project is built for studying python*
 
-## This project is moved here from an individule repository
+## This project is moved here from an individual repository
 ```
 $ git subtree add -P pythonStudy https://github.com/hivsuper/pythonStudy.git HEAD
 git fetch https://github.com/hivsuper/pythonStudy.git HEAD
