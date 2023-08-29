@@ -1,5 +1,5 @@
 # STUDY-CSHARP
-This is a experiment project created and tested on `Windows 11` OS and `dotnet 4.8.09032`.
+This is an experiment project created and tested on `Windows 11` OS and `dotnet 4.8.09032`.
 ```
 PS D:\Test\STUDY-CSHARP> Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -Recurse | Get-ItemProperty -Name version -EA 0 | Where { $_.PSChildName -Match '^(?!S)\p{L}'} | Select PSChildName, version
 
