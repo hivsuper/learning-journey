@@ -10,3 +10,5 @@ java-notes/.settings/
 target/
 .idea/
 *.iml
+*/*/bin/
+*/*/obj/
