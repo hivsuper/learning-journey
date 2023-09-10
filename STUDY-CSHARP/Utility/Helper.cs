@@ -58,4 +58,11 @@ namespace Utility
         [Description("R")]
         R
     }
+
+    public class TestClass
+    {
+        public Guid Id {get; set;}
+        public string? Name {get; set;}
+        public Guid? CreatedBy {get; set;}
+    }
 }

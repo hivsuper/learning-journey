@@ -65,4 +65,48 @@ public class HelperTest
         Assert.Equal("Requested value 'AnB1 ' was not found.", ex.Message);
         Assert.IsType<System.ArgumentException>(ex);
     }
+
+    [Fact]
+    public void TestClass()
+    {
+        Guid id = Guid.NewGuid();
+        string name = "testName";
+        Guid createdBy = Guid.NewGuid();
+        {
+            TestClass testClazzWithNothing = new TestClass();
+            Assert.Equal(testClazzWithNothing.Id, Guid.Empty);
+            Assert.Null(testClazzWithNothing.Name);
+            Assert.Null(testClazzWithNothing.CreatedBy);
+        }
+
+        {
+            TestClass testClazzWithId = new TestClass()
+            {
+                Id = id,
+                Name = name,
+            };
+            Assert.Equal(testClazzWithId.Id, id);
+            Assert.Equal(testClazzWithId.Name, name);
+            Assert.Null(testClazzWithId.CreatedBy);
+        }
+
+        {
+            TestClass testClazzWithCreatedBy = new TestClass()
+            {
+                Id = id,
+                Name = name,
+                CreatedBy = createdBy,
+            };
+            Assert.Equal(testClazzWithCreatedBy.Id, id);
+            Assert.Equal(testClazzWithCreatedBy.Name, name);
+            Assert.Equal(testClazzWithCreatedBy.CreatedBy, createdBy);
+        }
+
+        {
+            TestClass? testClazz = null;
+            Assert.Null(testClazz?.Id);
+            Assert.Null(testClazz?.Name);
+            Assert.Null(testClazz?.CreatedBy);
+        }
+    }
 }
