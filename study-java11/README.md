@@ -1,0 +1,4 @@
+- Generate unit test coverage report with `jacoco-maven-plugin`
+- Package JAR with `maven-assembly-plugin`
+- Package docker image with `dockerfile-maven-plugin`
+- Package docker image with `docker-maven-plugin`

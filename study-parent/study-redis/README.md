@@ -1,5 +1,5 @@
 # study-redis
-jedis test
+Test publish/subscribe based on redis
 
 ## Environment
 OS: Ubuntu 15.10  
