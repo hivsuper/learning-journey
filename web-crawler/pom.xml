@@ -15,8 +15,8 @@
 
     <repositories>
         <repository>
-            <id>mvnrepository</id>
-            <name>mvnrepository for Maven</name>
+            <id>aliyunmaven</id>
+            <name>ali cloud repository mirror for Maven</name>
             <url>https://maven.aliyun.com/repository/public</url>
         </repository>
     </repositories>
