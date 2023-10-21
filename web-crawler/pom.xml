@@ -17,7 +17,7 @@
         <repository>
             <id>mvnrepository</id>
             <name>mvnrepository for Maven</name>
-            <url>http://mvnrepository.com/</url>
+            <url>https://maven.aliyun.com/repository/public</url>
         </repository>
     </repositories>
 
