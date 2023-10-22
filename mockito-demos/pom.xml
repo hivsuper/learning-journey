@@ -10,9 +10,9 @@
     <name>mockito-demos</name>
     <repositories>
         <repository>
-            <id>mvnrepository</id>
-            <name>mvnrepository for Maven</name>
-            <url>http://mvnrepository.com/</url>
+            <id>aliyunmaven</id>
+            <name>ali cloud repository mirror for Maven</name>
+            <url>https://maven.aliyun.com/repository/public</url>
         </repository>
     </repositories>
 
@@ -84,7 +84,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.0</version>
+                    <version>3.11.0</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>

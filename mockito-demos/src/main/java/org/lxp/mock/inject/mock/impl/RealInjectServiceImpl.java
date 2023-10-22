@@ -1,6 +1,6 @@
 package org.lxp.mock.inject.mock.impl;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.lxp.mock.inject.mock.InjectService;
@@ -8,7 +8,7 @@ import org.lxp.mock.inject.mock.RealInjectService;
 
 @Named("realService")
 public class RealInjectServiceImpl implements RealInjectService {
-    @Resource
+    @Inject
     private InjectService injectService;
 
     @Override
