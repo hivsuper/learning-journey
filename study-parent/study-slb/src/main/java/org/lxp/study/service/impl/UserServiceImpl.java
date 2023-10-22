@@ -2,7 +2,7 @@ package org.lxp.study.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import org.lxp.study.dao.mapper.UserBaseMapper;
 import org.lxp.study.model.UserBase;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-  @Resource
+  @Inject
   private UserBaseMapper userBaseMapper;
 
   @Override

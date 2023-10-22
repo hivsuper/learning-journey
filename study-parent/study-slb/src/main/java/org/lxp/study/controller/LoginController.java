@@ -3,7 +3,7 @@ package org.lxp.study.controller;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -21,9 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController {
   private static final String USER = "user";
   private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
-  @Resource
+  @Inject
   private UserService userService;
-  @Resource
+  @Inject
   private HttpSession session;
 
   @RequestMapping(value = "/", method = GET)
