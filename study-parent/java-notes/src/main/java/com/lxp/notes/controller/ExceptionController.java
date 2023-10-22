@@ -6,7 +6,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.io.IOException;
 import java.util.List;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping(value = "/二")
 public class ExceptionController {
     static final String 捕获_RUNTIME_EXCEPTION = "捕获RuntimeException";
-    @Resource
+    @Inject
     private ExceptionService exceptionService;
 
     @ResponseBody

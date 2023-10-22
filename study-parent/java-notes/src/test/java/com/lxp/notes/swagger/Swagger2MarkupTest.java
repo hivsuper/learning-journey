@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.File;
 import java.io.IOException;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -37,7 +37,7 @@ import springfox.documentation.staticdocs.Swagger2MarkupResultHandler;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 public class Swagger2MarkupTest extends BaseTest {
-    @Resource
+    @Inject
     private WebApplicationContext context;
 
     private MockMvc mockMvc;

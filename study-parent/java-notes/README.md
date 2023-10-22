@@ -9,3 +9,13 @@ http://aub.iteye.com/blog/1103685
 + http://blog.csdn.net/daisy_xiu/article/details/52368920
 + http://www.robwin.eu/documentation-of-a-rest-api-with-swagger-and-asciidoc/
 + http://kanpiaoxue.iteye.com/blog/2151903
+
+## How to generate static the document of endpoints? 
+1. Run `mvn compile`  
+1. Run `mvn test`
+1. Run `mvn asciidoctor:process-asciidoc` 
+1. Then the document can be found in `target\generated-docs\${project.version}\index.html` like the [example](src/docs/example/index.html)
+
+## How to access swagger?
+1. Run `mvn tomcat7:run`
+2. Visit http://127.0.0.1:8080/notes/swagger-ui.html in browser
