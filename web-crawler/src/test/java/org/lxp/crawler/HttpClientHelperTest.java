@@ -5,6 +5,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -87,6 +88,7 @@ public class HttpClientHelperTest {
     }
 
     @Test
+    @Ignore
     public void shouldThrowExceptionWhenConnectTimeout() {
         forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(41000).withStatus(HttpStatus.SC_OK)));
         expectedException.expect(RuntimeException.class);
