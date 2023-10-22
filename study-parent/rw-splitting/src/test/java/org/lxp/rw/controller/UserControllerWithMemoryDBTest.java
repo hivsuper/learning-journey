@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerWithMemoryDBTest extends MemoryDBTest {
     private static final String TEST_QUERY_NAME = "testQuery";
     private static final String TEST_UPDATE_NAME = "testUpdate";
-    @Resource
+    @Inject
     private UserService userService;
     protected MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper();

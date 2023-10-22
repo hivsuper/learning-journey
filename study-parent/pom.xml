@@ -339,6 +339,11 @@
         <artifactId>activemq-pool</artifactId>
         <version>5.14.5</version>
       </dependency>
+      <dependency>
+        <groupId>javax.jms</groupId>
+        <artifactId>javax.jms-api</artifactId>
+        <version>2.0.1</version>
+      </dependency>
       <!-- study-activemq module end -->
 
       <!-- rw-splitting module start -->
@@ -376,7 +381,7 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>2.7.22</version>
+        <version>5.6.0</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -386,6 +391,11 @@
         <scope>test</scope>
       </dependency>
       <!-- study-redis module end -->
+      <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>1</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>

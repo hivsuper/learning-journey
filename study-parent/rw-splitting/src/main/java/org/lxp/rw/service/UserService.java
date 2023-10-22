@@ -2,7 +2,7 @@ package org.lxp.rw.service;
 
 import java.util.Calendar;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import org.lxp.rw.mapper.UserMapper;
 import org.lxp.rw.model.User;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
-    @Resource
+    @Inject
     private UserMapper userMapper;
 
     public User add(String name) {

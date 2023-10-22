@@ -2,7 +2,7 @@ package com.lxp.activemq.producer.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.stereotype.Controller;
@@ -15,9 +15,9 @@ import com.lxp.activemq.producer.service.MessageService;
 @Controller
 @RequestMapping(value = "/producer")
 public class ProducerController {
-    @Resource
+    @Inject
     private ActiveMQQueue queueDestination;
-    @Resource
+    @Inject
     private MessageService messageService;
 
     @ResponseBody

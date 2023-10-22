@@ -3,7 +3,7 @@ package com.lxp.activemq.producer.service;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -20,7 +20,7 @@ import com.lxp.activemq.common.model.CustomMessage;
 @Service
 public class MessageService {
     private static final Logger LOG = LoggerFactory.getLogger(MessageService.class);
-    @Resource
+    @Inject
     private JmsTemplate jmsTemplate;
 
     public void sendTextMessage(Destination destination, final String content) {

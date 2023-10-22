@@ -5,7 +5,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import org.lxp.rw.model.User;
 import org.lxp.rw.service.UserService;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
-    @Resource
+    @Inject
     private UserService userService;
 
     @ResponseBody

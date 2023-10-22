@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class UserControllerTest extends BaseTest {
     private static final String TEST_QUERY_NAME = "测试查询";
     private static final String TEST_UPDATE_NAME = "测试更新";
-    @Resource
+    @Inject
     private UserService userService;
     protected MockMvc mockMvc;
     private int deleteUserId;

@@ -1,6 +1,6 @@
 package org.lxp.rw.test.base;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.context.WebApplicationContext;
@@ -12,6 +12,6 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @ContextConfiguration(locations = { "classpath*:spring/*.xml" })
 public abstract class BaseTest {
-    @Resource
+    @Inject
     protected WebApplicationContext context;
 }
