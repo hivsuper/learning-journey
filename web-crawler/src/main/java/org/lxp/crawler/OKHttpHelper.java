@@ -16,8 +16,7 @@ public class OKHttpHelper {
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         Call call = okHttpClient.newCall(request);
-        try {
-            Response response = call.execute();
+        try (Response response = call.execute()) {
             return response.code();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
