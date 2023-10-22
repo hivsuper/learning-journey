@@ -18,7 +18,7 @@ public class JedisUtils {
     private final JedisPool jedisPool;
     private final String password = "123456";
     private final int port = 6379;
-    private final String host = "10.86.17.154";
+    private final String host = "127.0.0.1";
 
     public JedisUtils() {
         JedisPoolConfig config = new JedisPoolConfig();// Jedis池配置

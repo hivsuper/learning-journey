@@ -3,6 +3,7 @@ package org.lxp.redis.pubsub;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.lxp.redis.util.JedisHelper;
 import org.lxp.redis.util.JedisUtils;
@@ -13,6 +14,7 @@ import org.lxp.redis.util.JedisUtils;
  * 2. Run {@link #testPublishMsg()}, message will be sent to #1</br>
  * 3. RUn {@link #testUnsubscribe()}, message will be sent to #1 and it will stop.
  */
+@Ignore
 public class RedisMsgPubSubListenerTest {
     private static final String NEWS_SHARE_CHANNEL = "news.share";
     private RedisMsgPubSubListener pubsub;
