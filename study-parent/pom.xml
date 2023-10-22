@@ -10,9 +10,9 @@
   <name>study-parent</name>
   <repositories>
     <repository>
-      <id>mvnrepository</id>
-      <name>mvnrepository for Maven</name>
-      <url>http://mvnrepository.com/</url>
+      <id>aliyunmaven</id>
+      <name>ali cloud repository mirror for Maven</name>
+      <url>https://maven.aliyun.com/repository/public</url>
     </repository>
   </repositories>
 
