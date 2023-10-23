@@ -12,3 +12,7 @@ target/
 *.iml
 */*/bin/
 */*/obj/
+*.terraform.lock.hcl
+*.terraform
+*.tfstate
+*.tfstate.backup
