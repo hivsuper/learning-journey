@@ -1,0 +1,8 @@
+*.project
+*.versionsBackup
+*.classpath
+.settings/
+target/
+web/logs/
+*.epoch
+*.lck
