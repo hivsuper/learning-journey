@@ -103,4 +103,14 @@ public class JEP321HttpClientHelperTest {
                 () -> httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString()));
         assertThat(thrown.getMessage()).contains("timed out");
     }
+
+    @Test
+    public void sendAsyncWithStringSubscriber() throws URISyntaxException {
+        JEP321HttpClientHelper helper = new JEP321HttpClientHelper(maxTotalConnection);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(crawlerUrl))
+                .headers(CONTENT_TYPE, TEXT_PLAIN_CHARSET_UTF_8)
+                .GET().build();
+        assertThat(helper.sendAsyncWithStringSubscriber(request, helper.getHttpClientWithTimeout(1))).isEqualTo(RESULT);
+    }
 }
