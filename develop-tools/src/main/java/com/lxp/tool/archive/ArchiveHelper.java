@@ -81,7 +81,8 @@ public class ArchiveHelper {
             ZipEntry zipEntry = zis.getNextEntry();
             while (zipEntry != null) {
                 File newFile = newFile(destDir, zipEntry);
-                if (zipEntry.isDirectory()) {
+                // zipEntry.isDirectory() always only checks '/'
+                if (zipEntry.getName().endsWith(File.separator)) {
                     if (!newFile.isDirectory() && !newFile.mkdirs()) {
                         throw new IOException("Failed to create directory " + newFile);
                     }
