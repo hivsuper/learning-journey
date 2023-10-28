@@ -11,7 +11,6 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
@@ -100,7 +99,7 @@ public class ArchiveHelperTest {
         String rtn1 = resultFolder + "append1.zip";
         String rtn2 = resultFolder + "append2.zip";
         archiveHelper.zip(absolutePath + txt1, rtn1);
-        archiveHelper.zip(Arrays.asList(absolutePath + txt1,
+        archiveHelper.zip(List.of(absolutePath + txt1,
                 absolutePath + txt2, absolutePath + txt3), rtn2);
 
         archiveHelper.zipAppend(absolutePath + txt2, rtn1);
