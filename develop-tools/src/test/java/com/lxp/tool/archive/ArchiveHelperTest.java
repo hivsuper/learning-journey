@@ -11,6 +11,9 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
@@ -49,7 +52,7 @@ public class ArchiveHelperTest {
         results.add(resultFolder);
         File file = new File(resultFolder);
         if (file.exists()) {
-            TestHelper.recursiveDelete(new File(resultFolder));
+            TestHelper.recursiveDelete(file);
         }
         Assert.assertTrue(file.mkdir());
         String rtn = resultFolder + "single.zip";
@@ -70,7 +73,7 @@ public class ArchiveHelperTest {
         results.add(resultFolder);
         File file = new File(resultFolder);
         if (file.exists()) {
-            TestHelper.recursiveDelete(new File(resultFolder));
+            TestHelper.recursiveDelete(file);
         }
         Assert.assertTrue(file.mkdir());
         String rtn = resultFolder + "multiple.zip";
@@ -93,7 +96,7 @@ public class ArchiveHelperTest {
         results.add(resultFolder);
         File file = new File(resultFolder);
         if (file.exists()) {
-            TestHelper.recursiveDelete(new File(resultFolder));
+            TestHelper.recursiveDelete(file);
         }
         Assert.assertTrue(file.mkdir());
         String rtn1 = resultFolder + "append1.zip";
@@ -127,19 +130,30 @@ public class ArchiveHelperTest {
         results.add(resultFolder);
         File file = new File(resultFolder);
         if (file.exists()) {
-            TestHelper.recursiveDelete(new File(resultFolder));
+            TestHelper.recursiveDelete(file);
         }
         Assert.assertTrue(file.mkdir());
         String rtn = resultFolder + "directory.zip";
+        // Copy test files to a new folder to keep data clean
+        String testFolder = resultFolder.concat(archive);
+        File testFolderPath = new File(testFolder);
+        Assert.assertTrue(testFolderPath.mkdir());
+        List.of(txt1, txt2, txt3).forEach(original -> {
+            try {
+                Files.copy(Paths.get(absolutePath + original), Paths.get(testFolder + original), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
-        archiveHelper.zip(absolutePath, rtn);
+        archiveHelper.zip(testFolder, rtn);
 
         archiveHelper.unzip(rtn, resultFolder);
         Assert.assertEquals(FileMd5Helper.getMD5(absolutePath + txt1),
-                FileMd5Helper.getMD5(resultFolder + archive + txt1));
+                FileMd5Helper.getMD5(testFolder + txt1));
         Assert.assertEquals(FileMd5Helper.getMD5(absolutePath + txt2),
-                FileMd5Helper.getMD5(resultFolder + archive + txt2));
+                FileMd5Helper.getMD5(testFolder + txt2));
         Assert.assertEquals(FileMd5Helper.getMD5(absolutePath + txt3),
-                FileMd5Helper.getMD5(resultFolder + archive + txt3));
+                FileMd5Helper.getMD5(testFolder + txt3));
     }
 }

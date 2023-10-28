@@ -16,7 +16,5 @@ public class TestHelper {
             }
         }
         Assert.assertTrue(file.delete());
-//        System.out.println(file.getAbsolutePath());
-//        System.out.println(file.delete());
     }
 }
