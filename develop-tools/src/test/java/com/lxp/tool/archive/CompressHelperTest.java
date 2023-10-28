@@ -3,6 +3,7 @@ package com.lxp.tool.archive;
 import com.lxp.tool.TestHelper;
 import com.lxp.tool.algorithm.FileMd5Helper;
 import com.lxp.tool.pdf.MergePdfHelperTest;
+import net.lingala.zip4j.exception.ZipException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -89,6 +90,24 @@ public class CompressHelperTest {
     }
 
     @Test
+    public void shouldThrowZipExceptionWhenExtractingEncryptedCompressedFile() throws IOException {
+        Optional<String> methodName = walker.walk(frames -> frames
+                .findFirst()
+                .map(StackWalker.StackFrame::getMethodName));
+        final String resultFolder = absolutePath + methodName.orElseThrow() + File.separator;
+        results.add(resultFolder);
+        File file = new File(resultFolder);
+        if (file.exists()) {
+            TestHelper.recursiveDelete(file);
+        }
+        Assert.assertTrue(file.mkdir());
+        String rtn = resultFolder + "single.zip";
+
+        compressHelper.compressSingleFile(absolutePath + txt1, rtn, password);
+        Assert.assertThrows("empty or null password provided for AES decryption", ZipException.class, () -> compressHelper.extractSpecificFile(rtn, txt1, resultFolder));
+    }
+
+    @Test
     public void testCompressMultipleFilesAndExtract() throws IOException {
         Optional<String> methodName = walker.walk(frames -> frames
                 .findFirst()
@@ -109,6 +128,24 @@ public class CompressHelperTest {
                 FileMd5Helper.getMD5(resultFolder + txt2));
         Assert.assertEquals(FileMd5Helper.getMD5(absolutePath + txt3),
                 FileMd5Helper.getMD5(resultFolder + txt3));
+    }
+
+    @Test
+    public void shouldThrowZipExceptionWhenExtractingEncryptedCompressedMultipleFile() throws IOException {
+        Optional<String> methodName = walker.walk(frames -> frames
+                .findFirst()
+                .map(StackWalker.StackFrame::getMethodName));
+        final String resultFolder = absolutePath + methodName.orElseThrow() + File.separator;
+        results.add(resultFolder);
+        File file = new File(resultFolder);
+        if (file.exists()) {
+            TestHelper.recursiveDelete(file);
+        }
+        Assert.assertTrue(file.mkdir());
+        String rtn = resultFolder + "multiple.zip";
+
+        compressHelper.compress(List.of(absolutePath + txt2, absolutePath + txt3), rtn, password);
+        Assert.assertThrows("empty or null password provided for AES decryption", ZipException.class, () -> compressHelper.extract(rtn, resultFolder));
     }
 
     @Test
@@ -212,11 +249,11 @@ public class CompressHelperTest {
         compressHelper.extract(rtn, unzipDirectory, password);
 
         Assert.assertEquals(FileMd5Helper.getMD5(directory + txt1),
-                FileMd5Helper.getMD5(unzipDirectory +archive + txt1));
+                FileMd5Helper.getMD5(unzipDirectory + archive + txt1));
         Assert.assertEquals(FileMd5Helper.getMD5(directory + txt2),
-                FileMd5Helper.getMD5(unzipDirectory +archive + txt2));
+                FileMd5Helper.getMD5(unzipDirectory + archive + txt2));
         Assert.assertEquals(FileMd5Helper.getMD5(directory + txt3),
-                FileMd5Helper.getMD5(unzipDirectory +archive + txt3));
+                FileMd5Helper.getMD5(unzipDirectory + archive + txt3));
     }
 
     @Test
@@ -271,11 +308,11 @@ public class CompressHelperTest {
         Assert.assertEquals(FileMd5Helper.getMD5(absolutePath + txt1),
                 FileMd5Helper.getMD5(unzipDirectory + txt1));
         Assert.assertEquals(FileMd5Helper.getMD5(directory + txt1),
-                FileMd5Helper.getMD5(unzipDirectory +archive + txt1));
+                FileMd5Helper.getMD5(unzipDirectory + archive + txt1));
         Assert.assertEquals(FileMd5Helper.getMD5(directory + txt2),
-                FileMd5Helper.getMD5(unzipDirectory +archive + txt2));
+                FileMd5Helper.getMD5(unzipDirectory + archive + txt2));
         Assert.assertEquals(FileMd5Helper.getMD5(directory + txt3),
-                FileMd5Helper.getMD5(unzipDirectory +archive + txt3));
+                FileMd5Helper.getMD5(unzipDirectory + archive + txt3));
     }
 
     @Test
@@ -296,7 +333,7 @@ public class CompressHelperTest {
         String unzipDirectory = resultFolder.concat("unzip/");
         TestHelper.copy(List.of(txt1, txt2, txt3), absolutePath, directory);
 
-        compressHelper.compressAppend(absolutePath, rtn, password);
+        compressHelper.compressAppend(directory, rtn, password);
 
         compressHelper.extract(rtn, unzipDirectory, password);
         Assert.assertEquals(FileMd5Helper.getMD5(absolutePath + txt1),
