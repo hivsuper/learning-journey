@@ -76,7 +76,7 @@ public class ArchiveHelperTest {
         Assert.assertTrue(file.mkdir());
         String rtn = resultFolder + "multiple.zip";
 
-        archiveHelper.zip(Arrays.asList(absolutePath + txt2, absolutePath + txt3), rtn);
+        archiveHelper.zip(List.of(absolutePath + txt2, absolutePath + txt3), rtn);
 
         archiveHelper.unzip(rtn, resultFolder);
         Assert.assertEquals(FileMd5Helper.getMD5(absolutePath + txt2),
