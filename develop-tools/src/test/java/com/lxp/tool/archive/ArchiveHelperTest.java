@@ -11,9 +11,6 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
@@ -135,25 +132,19 @@ public class ArchiveHelperTest {
         Assert.assertTrue(file.mkdir());
         String rtn = resultFolder + "directory.zip";
         // Copy test files to a new folder to keep data clean
-        String testFolder = resultFolder.concat(archive);
-        File testFolderPath = new File(testFolder);
-        Assert.assertTrue(testFolderPath.mkdir());
-        List.of(txt1, txt2, txt3).forEach(original -> {
-            try {
-                Files.copy(Paths.get(absolutePath + original), Paths.get(testFolder + original), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        String directory = resultFolder.concat(archive);
+        String unzipDirectory = resultFolder.concat("unzip/");
+        Assert.assertTrue(new File(unzipDirectory).mkdir());
+        TestHelper.copy(List.of(txt1, txt2, txt3), absolutePath, directory);
 
-        archiveHelper.zip(testFolder, rtn);
+        archiveHelper.zip(directory, rtn);
 
-        archiveHelper.unzip(rtn, resultFolder);
+        archiveHelper.unzip(rtn, unzipDirectory);
         Assert.assertEquals(FileMd5Helper.getMD5(absolutePath + txt1),
-                FileMd5Helper.getMD5(testFolder + txt1));
+                FileMd5Helper.getMD5(unzipDirectory + archive + txt1));
         Assert.assertEquals(FileMd5Helper.getMD5(absolutePath + txt2),
-                FileMd5Helper.getMD5(testFolder + txt2));
+                FileMd5Helper.getMD5(unzipDirectory + archive + txt2));
         Assert.assertEquals(FileMd5Helper.getMD5(absolutePath + txt3),
-                FileMd5Helper.getMD5(testFolder + txt3));
+                FileMd5Helper.getMD5(unzipDirectory + archive + txt3));
     }
 }
