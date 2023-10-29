@@ -257,6 +257,25 @@ public class CompressHelperTest {
     }
 
     @Test
+    public void shouldThrowZipExceptionWhenExtractingEncryptedCompressedDirectory() throws IOException {
+        Optional<String> methodName = walker.walk(frames -> frames
+                .findFirst()
+                .map(StackWalker.StackFrame::getMethodName));
+        final String resultFolder = absolutePath + methodName.orElseThrow() + File.separator;
+        results.add(resultFolder);
+        File file = new File(resultFolder);
+        if (file.exists()) {
+            TestHelper.recursiveDelete(file);
+        }
+        Assert.assertTrue(file.mkdir());
+        copy(resultFolder);
+        String rtn = resultFolder + "directory.zip";
+
+        compressHelper.compress(resultFolder, rtn, password, splitLength);
+        Assert.assertThrows("empty or null password provided for AES decryption", ZipException.class, () -> compressHelper.extract(rtn, resultFolder.concat("zip/")));
+    }
+
+    @Test
     public void testCompressDirectoryAndExtractWithSplitting() throws IOException {
         Optional<String> methodName = walker.walk(frames -> frames
                 .findFirst()
