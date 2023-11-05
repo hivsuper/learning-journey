@@ -1,12 +1,11 @@
 package com.lxp.tool.algorithm;
 
-import java.security.KeyPair;
-import java.util.Base64;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.security.KeyPair;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RSAHelperTest {
@@ -14,8 +13,8 @@ public class RSAHelperTest {
     @Test
     public void testGetKeyPair() throws Exception {
         KeyPair keyPair = RSAHelper.getKeyPair();
-        Assert.assertTrue(new String(Base64.getEncoder().encode(keyPair.getPrivate().getEncoded())) != null);
-        Assert.assertTrue(new String(Base64.getEncoder().encode(keyPair.getPublic().getEncoded())) != null);
+        Assert.assertNotNull(keyPair.getPrivate().getEncoded());
+        Assert.assertNotNull(keyPair.getPublic().getEncoded());
     }
 
     @Test

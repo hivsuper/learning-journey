@@ -12,7 +12,7 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 
 /**
- * https://blog.csdn.net/qq_18870023/article/details/52596808
+ * <a href="https://blog.csdn.net/qq_18870023/article/details/52596808">java加解密之RSA使用</a>
  */
 public class RSAHelper {
     private static final String ALGORITHM = "RSA";
@@ -20,7 +20,7 @@ public class RSAHelper {
     private static final String PRIVATE_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIQAzrVYPypQguAelzRI9D6pnikj32CD+F403GdOFswPAohn06Y4LNSKDrclT1Kku25tazzR1a9R9yRi0xK1JEsCnEirbAX5JNw/olB3zp61YR/IpYU54CD/F8JWVa8QUkZ6zybinVfPSeKWW7NEXtS6CHqJPcaeM+TFthRgbZ+vAgMBAAECgYASaV5rktx0lXg7tGiYpVhT6SqjSFqexql80livnAe3/Jv41KqDs7AlEQCOcQjIWSu/ckmT2Ry58G/NRm90W4mtLGJXZRRPY0gZe85TZ6uqbydjLnFLbdLTlqqhQ7Ho1M0qf/wVa8hG9L7obtMrGNe0+fXvQGHcPYRTMh8O8PwKgQJBAOD6/WnxgfC4jEhZcBxm8vXy27BMkyqRx3z8oYgb2Aeb8UHDuf2mEc+kVak7XXLCe82lS5ZVzTetWrJAjZDOScECQQCWNAzKkx6iv7Eezlh5OqKCzawHay5L9Y9gmuRcNbyFT0N2h13/xptb/Dkc2/KQ+qXHwiw5MoIHmTL+a3FbguVvAkB6bhuZm6NqrAMrHAC2dA+jaBXFSuaLM+mrSo9c0kotWd9gOnLsZYMry/IRtgyUduGId3s6xFZ5Bg1lE1v2gUwBAkBh7qnwYp/06RsoxM02rZ5LvqHNbHqRGBhVmmgOHxM9sAKCg5wsKmgdP4RVZqrvEB2K8vU2jdHt9lsjOxZ73gqNAkEAvVJOjRh+N0L+9gscwIdK++ZYYhOygKoU2OfGF1VHtZzU7zsk03e5s1y4sURF/9aumqZ1HMaOFyoKUs5oPyhsDQ==";
 
     public static KeyPair getKeyPair() throws Exception {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM);
         keyPairGenerator.initialize(1024);
         return keyPairGenerator.generateKeyPair();
     }
