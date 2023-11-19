@@ -97,6 +97,12 @@
       <artifactId>zip4j</artifactId>
       <version>2.11.5</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcpg-jdk18on</artifactId>
+      <version>1.75</version>
+    </dependency>
   </dependencies>
   <build>
     <pluginManagement>
