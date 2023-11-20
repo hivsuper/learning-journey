@@ -72,7 +72,7 @@ public class OpenPGPHelperTest {
             Assert.assertNotNull(encrypted);
 
             PGPPrivateKey pgpPrivateKey = OpenPGPHelper.readPrivateKey(secretKeyRingCollection, pgpPublicKey.getKeyID(), password.toCharArray());
-            String rtn = OpenPGPHelper.decryptAndVerify(encrypted, secretKeyRingCollection, password);
+            String rtn = OpenPGPHelper.decryptAndVerify(encrypted, publicKeyRingCollection, secretKeyRingCollection, password);
             System.out.println(rtn);
             Assert.assertNotNull(rtn);
         }
