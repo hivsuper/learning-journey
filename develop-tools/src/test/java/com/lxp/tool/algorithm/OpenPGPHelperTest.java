@@ -3,19 +3,19 @@ package com.lxp.tool.algorithm;
 import org.bouncycastle.bcpg.ArmoredInputStream;
 import org.bouncycastle.openpgp.PGPPrivateKey;
 import org.bouncycastle.openpgp.PGPPublicKey;
-import org.bouncycastle.openpgp.PGPPublicKeyRingCollection;
-import org.bouncycastle.openpgp.PGPSecretKey;
-import org.bouncycastle.openpgp.PGPSecretKeyRingCollection;
-import org.bouncycastle.openpgp.operator.jcajce.JcaKeyFingerprintCalculator;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class OpenPGPHelperTest {
@@ -45,36 +45,31 @@ public class OpenPGPHelperTest {
     }
 
     @Test
-    public void testPublicKeyAndPrivateKey() throws Exception {
-        final String identify = "Test User";
-        final String password = "passphrase";
-        OpenPGPHelper.generatePublicKeyAndPrivateKey(identify, password.toCharArray(), publicKeyFile, privateKeyFile);
-        Assert.assertNotNull(OpenPGPHelper.readPublicKey(publicKeyFile));
-        PGPSecretKey secretKey = OpenPGPHelper.readSecretKey(privateKeyFile);
-        Assert.assertNotNull(secretKey);
-        Assert.assertNotNull(OpenPGPHelper.readPrivateKey(privateKeyFile, secretKey.getKeyID(), password));
-        OpenPGPHelper.readSecretKey(privateKeyFile).getUserIDs().forEachRemaining(userId -> Assert.assertEquals(identify, userId));
-    }
-
-    @Test
     public void testEncryptAndSign() throws Exception {
         final String identify = "Test User";
         final String password = "passphrase";
-        OpenPGPHelper.generatePublicKeyAndPrivateKey(identify, password.toCharArray(), publicKeyFile, privateKeyFile);
-        PGPPublicKey pgpPublicKey = OpenPGPHelper.readPublicKey(publicKeyFile);
-        try (InputStream privateKeyIn = new ArmoredInputStream(new FileInputStream(privateKeyFile));
+        RSAKeyPairGenerator.generate(publicKeyFile, privateKeyFile, identify, password);
+        String encrypted;
+        String msg = "test";
+        try (InputStream inputStream = new ByteArrayInputStream(msg.getBytes(StandardCharsets.UTF_8));
+             ByteArrayOutputStream resultOutputStream = new ByteArrayOutputStream();
+             InputStream privateKeyIn = new ArmoredInputStream(new FileInputStream(privateKeyFile));
              InputStream publicKeyIn = new ArmoredInputStream(new FileInputStream(publicKeyFile))) {
-            PGPSecretKeyRingCollection secretKeyRingCollection = new PGPSecretKeyRingCollection(privateKeyIn, new JcaKeyFingerprintCalculator());
-            PGPPublicKeyRingCollection publicKeyRingCollection = new PGPPublicKeyRingCollection(publicKeyIn, new JcaKeyFingerprintCalculator());
 
-            String encrypted = OpenPGPHelper.encryptAndSign("test", pgpPublicKey, secretKeyRingCollection, password);
-            System.out.println(encrypted);
+            PGPPublicKey publicKey = OpenPGPHelper.getInstance().readPublicKey(publicKeyIn);
+            PGPPrivateKey privateKey = OpenPGPHelper.getInstance().findSecretKey(OpenPGPHelper.getInstance().readSecretKey(privateKeyIn), password.toCharArray());
+
+            OpenPGPHelper.getInstance().encryptAndSign(resultOutputStream, inputStream, publicKey, privateKey, identify);
+            encrypted = resultOutputStream.toString();
             Assert.assertNotNull(encrypted);
+        }
 
-            PGPPrivateKey pgpPrivateKey = OpenPGPHelper.readPrivateKey(secretKeyRingCollection, pgpPublicKey.getKeyID(), password.toCharArray());
-            String rtn = OpenPGPHelper.decryptAndVerify(encrypted, publicKeyRingCollection, secretKeyRingCollection, password);
-            System.out.println(rtn);
-            Assert.assertNotNull(rtn);
+        try (InputStream inputStream = new ByteArrayInputStream(encrypted.getBytes(StandardCharsets.UTF_8));
+             ByteArrayOutputStream resultOutputStream = new ByteArrayOutputStream();
+             InputStream privateKeyIn = new ArmoredInputStream(new FileInputStream(privateKeyFile));
+             BufferedInputStream publicKeyIn = new BufferedInputStream(new FileInputStream(publicKeyFile))) {
+            OpenPGPHelper.getInstance().decryptStream(inputStream, resultOutputStream, publicKeyIn, privateKeyIn, password);
+            Assert.assertEquals(msg, resultOutputStream.toString());
         }
     }
 }
