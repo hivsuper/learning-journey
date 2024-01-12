@@ -3,6 +3,7 @@ package com.lxp.tool.algorithm;
 import org.bouncycastle.bcpg.ArmoredInputStream;
 import org.bouncycastle.openpgp.PGPPrivateKey;
 import org.bouncycastle.openpgp.PGPPublicKey;
+import org.bouncycastle.util.encoders.Base64;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -60,15 +61,15 @@ public class OpenPGPHelperTest {
             PGPPrivateKey privateKey = OpenPGPHelper.getInstance().findSecretKey(OpenPGPHelper.getInstance().readSecretKey(privateKeyIn), password.toCharArray());
 
             OpenPGPHelper.getInstance().encryptAndSign(resultOutputStream, inputStream, publicKey, privateKey, identify);
-            encrypted = resultOutputStream.toString();
+            encrypted = Base64.toBase64String(resultOutputStream.toByteArray());
             Assert.assertNotNull(encrypted);
         }
 
-        try (InputStream inputStream = new ByteArrayInputStream(encrypted.getBytes(StandardCharsets.UTF_8));
+        try (InputStream inputStream = new ByteArrayInputStream(Base64.decode(encrypted));
              ByteArrayOutputStream resultOutputStream = new ByteArrayOutputStream();
              InputStream privateKeyIn = new ArmoredInputStream(new FileInputStream(privateKeyFile));
              BufferedInputStream publicKeyIn = new BufferedInputStream(new FileInputStream(publicKeyFile))) {
-            OpenPGPHelper.getInstance().decryptStream(inputStream, resultOutputStream, publicKeyIn, privateKeyIn, password);
+            OpenPGPHelper.getInstance().decryptAndVerify(inputStream, resultOutputStream, publicKeyIn, privateKeyIn, password);
             Assert.assertEquals(msg, resultOutputStream.toString());
         }
     }

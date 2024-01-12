@@ -145,7 +145,66 @@ public class OpenPGPHelper {
         throw new IllegalArgumentException("Can't find signing key in key ring.");
     }
 
-    public void decryptStream(InputStream in, OutputStream out, BufferedInputStream bankIs, InputStream pkstream, String password)
+    public void encryptAndSign(OutputStream out, InputStream inputStream, PGPPublicKey encKey, PGPPrivateKey privateKey, String identify) {
+        out = new ArmoredOutputStream(out);
+        try {
+            PGPEncryptedDataGenerator encGen =
+                    new PGPEncryptedDataGenerator(
+                            new JcePGPDataEncryptorBuilder(PGPEncryptedData.AES_256).setWithIntegrityPacket(true).setSecureRandom(
+                                            new SecureRandom())
+                                    .setProvider(new BouncyCastleProvider()));
+            encGen.addMethod(new JcePublicKeyKeyEncryptionMethodGenerator(encKey).setProvider(new BouncyCastleProvider()));
+            OutputStream encryptedOut = encGen.open(out, new byte[inputStream.available()]);
+
+            PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedData.ZIP);
+            OutputStream compressedData = comData.open(encryptedOut);
+
+            PGPSignatureGenerator sGen = new PGPSignatureGenerator(new JcaPGPContentSignerBuilder(
+                    privateKey.getPublicKeyPacket().getAlgorithm(), PGPUtil.SHA512).setProvider(new BouncyCastleProvider()));
+            sGen.init(PGPSignature.BINARY_DOCUMENT, privateKey);
+            Iterator<String> it = encKey.getUserIDs();
+            if (it.hasNext()) {
+                PGPSignatureSubpacketGenerator spGen = new PGPSignatureSubpacketGenerator();
+                spGen.addSignerUserID(false, it.next());
+                sGen.setHashedSubpackets(spGen.generate());
+            }
+            //BCPGOutputStream bOut = new BCPGOutputStream(compressedData);
+            sGen.generateOnePassVersion(false).encode(compressedData); // bOut
+
+            PGPLiteralDataGenerator lGen = new PGPLiteralDataGenerator();
+            OutputStream lOut = lGen.open(compressedData, PGPLiteralData.BINARY, identify, new Date(),
+                    new byte[inputStream.available()]); //bOut
+
+            byte[] data = inputStream.readAllBytes();
+            lOut.write(data);
+            sGen.update(data);
+
+            lOut.close();
+            lGen.close();
+
+            sGen.generate().encode(compressedData);
+
+            //bOut.close();
+
+            comData.close();
+            compressedData.close();
+
+            encryptedOut.close();
+            encGen.close();
+
+            out.close();
+        } catch (PGPException e) {
+            if (e.getUnderlyingException() != null) {
+                LOGGER.error(e.getUnderlyingException().getMessage(), e.getUnderlyingException());
+            } else {
+                LOGGER.error(e.getMessage(), e);
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    public void decryptAndVerify(InputStream in, OutputStream out, BufferedInputStream bankIs, InputStream pkstream, String password)
             throws Exception {
         Security.addProvider(new BouncyCastleProvider());
         PGPObjectFactory pgpF = new PGPObjectFactory(PGPUtil.getDecoderStream(in), new JcaKeyFingerprintCalculator());
@@ -242,65 +301,6 @@ public class OpenPGPHelper {
             out.write(output);
             out.flush();
             out.close();
-        }
-    }
-
-    public void encryptAndSign(OutputStream out, InputStream inputStream, PGPPublicKey encKey, PGPPrivateKey privateKey, String identify) {
-        out = new ArmoredOutputStream(out);
-        try {
-            PGPEncryptedDataGenerator encGen =
-                    new PGPEncryptedDataGenerator(
-                            new JcePGPDataEncryptorBuilder(PGPEncryptedData.AES_256).setWithIntegrityPacket(true).setSecureRandom(
-                                            new SecureRandom())
-                                    .setProvider(new BouncyCastleProvider()));
-            encGen.addMethod(new JcePublicKeyKeyEncryptionMethodGenerator(encKey).setProvider(new BouncyCastleProvider()));
-            OutputStream encryptedOut = encGen.open(out, new byte[inputStream.available()]);
-
-            PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedData.ZIP);
-            OutputStream compressedData = comData.open(encryptedOut);
-
-            PGPSignatureGenerator sGen = new PGPSignatureGenerator(new JcaPGPContentSignerBuilder(
-                    privateKey.getPublicKeyPacket().getAlgorithm(), PGPUtil.SHA512).setProvider(new BouncyCastleProvider()));
-            sGen.init(PGPSignature.BINARY_DOCUMENT, privateKey);
-            Iterator<String> it = encKey.getUserIDs();
-            if (it.hasNext()) {
-                PGPSignatureSubpacketGenerator spGen = new PGPSignatureSubpacketGenerator();
-                spGen.addSignerUserID(false, it.next());
-                sGen.setHashedSubpackets(spGen.generate());
-            }
-            //BCPGOutputStream bOut = new BCPGOutputStream(compressedData);
-            sGen.generateOnePassVersion(false).encode(compressedData); // bOut
-
-            PGPLiteralDataGenerator lGen = new PGPLiteralDataGenerator();
-            OutputStream lOut = lGen.open(compressedData, PGPLiteralData.BINARY, identify, new Date(),
-                    new byte[inputStream.available()]); //bOut
-
-            byte[] data = inputStream.readAllBytes();
-            lOut.write(data);
-            sGen.update(data);
-
-            lOut.close();
-            lGen.close();
-
-            sGen.generate().encode(compressedData);
-
-            //bOut.close();
-
-            comData.close();
-            compressedData.close();
-
-            encryptedOut.close();
-            encGen.close();
-
-            out.close();
-        } catch (PGPException e) {
-            if (e.getUnderlyingException() != null) {
-                LOGGER.error(e.getUnderlyingException().getMessage(), e.getUnderlyingException());
-            } else {
-                LOGGER.error(e.getMessage(), e);
-            }
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
         }
     }
 }
