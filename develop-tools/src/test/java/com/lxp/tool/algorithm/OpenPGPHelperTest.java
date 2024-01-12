@@ -50,9 +50,9 @@ public class OpenPGPHelperTest {
         final String identify = "Test User";
         final String password = "passphrase";
         RSAKeyPairGenerator.generate(publicKeyFile, privateKeyFile, identify, password);
-        String encrypted;
-        String msg = "test";
-        try (InputStream inputStream = new ByteArrayInputStream(msg.getBytes(StandardCharsets.UTF_8));
+        String response;
+        String payload = "test";
+        try (InputStream inputStream = new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8));
              ByteArrayOutputStream resultOutputStream = new ByteArrayOutputStream();
              InputStream privateKeyIn = new ArmoredInputStream(new FileInputStream(privateKeyFile));
              InputStream publicKeyIn = new ArmoredInputStream(new FileInputStream(publicKeyFile))) {
@@ -61,16 +61,16 @@ public class OpenPGPHelperTest {
             PGPPrivateKey privateKey = OpenPGPHelper.getInstance().findSecretKey(OpenPGPHelper.getInstance().readSecretKey(privateKeyIn), password.toCharArray());
 
             OpenPGPHelper.getInstance().encryptAndSign(resultOutputStream, inputStream, publicKey, privateKey, identify);
-            encrypted = Base64.toBase64String(resultOutputStream.toByteArray());
-            Assert.assertNotNull(encrypted);
+            response = Base64.toBase64String(resultOutputStream.toByteArray());
+            Assert.assertNotNull(response);
         }
 
-        try (InputStream inputStream = new ByteArrayInputStream(Base64.decode(encrypted));
+        try (InputStream inputStream = new ByteArrayInputStream(Base64.decode(response));
              ByteArrayOutputStream resultOutputStream = new ByteArrayOutputStream();
              InputStream privateKeyIn = new ArmoredInputStream(new FileInputStream(privateKeyFile));
              BufferedInputStream publicKeyIn = new BufferedInputStream(new FileInputStream(publicKeyFile))) {
             OpenPGPHelper.getInstance().decryptAndVerify(inputStream, resultOutputStream, publicKeyIn, privateKeyIn, password);
-            Assert.assertEquals(msg, resultOutputStream.toString());
+            Assert.assertEquals(payload, resultOutputStream.toString());
         }
     }
 }

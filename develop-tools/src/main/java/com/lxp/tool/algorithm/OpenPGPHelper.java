@@ -204,7 +204,7 @@ public class OpenPGPHelper {
         }
     }
 
-    public void decryptAndVerify(InputStream in, OutputStream out, BufferedInputStream bankIs, InputStream pkstream, String password)
+    public void decryptAndVerify(InputStream in, OutputStream out, BufferedInputStream publicKeyStream, InputStream privateKeyStream, String password)
             throws Exception {
         Security.addProvider(new BouncyCastleProvider());
         PGPObjectFactory pgpF = new PGPObjectFactory(PGPUtil.getDecoderStream(in), new JcaKeyFingerprintCalculator());
@@ -224,7 +224,7 @@ public class OpenPGPHelper {
         Iterator<?> it = enc.getEncryptedDataObjects();
         PGPPublicKeyEncryptedData pbe = null;
         PGPSecretKeyRingCollection pgpSec = new PGPSecretKeyRingCollection(
-                PGPUtil.getDecoderStream(pkstream), new JcaKeyFingerprintCalculator());
+                PGPUtil.getDecoderStream(privateKeyStream), new JcaKeyFingerprintCalculator());
         PGPPrivateKey sKey = null;
 
         while (sKey == null && it.hasNext()) {
@@ -274,7 +274,7 @@ public class OpenPGPHelper {
         } else {
             for (int i = 0; i < onePassSignatureList.size(); i++) {
                 PGPOnePassSignature ops = onePassSignatureList.get(0);
-                PGPPublicKeyRingCollection pgpPub = new PGPPublicKeyRingCollection(PGPUtil.getDecoderStream(bankIs), new JcaKeyFingerprintCalculator());
+                PGPPublicKeyRingCollection pgpPub = new PGPPublicKeyRingCollection(PGPUtil.getDecoderStream(publicKeyStream), new JcaKeyFingerprintCalculator());
                 PGPSignature signature = signatureList.get(i);
                 publicKeyIn = pgpPub.getPublicKey(signature.getKeyID());
                 if (publicKeyIn != null) {
