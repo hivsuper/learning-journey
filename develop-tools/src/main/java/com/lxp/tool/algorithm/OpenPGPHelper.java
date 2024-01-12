@@ -67,6 +67,9 @@ public class OpenPGPHelper {
         return instance;
     }
 
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
 
     public PGPPublicKey readPublicKey(InputStream in) throws IOException, PGPException {
 
@@ -206,7 +209,6 @@ public class OpenPGPHelper {
 
     public void decryptAndVerify(InputStream in, OutputStream out, BufferedInputStream publicKeyStream, InputStream privateKeyStream, String password)
             throws Exception {
-        Security.addProvider(new BouncyCastleProvider());
         PGPObjectFactory pgpF = new PGPObjectFactory(PGPUtil.getDecoderStream(in), new JcaKeyFingerprintCalculator());
         PGPEncryptedDataList enc;
         Object o = pgpF.nextObject();
@@ -272,9 +274,9 @@ public class OpenPGPHelper {
         if (onePassSignatureList == null || signatureList == null) {
             throw new PGPException("Poor PGP. Signatures not found.");
         } else {
+            PGPPublicKeyRingCollection pgpPub = new PGPPublicKeyRingCollection(PGPUtil.getDecoderStream(publicKeyStream), new JcaKeyFingerprintCalculator());
             for (int i = 0; i < onePassSignatureList.size(); i++) {
                 PGPOnePassSignature ops = onePassSignatureList.get(0);
-                PGPPublicKeyRingCollection pgpPub = new PGPPublicKeyRingCollection(PGPUtil.getDecoderStream(publicKeyStream), new JcaKeyFingerprintCalculator());
                 PGPSignature signature = signatureList.get(i);
                 publicKeyIn = pgpPub.getPublicKey(signature.getKeyID());
                 if (publicKeyIn != null) {
