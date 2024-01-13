@@ -4,8 +4,10 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- Make the project runnable -->
     <OutputType>Exe</OutputType>
-    <MainEntryPoint>Utility.Example.OpenPGPHelperExample</MainEntryPoint>
+    <!-- Specify a startup object by changing the class here when there are multiple Main methods -->
+    <StartupObject>Utility.Example.OpenPGPHelperExample</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BouncyCastle.OpenPGP" Version="2.0.0.1" />
