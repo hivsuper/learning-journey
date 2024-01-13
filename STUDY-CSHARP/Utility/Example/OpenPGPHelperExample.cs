@@ -2,7 +2,7 @@ using System.Reflection;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 using Org.BouncyCastle.Utilities.Encoders;
 
-namespace Utility;
+namespace Utility.Example;
 
 class OpenPGPHelperExample
 {

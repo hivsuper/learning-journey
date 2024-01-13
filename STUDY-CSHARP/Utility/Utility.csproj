@@ -5,14 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
-    <MainEntryPoint>Utility.OpenPGPHelperExample</MainEntryPoint>
+    <MainEntryPoint>Utility.Example.OpenPGPHelperExample</MainEntryPoint>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BouncyCastle.OpenPGP" Version="2.0.0.1" />
     <PackageReference Include="NLog" Version="5.2.8" />
-  </ItemGroup>
-
-  <ItemGroup>
     <!-- Include embedded resources -->
     <EmbeddedResource Include="..\Resources\*.asc" />
   </ItemGroup>
