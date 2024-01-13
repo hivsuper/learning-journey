@@ -30,8 +30,8 @@ public class OpenPGPHelperTest {
         Assert.assertNotNull(url);
         File file = new File(url.getFile());
         final String absolutePath = file.getAbsolutePath() + File.separator;
-        publicKeyFile = absolutePath + "private_key.asc";
-        privateKeyFile = absolutePath + "public_key.asc";
+        publicKeyFile = absolutePath + "public_key.asc";
+        privateKeyFile = absolutePath + "private_key.asc";
     }
 
     @After
