@@ -1,2 +1,3 @@
-- Demos for mockito2/powermock
+- Demos for mockito(mockito-core & mockito-inline)/powermock
 - Verification demos of `org.hamcrest and.hamcrest` and `org.awaitility.Awaitility` libraries
+- Demos for wiremock
