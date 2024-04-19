@@ -1,4 +1,4 @@
-package org.lxp.crawler;
+package com.lxp.tool.crawler;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class CloseableHttpAsyncClientHelper extends AbstractHttpClientHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(CloseableHttpAsyncClientHelper.class);
-    private HttpAsyncClientBuilder httpAsyncClientBuilder;
+    private final HttpAsyncClientBuilder httpAsyncClientBuilder;
 
     public CloseableHttpAsyncClientHelper() throws IOReactorException {
         IOReactorConfig ioReactorConfig = IOReactorConfig.custom()

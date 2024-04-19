@@ -1,4 +1,4 @@
-package org.lxp.crawler;
+package com.lxp.tool.crawler;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class CloseableHttpClientHelper extends AbstractHttpClientHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(CloseableHttpClientHelper.class);
-    private HttpClientBuilder httpClientBuilder;
+    private final HttpClientBuilder httpClientBuilder;
 
     public CloseableHttpClientHelper() {
         PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();

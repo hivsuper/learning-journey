@@ -1,11 +1,10 @@
-package org.lxp.crawler;
+package com.lxp.tool.crawler;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.http.HttpStatus;
 import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.util.StopWatch;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -39,18 +38,15 @@ public class HttpClientHelperTest {
                 .mapToObj(index -> crawlerUrl)
                 .collect(Collectors.toList());
         // execute
-        StopWatch stopWatch = new StopWatch();
         helper = new CloseableHttpAsyncClientHelper();
-        stopWatch.start();
+        long startTime = System.currentTimeMillis();
         List<Integer> statusCodesAsyncBatch = helper.batchGet(urls);
-        stopWatch.stop();
-        long costTimeAsyncBatch = stopWatch.getLastTaskTimeMillis();
+        long costTimeAsyncBatch = System.currentTimeMillis() - startTime;
 
         helper = new CloseableHttpClientHelper();
-        stopWatch.start();
+        startTime = System.currentTimeMillis();
         List<Integer> statusCodesBatch = helper.batchGet(urls);
-        stopWatch.stop();
-        long costTimeBatch = stopWatch.getLastTaskTimeMillis();
+        long costTimeBatch = System.currentTimeMillis() - startTime;
 
         // verify
         assertThat(statusCodesBatch).containsExactlyElementsOf(statusCodesAsyncBatch);
