@@ -22,6 +22,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -37,7 +38,7 @@ public class JEP321HttpClientHelperTest {
 
     @Before
     public void setUp() {
-        forecastIoService.stubFor(get(new UrlPattern(new RegexPattern("/crawler-test(.*)"), true))
+        stubFor(get(new UrlPattern(new RegexPattern("/crawler-test(.*)"), true))
                 .withHeader(CONTENT_TYPE, containing(TEXT_PLAIN_CHARSET_UTF_8))
                 .willReturn(ok(RESULT).withFixedDelay(10).withStatus(HttpStatus.SC_OK)));
     }
@@ -46,7 +47,7 @@ public class JEP321HttpClientHelperTest {
     public void testPost() throws URISyntaxException, IOException, InterruptedException {
         JEP321HttpClientHelper helper = new JEP321HttpClientHelper(String.valueOf(maxTotalConnection));
         final String requestBody = "lalala";
-        forecastIoService.stubFor(post(urlEqualTo("/crawler-test"))
+        stubFor(post(urlEqualTo("/crawler-test"))
                 .withHeader(CONTENT_TYPE, containing(TEXT_PLAIN_CHARSET_UTF_8))
                 .withRequestBody(containing(requestBody))
                 .willReturn(ok(RESULT).withFixedDelay(10).withStatus(HttpStatus.SC_OK)));

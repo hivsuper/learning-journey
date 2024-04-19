@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -32,7 +33,7 @@ public class HttpClientHelperTest {
 
     @Test
     public void testBatchGet() throws IOException {
-        forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(10).withStatus(HttpStatus.SC_OK)));
+        stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(10).withStatus(HttpStatus.SC_OK)));
         // given
         List<String> urls = IntStream.range(0, 100)
                 .mapToObj(index -> crawlerUrl)
@@ -58,22 +59,22 @@ public class HttpClientHelperTest {
 
     @Test
     public void shouldThrowExceptionWhenAsyncSocketTimeout() throws Exception {
-        forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(6100).withStatus(HttpStatus.SC_OK)));
+        stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(6100).withStatus(HttpStatus.SC_OK)));
         helper = new CloseableHttpAsyncClientHelper();
         assertThrows(ExecutionException.class, () -> helper.get(crawlerUrl));
     }
 
     @Test
     public void shouldThrowExceptionWhenSocketTimeout() {
-        forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(6100).withStatus(HttpStatus.SC_OK)));
+        stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(6100).withStatus(HttpStatus.SC_OK)));
         helper = new CloseableHttpClientHelper();
         assertThrows(SocketTimeoutException.class, () -> helper.get(crawlerUrl));
     }
 
     @Test
     public void shouldThrowExceptionWhenConnectTimeout() {
-        forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(6100).withStatus(HttpStatus.SC_OK)));
-        forecastIoService.stubFor(get(urlEqualTo("/crawler-test2")).willReturn(aResponse().withFixedDelay(1).withStatus(HttpStatus.SC_OK)));
+        stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(6100).withStatus(HttpStatus.SC_OK)));
+        stubFor(get(urlEqualTo("/crawler-test2")).willReturn(aResponse().withFixedDelay(1).withStatus(HttpStatus.SC_OK)));
         helper = new CloseableHttpClientHelper();
         final int size = helper.maxTotalConnection;
         ExecutorService executorService = Executors.newFixedThreadPool(size * 10);
