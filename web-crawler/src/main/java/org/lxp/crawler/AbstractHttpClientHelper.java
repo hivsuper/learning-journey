@@ -8,8 +8,8 @@ import org.apache.http.client.methods.HttpGet;
 
 public abstract class AbstractHttpClientHelper {
     protected int maxTotalConnection = 10;
-    protected RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(30000).setSocketTimeout(60000)
-            .setConnectionRequestTimeout(10000).build();
+    protected RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(3000).setSocketTimeout(6000)
+            .setConnectionRequestTimeout(1000).build();
 
     public abstract List<Integer> batchGet(List<String> urls) throws IOException;
 

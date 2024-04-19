@@ -3,12 +3,8 @@ package org.lxp.crawler;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.http.HttpStatus;
 import org.apache.http.conn.ConnectionPoolTimeoutException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.springframework.util.StopWatch;
 
 import java.io.IOException;
@@ -25,25 +21,14 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 public class HttpClientHelperTest {
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
     private AbstractHttpClientHelper helper;
     private final String crawlerUrl = "http://127.0.0.1:8080/crawler-test";
 
     @Rule
-    public WireMockRule forecastIoService = new WireMockRule();
-
-    @Before
-    public void setUp() {
-        forecastIoService.start();
-    }
-
-    @After
-    public void tearDown() {
-        forecastIoService.stop();
-    }
+    public WireMockRule forecastIoService = new WireMockRule(8080);
 
     @Test
     public void testBatchGet() throws IOException {
@@ -73,42 +58,32 @@ public class HttpClientHelperTest {
 
     @Test
     public void shouldThrowExceptionWhenAsyncSocketTimeout() throws Exception {
-        forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(61000).withStatus(HttpStatus.SC_OK)));
-        expectedException.expect(ExecutionException.class);
+        forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(6100).withStatus(HttpStatus.SC_OK)));
         helper = new CloseableHttpAsyncClientHelper();
-        helper.get(crawlerUrl);
+        assertThrows(ExecutionException.class, () -> helper.get(crawlerUrl));
     }
 
     @Test
-    public void shouldThrowExceptionWhenSocketTimeout() throws Exception {
-        forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(61000).withStatus(HttpStatus.SC_OK)));
-        expectedException.expect(SocketTimeoutException.class);
+    public void shouldThrowExceptionWhenSocketTimeout() {
+        forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(6100).withStatus(HttpStatus.SC_OK)));
         helper = new CloseableHttpClientHelper();
-        helper.get(crawlerUrl);
+        assertThrows(SocketTimeoutException.class, () -> helper.get(crawlerUrl));
     }
 
     @Test
-    @Ignore
     public void shouldThrowExceptionWhenConnectTimeout() {
-        forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(41000).withStatus(HttpStatus.SC_OK)));
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("ConnectionPoolTimeoutException");
+        forecastIoService.stubFor(get(urlEqualTo("/crawler-test")).willReturn(aResponse().withFixedDelay(6100).withStatus(HttpStatus.SC_OK)));
+        forecastIoService.stubFor(get(urlEqualTo("/crawler-test2")).willReturn(aResponse().withFixedDelay(1).withStatus(HttpStatus.SC_OK)));
         helper = new CloseableHttpClientHelper();
         final int size = helper.maxTotalConnection;
         ExecutorService executorService = Executors.newFixedThreadPool(size * 10);
-        IntStream.range(0, size * 10).forEach(index -> CompletableFuture.runAsync(this::execute, executorService));
-        execute();
-    }
-
-    private void execute() {
-        try {
-            helper.get(crawlerUrl);
-        } catch (Exception e) {
-            if (e instanceof ConnectionPoolTimeoutException) {
-                throw new RuntimeException("ConnectionPoolTimeoutException");
-            } else {
-                e.printStackTrace();
+        IntStream.range(0, size * 10).forEach(index -> CompletableFuture.runAsync(() -> {
+            try {
+                helper.get(crawlerUrl);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-        }
+        }, executorService));
+        assertThrows(ConnectionPoolTimeoutException.class, () -> helper.get("http://127.0.0.1:8080/crawler-test2"));
     }
 }

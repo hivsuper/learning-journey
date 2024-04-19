@@ -4,7 +4,6 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.matching.RegexPattern;
 import com.github.tomakehurst.wiremock.matching.UrlPattern;
 import org.apache.http.HttpStatus;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,19 +33,13 @@ public class JEP321HttpClientHelperTest {
     private final String crawlerUrl = "http://127.0.0.1:8080/crawler-test";
     private final int maxTotalConnection = 10;
     @Rule
-    public WireMockRule forecastIoService = new WireMockRule();
+    public WireMockRule forecastIoService = new WireMockRule(8080);
 
     @Before
     public void setUp() {
-        forecastIoService.start();
         forecastIoService.stubFor(get(new UrlPattern(new RegexPattern("/crawler-test(.*)"), true))
                 .withHeader(CONTENT_TYPE, containing(TEXT_PLAIN_CHARSET_UTF_8))
                 .willReturn(ok(RESULT).withFixedDelay(10).withStatus(HttpStatus.SC_OK)));
-    }
-
-    @After
-    public void tearDown() {
-        forecastIoService.stop();
     }
 
     @Test
