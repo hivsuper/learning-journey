@@ -4,25 +4,21 @@ Test Environment:
 - `apache maven 3.9.2` in `IntelliJ IDEA 2023.2.3`
 ----------------------------------------------------
 Common tools help to develop
-1. algorithm
-- DES/RSA
-- MD5
-- OpenPGP
-
-2. archive
-- zip4j
-- java.util.zip.ZipUtils
-
-3. crawler
-- httpclient and httpasyncclient
-- okhttp
-- java.net.http.HttpClient
-
-4. json
-- jackson
-
-5. log
-- MDC
-
-6. pdf
-- itextpdf
+- algorithm
+  - DES
+  - MD5
+  - OpenPGP
+  - RSA
+- archive
+  - net.lingala.zip4j
+  - java.util.zip.ZipUtils
+- crawler
+  - httpclient and httpasyncclient
+  - okhttp
+  - java.net.http.HttpClient
+- json
+  - jackson
+- log
+  - MDC
+- pdf
+  - itextpdf
