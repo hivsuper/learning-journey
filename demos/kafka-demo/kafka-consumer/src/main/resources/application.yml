@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: kafka-consumer
+  kafka:
+    consumer:
+      group-id: test-topic-events
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: org.lxp
+    listener:
+      type: BATCH
+      ack-mode: BATCH

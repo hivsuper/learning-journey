@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: kafka-manual-commit-consumer
+  kafka:
+    consumer:
+      group-id: test-topic-manual-commit-events
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: org.lxp
+      enable-auto-commit: false
+    listener:
+      ack-mode: MANUAL_IMMEDIATE

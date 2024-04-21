@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: kafka-producer
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      retries: 10 # how many times to try sending a message if it doesn’t go through the first time. default 2147483647
+#      properties:
+#        retry:
+#          backoff:
+#            ms: 1000 # how long Kafka waits before it tries to send a message again.
+      properties:
+        linger:
+          ms: 0 # 0 means the producer will send messages immediately without waiting
+        request:
+          timeout:
+            ms: 30000 # the time the producer waits for a response from the broker for each individual request.
+        delivery:
+          timeout:
+            ms: 120000 # It’s the total time allotted for the entire send operation, including retries. default 120000
