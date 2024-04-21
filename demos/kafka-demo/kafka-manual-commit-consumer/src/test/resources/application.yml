@@ -1,0 +1,10 @@
+spring:
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      group-id: baeldung
+      enable-auto-commit: false
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+test:
+  topic: test-topic-embedded

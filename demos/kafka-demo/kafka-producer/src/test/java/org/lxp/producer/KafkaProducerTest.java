@@ -1,4 +1,4 @@
-package org.lxp.auto.consumer.producer;
+package org.lxp.producer;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.Test;
@@ -50,10 +50,6 @@ public class KafkaProducerTest {
         public void receive(ConsumerRecord<?, ?> consumerRecord) {
             payload = consumerRecord.toString();
             latch.countDown();
-        }
-
-        public void resetLatch() {
-            latch = new CountDownLatch(1);
         }
 
         public CountDownLatch getLatch() {
