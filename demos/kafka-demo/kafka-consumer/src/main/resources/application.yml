@@ -15,3 +15,5 @@ spring:
     listener:
       type: BATCH
       ack-mode: BATCH
+test:
+  topic: test-topic

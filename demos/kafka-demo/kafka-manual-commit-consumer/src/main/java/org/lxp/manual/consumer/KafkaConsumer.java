@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class KafkaConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
-    @KafkaListener(topics = "test-topic")
+    @KafkaListener(topics = "${test.topic}")
     public void handle(ConsumerRecord<String, String> record, Acknowledgment acknowledgment) {
         LOGGER.info("receive message key={} value={} topic={} partition={}, offset={}",
                 record.key(), record.value(), record.topic(), record.partition(), record.offset());

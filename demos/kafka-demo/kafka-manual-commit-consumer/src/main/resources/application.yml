@@ -15,3 +15,5 @@ spring:
       enable-auto-commit: false
     listener:
       ack-mode: MANUAL_IMMEDIATE
+test:
+  topic: test-topic

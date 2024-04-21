@@ -20,3 +20,5 @@ spring:
         delivery:
           timeout:
             ms: 120000 # It’s the total time allotted for the entire send operation, including retries. default 120000
+test:
+  topic: test-topic
