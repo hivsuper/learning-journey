@@ -31,8 +31,7 @@ public class KafkaProducerTest {
     }
 
     @Test
-    public void givenEmbeddedKafkaBroker_whenSendingWithSimpleProducer_thenMessageReceived()
-            throws Exception {
+    public void sendMessage() throws Exception {
         String data = "Sending with our own simple KafkaProducer";
 
         producer.sendMessage(data);
@@ -43,7 +42,7 @@ public class KafkaProducerTest {
     }
 
     public static class TestConsumer {
-        private CountDownLatch latch = new CountDownLatch(1);
+        private final CountDownLatch latch = new CountDownLatch(1);
         private String payload;
 
         @KafkaListener(topics = "${test.topic}")
