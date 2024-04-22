@@ -11,7 +11,7 @@ import javax.inject.Inject;
 @Component
 public class KafkaConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
-    private MessageHandler messageHandler;
+    private final MessageHandler messageHandler;
 
     @Inject
     public KafkaConsumer(MessageHandler messageHandler) {

@@ -26,12 +26,11 @@ public class KafkaProducer {
 
     public void sendMessage(String message) {
         String messageId = UUID.randomUUID().toString();
-        System.out.println(messageId);
         CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topicName, messageId, message);
         future.whenComplete((result, exception) -> {
             if (Objects.isNull(exception)) {
-                LOGGER.info("Message {} has been successfully sent to the topic {}, partition {}, offset {}",
-                        message, topicName, result.getRecordMetadata().partition(), result.getRecordMetadata().offset());
+                LOGGER.info("Message key={} value={} has been successfully sent to the topic {}, partition {}, offset {}",
+                        messageId, message, topicName, result.getRecordMetadata().partition(), result.getRecordMetadata().offset());
             } else {
                 LOGGER.error("Failed to send message {} to the topic {}", message, topicName);
             }

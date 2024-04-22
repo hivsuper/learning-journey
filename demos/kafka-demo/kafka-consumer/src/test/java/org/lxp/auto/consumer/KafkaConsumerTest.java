@@ -79,9 +79,7 @@ public class KafkaConsumerTest {
             try {
                 kafkaTemplate.send(topicName, UUID.randomUUID().toString(), message).get();
                 latch.countDown();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
             }
         }
