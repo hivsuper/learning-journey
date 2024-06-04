@@ -1,15 +1,24 @@
 package com.lxp.tool.json;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class JsonHelperTest {
     private TestJsonVo testJsonVo;
@@ -47,7 +56,16 @@ public class JsonHelperTest {
     @Test
     public void shouldReturnObjectWhenPassString() {
         assertEquals(testJsonVo.toString(), JsonHelper.toObject(TestJsonVo.class,
-                "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}")
+                        "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}")
+                .toString());
+    }
+
+    @Test
+    public void shouldReturnTypeObjectWhenPassString() {
+        TypeReference<List<TestJsonVo>> reference = new TypeReference<>() {
+        };
+        assertEquals(Collections.singletonList(testJsonVo).toString(), JsonHelper.toObject(reference,
+                        "[{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}]")
                 .toString());
     }
 
@@ -55,6 +73,16 @@ public class JsonHelperTest {
     public void shouldReturnObjectWhenPassInputStream() throws IOException {
         try (InputStream inputStream = JsonHelperTest.class.getResourceAsStream("/JsonHepler.json")) {
             assertEquals(testJsonVo.toString(), JsonHelper.toObject(TestJsonVo.class, inputStream).toString());
+        }
+    }
+
+    @Test
+    public void shouldReturnTypeObjectWhenPassInputStream() throws IOException, URISyntaxException {
+        TypeReference<List<TestJsonVo>> reference = new TypeReference<>() {
+        };
+        String content = String.format("[%s]", Files.lines(Paths.get(JsonHelperTest.class.getResource("/JsonHepler.json").toURI()), StandardCharsets.UTF_8).collect(Collectors.joining()));
+        try (InputStream inputStream = new ByteArrayInputStream(content.getBytes())) {
+            assertEquals(Collections.singletonList(testJsonVo).toString(), JsonHelper.toObject(reference, inputStream).toString());
         }
     }
 
