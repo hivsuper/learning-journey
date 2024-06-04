@@ -1,5 +1,7 @@
 package com.lxp.tool.json;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,10 +88,31 @@ public class JsonHelperTest {
         }
     }
 
+    @Test
+    public void shouldPropertyDoubleWhenPassDouble() throws IOException, URISyntaxException {
+        assertEquals(testJsonVo.toString(), JsonHelper.toObject(TestJsonVo.class,
+                        "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}")
+                .toString());
+    }
+
+    @Test
+    public void shouldPropertyDoubleWhenPassFloat() throws IOException, URISyntaxException {
+        assertEquals(testJsonVo.toString(), JsonHelper.toObject(TestJsonVo.class,
+                        "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyFloat\":0.56}")
+                .toString());
+    }
+
+    @Test
+    public void shouldGeneratePropertyDouble() {
+        assertEquals("{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}", JsonHelper.toString(testJsonVo));
+    }
+
     private static class TestJsonVo {
         private String propertyString;
         private boolean propertyBoolean;
         private int propertyInt;
+        @JsonProperty("propertyDouble")
+        @JsonAlias("propertyFloat")
         private double propertyDouble;
 
         public String getPropertyString() {
