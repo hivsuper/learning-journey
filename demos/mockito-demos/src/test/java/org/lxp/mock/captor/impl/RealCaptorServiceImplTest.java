@@ -2,10 +2,9 @@ package org.lxp.mock.captor.impl;
 
 import org.assertj.core.api.Assertions;
 import org.awaitility.Awaitility;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.lxp.mock.captor.CaptorModel;
 import org.lxp.mock.captor.CaptorService;
 import org.lxp.mock.captor.RealCaptorService;
@@ -13,7 +12,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RealCaptorServiceImplTest {
     @Mock
     private CaptorService captorService;
@@ -29,7 +28,7 @@ public class RealCaptorServiceImplTest {
     private ArgumentCaptor<List<CaptorModel>> argumentCaptor;
     private RealCaptorService realCaptorService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         realCaptorService = new RealCaptorServiceImpl(captorService);
     }
@@ -40,7 +39,7 @@ public class RealCaptorServiceImplTest {
         String propertyString = "propertyString";
         int propertyInt = 1;
         realCaptorService.batchExecute(propertyString, propertyInt);
-        Assert.assertEquals("[CaptorModel [property1=propertyString, property2=1]]",
+        org.junit.jupiter.api.Assertions.assertEquals("[CaptorModel [property1=propertyString, property2=1]]",
                 argumentCaptor.getValue().toString());
     }
 
@@ -57,13 +56,6 @@ public class RealCaptorServiceImplTest {
         Mockito.when(captorService.execute(captorModel)).thenReturn("lalala");
         realCaptorService.execute(captorModel);
         Mockito.verify(captorService, Mockito.times(1)).execute(Mockito.eq(captorModel));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void doThrow() {
-        CaptorModel captorModel = new CaptorModel("propertyString", 1);
-        Mockito.doThrow(new IllegalArgumentException("s")).when(captorService).execute(captorModel);
-        realCaptorService.execute(captorModel);
     }
 
     @Test

@@ -2,8 +2,8 @@ package org.lxp.powermock.impl;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.lxp.powermock.PowerMockHelper;
 import org.lxp.powermock.RealPowerMockService;
 import org.mockito.MockedStatic;
@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 public class RealPowerMockServiceImplWithMockitoInlineTest {
     private RealPowerMockService realPowerMockService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         realPowerMockService = new RealPowerMockServiceImpl();
     }
