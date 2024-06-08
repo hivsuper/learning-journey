@@ -17,6 +17,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -72,10 +74,13 @@ public class RealCaptorServiceImplTest {
     }
 
     @Test
-    public void doThrowRuleInAssert() {
+    public void doThrowRuleInJupiterAssertions() {
         CaptorModel captorModel = new CaptorModel("propertyString", 1);
-        Mockito.doThrow(new IllegalArgumentException("s")).when(captorService).execute(captorModel);
-        Assert.assertThrows("s", IllegalArgumentException.class, () -> realCaptorService.execute(captorModel));
+        Mockito.doAnswer(__ -> {
+            throw new ExecutionException(null);
+        }).when(captorService).execute(captorModel);
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(ExecutionException.class, () -> realCaptorService.execute(captorModel), "s");
+        Assertions.assertThat(exception.getClass()).isEqualTo(ExecutionException.class);
     }
 
     @Test
@@ -88,6 +93,19 @@ public class RealCaptorServiceImplTest {
         }).when(captorService).execute(captorModel);
         realCaptorService.asyncExecute(captorModel);
         Awaitility.await().untilTrue(running);
+        Mockito.verify(captorService).execute(Mockito.eq(captorModel));
+    }
+
+    @Test
+    public void countDown() {
+        CaptorModel captorModel = new CaptorModel("propertyString", 1);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        Mockito.doAnswer(a -> {
+            countDownLatch.countDown();
+            return Collections.emptyList();
+        }).when(captorService).execute(captorModel);
+        realCaptorService.asyncExecute(captorModel);
+        Awaitility.await().until(() -> countDownLatch.getCount() == 0);
         Mockito.verify(captorService).execute(Mockito.eq(captorModel));
     }
 
