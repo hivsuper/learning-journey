@@ -1,8 +1,8 @@
-package org.lxp.springboot.model;
+package org.lxp.springboot.dto;
 
 import java.util.Date;
 
-public class CustomerBase {
+public class Customer {
     private Integer id;
 
     private String name;

@@ -1,18 +1,33 @@
 # web
+## Prerequisites
+1. Install `IntelliJ IDEA 2024.1 (Community Edition)`
+2. Install `Lombok` plugin and [set](https://www.baeldung.com/lombok-ide)
+## Test Scope
 Test web application base on spring-boot.  
-1. spring-boot
-2. mybatis + HikariCP
-3. mybatis-generator
-4. transactional rollback
-5. swagger-ui
-6. FilterChainProxy implementation
+1. SpringBoot
+2. MyBatis + HikariCP
+3. Transactional Rollback
+4. Swagger UI
+5. Lombok
 	
 ## Environment 
-MySQL: 5.6.31-0ubuntu0.15.10.1  
-JAVA: 1.8.0_91  
+MySQL: 8.1.0  
+JAVA: openjdk version "21.0.2" 2024-01-16  
 
-## Q&A
-+	How to Package the Project?  
-	Run `mvn clean package`
-+	How to Generate Class/XML from Database?  
-	Run `mvn mybatis-generator:generate`  
+## Install and verify this project
+- Use maven commands
+```shell
+## Create git.properties
+git-commit-id:revision
+## Run Unit Tests
+mvn test
+## Run Integration Tests
+mvn install -DskipUTs=true failsafe:integration-test -DskipITs=false
+## Package
+mvn clean package
+```
+- Start modules by running the `Bootstarp` class. Below is the swagger pages to see the endpoints' detail
+
+| Module Name            | Swagger Address                                  |
+|------------------------|--------------------------------------------------|
+| account-service        | http://127.0.0.1:8082/swagger-ui/index.html      |

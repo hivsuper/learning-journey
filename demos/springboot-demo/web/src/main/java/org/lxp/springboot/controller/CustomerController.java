@@ -1,32 +1,45 @@
 package org.lxp.springboot.controller;
 
-import io.swagger.annotations.ApiOperation;
-import org.lxp.springboot.model.CustomerBase;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.lxp.springboot.dto.Customer;
 import org.lxp.springboot.service.CustomerService;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 public class CustomerController {
-    @Resource
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
-    @RequestMapping(value = "/add.json", method = POST)
-    @ApiOperation(value = "Add Customer")
-    public boolean add(@RequestParam String name, @RequestParam String email, @RequestParam(defaultValue = "true") boolean isSleep) {
-        customerService.addCustomer(name, email, isSleep);
-        return true;
+    @Operation(
+            summary = "Add an customer",
+            description = "Return the added customer id.")
+    @PostMapping(value = "/add.json")
+    public ResponseEntity<Integer> add(@RequestParam String name, @RequestParam String email) {
+        return ResponseEntity.ok(customerService.addCustomer(name, email));
     }
 
-    @RequestMapping(value = "/list.json", method = POST)
-    @ApiOperation(value = "Query All Customers")
-    public List<CustomerBase> list() {
-        return customerService.findAll();
+    @Operation(
+            summary = "Query Customers by Customer Ids",
+            description = "Return the account list by customer ids.")
+    @PostMapping(value = "/listByCustomerIds.json")
+    public ResponseEntity<List<Customer>> list(@RequestBody List<Integer> customerIds) {
+        return ResponseEntity.ok(customerService.findCustomerByIds(customerIds));
+    }
+
+    @Operation(
+            summary = "Query All Customers",
+            description = "Return the account list.")
+    @PostMapping(value = "/list.json")
+    public ResponseEntity<List<Customer>> list() {
+        return ResponseEntity.ok(customerService.findAll());
     }
 }

@@ -5,6 +5,4 @@ CREATE TABLE `customer` (
 	`email` VARCHAR(100) NOT NULL,
 	`created_date` DATE NOT NULL,
 	PRIMARY KEY (`id`)
-)
-COLLATE='utf8_general_ci'
-ENGINE=InnoDB;
+);;

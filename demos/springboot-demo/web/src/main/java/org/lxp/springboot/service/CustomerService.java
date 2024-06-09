@@ -1,43 +1,37 @@
 package org.lxp.springboot.service;
 
-import java.util.Calendar;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.lxp.springboot.dao.CustomerBaseMapper;
-import org.lxp.springboot.model.CustomerBase;
-import org.lxp.springboot.model.CustomerBaseExample;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.lxp.springboot.dao.CustomerMapper;
+import org.lxp.springboot.dto.Customer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
+import java.util.List;
+
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class CustomerService {
-    private static final Logger LOG = LoggerFactory.getLogger(CustomerService.class);
-    @Resource
-    private CustomerBaseMapper customerBaseMapper;
+    private final CustomerMapper customerMapper;
 
     @Transactional
-    public void addCustomer(String name, String email, boolean isSleep) {
-        LOG.info("add name={} email={}", name, email);
-        CustomerBase customer = new CustomerBase();
+    public int addCustomer(String name, String email) {
+        Customer customer = new Customer();
         customer.setName(name);
         customer.setEmail(email);
         customer.setCreatedDate(Calendar.getInstance().getTime());
-        customerBaseMapper.insert(customer);
-        if (isSleep) {
-            try {
-                Thread.sleep(10000L);
-            } catch (InterruptedException e) {
-                LOG.error(e.getMessage(), e);
-            }
-        }
+        customerMapper.add(customer);
+        log.info("add customer:{} successfully", customer.getId());
+        return customer.getId();
     }
 
-    public List<CustomerBase> findAll() {
-        CustomerBaseExample example = new CustomerBaseExample();
-        return customerBaseMapper.selectByExample(example);
+    public List<Customer> findCustomerByIds(List<Integer> customerIds) {
+        return customerMapper.findByIds(customerIds);
+    }
+
+    public List<Customer> findAll() {
+        return customerMapper.findAllCustomers();
     }
 }

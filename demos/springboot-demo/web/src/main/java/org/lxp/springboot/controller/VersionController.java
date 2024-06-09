@@ -1,46 +1,45 @@
 package org.lxp.springboot.controller;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.ApiOperation;
-
+@Slf4j
+@Data
+@Configuration
+@PropertySource("classpath:git.properties")
 @RestController
 public class VersionController {
-    private static final Logger LOG = LoggerFactory.getLogger(VersionController.class);
-    private static final ThreadLocal<DateFormat> DATE_FORMAT = new ThreadLocal<DateFormat>() {
-        public DateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        }
-    };
-    @Value("${project.version}")
-    private String version;
-    @Value("${project.buildTime}")
-    private String builtAt;
-    @Value("${project.format}")
-    private String format;
-    @Value("${project.env}")
-    private String env;
+    @Value("${git.commit.id.abbrev:na}")
+    private String abbrev;
 
-    @RequestMapping(value = "/version", method = GET)
-    @ApiOperation(value = "查看版本信息")
-    public Map<String, String> version() throws ParseException {
-        LOG.info("version接口被调用！");
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("version", version);
-        map.put("env", env);
-        map.put("builtAt", DATE_FORMAT.get().format(new SimpleDateFormat(format).parse(builtAt)));
-        return map;
+    @Value("${git.commit.id.full:na}")
+    private String full;
+
+    @Value("${git.commit.message.short:na}")
+    private String messageShort;
+
+    @Value("${git.commit.time:na}")
+    private String time;
+
+    @Operation(summary = "查看版本信息")
+    @GetMapping(value = "/version")
+    public ResponseEntity<Map<String, String>> version() {
+        log.info("version接口被调用！");
+        Map<String, String> map = new HashMap<>();
+        map.put("abbrev", abbrev);
+        map.put("full", full);
+        map.put("messageShort", messageShort);
+        map.put("time", time);
+        return ResponseEntity.ok(map);
     }
 }
