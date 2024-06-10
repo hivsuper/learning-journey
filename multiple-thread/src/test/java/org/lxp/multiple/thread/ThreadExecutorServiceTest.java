@@ -1,7 +1,7 @@
 package org.lxp.multiple.thread;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.lxp.multiple.thread.task.SumTask;
 
 import java.util.Arrays;
@@ -92,15 +92,15 @@ public class ThreadExecutorServiceTest {
 
     @Test
     public void test() throws InterruptedException, ExecutionException {
-        Assert.assertTrue(submitRunnable());
-        Assert.assertEquals(RESULT, submitRunnableWithResult().intValue());
-        Assert.assertEquals(RESULT, submitBlockCallable().intValue());
-        Assert.assertTrue(submitNonBlockCallable());
-        Assert.assertTrue(shutdown().isEmpty());
-        Assert.assertEquals(THIS_IS_SHUTDOWN_WITH_AWAIT_TERMINATION, shutdownWithAwaitTermination());
-        Assert.assertEquals(10, testForkJoinPool(Arrays.asList(1, 2, 3, 4)));
-        Assert.assertEquals(49, testForkJoinPool(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
-        Assert.assertEquals(60, testForkJoinPool(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)));
+        Assertions.assertTrue(submitRunnable());
+        Assertions.assertEquals(RESULT, submitRunnableWithResult().intValue());
+        Assertions.assertEquals(RESULT, submitBlockCallable().intValue());
+        Assertions.assertTrue(submitNonBlockCallable());
+        Assertions.assertTrue(shutdown().isEmpty());
+        Assertions.assertEquals(THIS_IS_SHUTDOWN_WITH_AWAIT_TERMINATION, shutdownWithAwaitTermination());
+        Assertions.assertEquals(10, testForkJoinPool(Arrays.asList(1, 2, 3, 4)));
+        Assertions.assertEquals(49, testForkJoinPool(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
+        Assertions.assertEquals(60, testForkJoinPool(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)));
     }
 
 }

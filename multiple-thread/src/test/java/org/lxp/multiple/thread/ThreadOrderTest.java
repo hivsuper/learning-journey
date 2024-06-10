@@ -1,13 +1,13 @@
 package org.lxp.multiple.thread;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.concurrent.CountDownLatch;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 /**
- * @Description: 规定线程次序的方法
  * @author Super.Li
+ * @Description: 规定线程次序的方法
  * @date Jul 5, 2017
  */
 public class ThreadOrderTest {
@@ -17,7 +17,7 @@ public class ThreadOrderTest {
     class ThreadOrder {
         /**
          * join方法使多个线程依次执行
-         * 
+         *
          * @return
          * @throws InterruptedException
          */
@@ -43,7 +43,7 @@ public class ThreadOrderTest {
 
         /**
          * CountdownLatch可同时阻塞多个线程，但它们可并发执行
-         * 
+         *
          * @return
          * @throws InterruptedException
          */
@@ -71,12 +71,12 @@ public class ThreadOrderTest {
     @Test
     public void testPreserveOrderViaJoin() throws InterruptedException {
         ThreadOrder threadOrder = new ThreadOrder();
-        Assert.assertEquals(count, threadOrder.preserveOrderViaJoin() / millisUnit);
+        Assertions.assertEquals(count, threadOrder.preserveOrderViaJoin() / millisUnit);
     }
 
     @Test
     public void testPreserveOrderViaCountdownLatch() throws InterruptedException {
         ThreadOrder threadOrder = new ThreadOrder();
-        Assert.assertEquals(1, threadOrder.preserveOrderViaCountdownLatch() / millisUnit);
+        Assertions.assertEquals(1, threadOrder.preserveOrderViaCountdownLatch() / millisUnit);
     }
 }

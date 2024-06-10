@@ -1,14 +1,14 @@
 package org.lxp.multiple.thread;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 /**
- * @Description: 线程的两种实现方法
  * @author Super.Li
+ * @Description: 线程的两种实现方法
  * @date Jul 4, 2017
  */
 public class ThreadImplementTest {
@@ -58,9 +58,9 @@ public class ThreadImplementTest {
             tmp.start();
             tmp.join();
         }
-        Assert.assertTrue(map.containsKey(3));
-        Assert.assertTrue(map.containsKey(2));
-        Assert.assertTrue(map.containsKey(1));
+        Assertions.assertTrue(map.containsKey(3));
+        Assertions.assertTrue(map.containsKey(2));
+        Assertions.assertTrue(map.containsKey(1));
 
         map.clear();// 清空缓存
         for (int i = 0; i < 3; i++) {// 三个不同线程
@@ -68,7 +68,7 @@ public class ThreadImplementTest {
             tmp.start();
             tmp.join();
         }
-        Assert.assertEquals(1, map.size());
-        Assert.assertTrue(map.containsKey(1));
+        Assertions.assertEquals(1, map.size());
+        Assertions.assertTrue(map.containsKey(1));
     }
 }

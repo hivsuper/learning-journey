@@ -1,16 +1,15 @@
 package org.lxp.multiple.thread;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 /**
- * 
- * @Description: 测试Thread的方法
  * @author Super.Li
+ * @Description: 测试Thread的方法
  * @date Jul 4, 2017
  */
 public class ThreadMethodsTest {
@@ -108,7 +107,7 @@ public class ThreadMethodsTest {
         sleep.join();
         ThreadMethodEnum tme = map.get(SLEEP);
         // 预期sleep时间与millis相近
-        Assert.assertEquals(1, Math.round((tme.getStopTimeMillis() - tme.getStartTimeMillis()) * 1.0 / millis));
+        Assertions.assertEquals(1, Math.round((tme.getStopTimeMillis() - tme.getStartTimeMillis()) * 1.0 / millis));
     }
 
     @Test
@@ -118,7 +117,7 @@ public class ThreadMethodsTest {
         yield.join();
         ThreadMethodEnum tme = map.get(YIELD);
         // 预期yield消耗时间几乎为0
-        Assert.assertEquals(1, Math.round(tme.getStartTimeMillis() * 1.0 / tme.getStopTimeMillis()));
+        Assertions.assertEquals(1, Math.round(tme.getStartTimeMillis() * 1.0 / tme.getStopTimeMillis()));
     }
 
     @Test
@@ -131,10 +130,10 @@ public class ThreadMethodsTest {
         join.join();
         ThreadMethodEnum tme = map.get(SLEEP);
         // 预期sleep时间与millis相近
-        Assert.assertEquals(1, Math.round((tme.getStopTimeMillis() - tme.getStartTimeMillis()) * 1.0 / millis));
+        Assertions.assertEquals(1, Math.round((tme.getStopTimeMillis() - tme.getStartTimeMillis()) * 1.0 / millis));
         tme = map.get(JOIN);
         // 预期join阻塞时间与millis相近
-        Assert.assertEquals(1, Math.round((tme.getStopTimeMillis() - tme.getStartTimeMillis()) * 1.0 / millis));
+        Assertions.assertEquals(1, Math.round((tme.getStopTimeMillis() - tme.getStartTimeMillis()) * 1.0 / millis));
     }
 
     @Test
@@ -147,10 +146,10 @@ public class ThreadMethodsTest {
         join.join();
         ThreadMethodEnum tme = map.get(SLEEP);
         // 预期sleep不能在join阻塞结束前设置，故为null
-        Assert.assertTrue(tme == null);
+        Assertions.assertTrue(tme == null);
         tme = map.get(JOIN);
         // 预期join阻塞时间与millis相近
-        Assert.assertEquals(1, Math.round((tme.getStopTimeMillis() - tme.getStartTimeMillis()) / millis));
+        Assertions.assertEquals(1, Math.round((tme.getStopTimeMillis() - tme.getStartTimeMillis()) / millis));
     }
 
     @Test
@@ -158,7 +157,7 @@ public class ThreadMethodsTest {
         ThreadInterrupt interrupt = new ThreadInterrupt();
         interrupt.start();
         interrupt.join();
-        Assert.assertEquals(interruptIndex, interruptCount.intValue());
+        Assertions.assertEquals(interruptIndex, interruptCount.intValue());
     }
 }
 
