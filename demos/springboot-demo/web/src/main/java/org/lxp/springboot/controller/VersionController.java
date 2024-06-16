@@ -16,7 +16,7 @@ import java.util.Map;
 @Slf4j
 @Data
 @Configuration
-@PropertySource("classpath:git.properties")
+@PropertySource(value = "classpath:git.properties", ignoreResourceNotFound = true)
 @RestController
 public class VersionController {
     @Value("${git.commit.id.abbrev:na}")
