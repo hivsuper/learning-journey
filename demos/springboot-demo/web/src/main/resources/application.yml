@@ -28,3 +28,7 @@ server:
     max-threads: 200
     min-spare-threads: 100
     uri-encoding: UTF-8
+
+retry:
+  maxAttempts: 2
+  maxDelay: 1

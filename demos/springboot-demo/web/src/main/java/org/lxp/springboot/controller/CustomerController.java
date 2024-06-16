@@ -20,6 +20,15 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @Operation(
+            summary = "Add an customer asynchronously",
+            description = "Return the added customer id.")
+    @PostMapping(value = "/addAsync.json")
+    public ResponseEntity<Void> addAsync(@RequestParam String name, @RequestParam String email) {
+        customerService.addCustomerAsync(name, email);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(
             summary = "Add an customer",
             description = "Return the added customer id.")
     @PostMapping(value = "/add.json")
