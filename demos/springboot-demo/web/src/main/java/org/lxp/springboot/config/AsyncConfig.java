@@ -24,6 +24,7 @@ public class AsyncConfig implements AsyncConfigurer {
         executor.setThreadNamePrefix("asyncExecutor-");
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        //Still can't figure out how to apply org.springframework.core.task.support.ContextPropagatingTaskDecorator to MDC copy
         executor.setTaskDecorator(new MDCTaskDecorator());
         executor.initialize();
         return executor;

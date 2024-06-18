@@ -31,4 +31,4 @@ server:
 
 retry:
   maxAttempts: 2
-  maxDelay: 1
+  maxDelay: 600000

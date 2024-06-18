@@ -6,9 +6,11 @@ import org.lxp.springboot.dao.CustomerMapper;
 import org.lxp.springboot.dto.Customer;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.slf4j.MDC;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.retry.ExhaustedRetryException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
@@ -25,9 +27,9 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@ActiveProfiles("test")
 @SpringBootTest(classes = CustomerService.class)
 @ContextConfiguration(classes = AsyncConfig.class)
-@TestPropertySource(properties = "retry.maxAttempts = 2")
 public class CustomerServiceTest {
     private final String NAME = "name";
     private final String EMAIL = "email";
@@ -45,6 +47,7 @@ public class CustomerServiceTest {
 
     @Test
     public void addCustomerAsync() {
+        MDC.put("key", "addCustomerAsync");
         Future<Integer> future = customerService.addCustomerAsync(NAME, EMAIL);
         await().until(future::isDone);
 
@@ -85,6 +88,7 @@ public class CustomerServiceTest {
 
     @Test
     public void addCustomer() {
+        MDC.put("key", "addCustomer");
         customerService.addCustomer(NAME, EMAIL);
 
         verify(customerMapper, times(1)).add(captor.capture());
