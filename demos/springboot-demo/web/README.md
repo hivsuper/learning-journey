@@ -28,6 +28,8 @@ mvn clean package
 ```
 - Start modules by running the `Bootstarp` class. Below is the swagger pages to see the endpoints' detail
 
-| Module Name            | Swagger Address                                  |
-|------------------------|--------------------------------------------------|
-| account-service        | http://127.0.0.1:8082/swagger-ui/index.html      |
+| Module Name | Swagger Address                                  |
+|-------------|--------------------------------------------------|
+| web         | http://127.0.0.1:8082/swagger-ui/index.html      |
+
+Switch environment by activating profile `-Dspring.profiles.active=local`
