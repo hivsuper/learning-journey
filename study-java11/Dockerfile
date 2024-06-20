@@ -1,7 +1,8 @@
 FROM amazoncorretto:11-alpine3.16-jdk
 WORKDIR /tmp
-RUN addgroup -S demo && adduser -S demo -G demo
-USER demo
+ARG DOCKER_USER=demo
+RUN addgroup -S $DOCKER_USER && adduser -S $DOCKER_USER -G $DOCKER_USER
+USER $DOCKER_USER
 ARG JAR_FILE
 ARG MIN_HEAP
 ARG MAX_HEAP
