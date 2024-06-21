@@ -9,6 +9,8 @@ import org.lxp.powermock.RealPowerMockService;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import static org.mockito.ArgumentMatchers.eq;
+
 
 /**
  * https://frontbackend.com/java/how-to-mock-static-methods-with-mockito
@@ -23,15 +25,16 @@ public class RealPowerMockServiceImplWithMockitoInlineTest {
 
     @Test
     public void testExecute() {
-        MatcherAssert.assertThat(realPowerMockService.execute("aa"), Matchers.is("Super Liaa"));
+        MatcherAssert.assertThat(realPowerMockService.execute("first", "last"), Matchers.is("Hello, first last!"));
         try (MockedStatic<PowerMockHelper> theMock = Mockito.mockStatic(PowerMockHelper.class)) {
-            theMock.when(PowerMockHelper::getName).thenReturn("bb");
+            theMock.when(() -> PowerMockHelper.getFullName("first", "last")).thenReturn("bb");
 
-            MatcherAssert.assertThat(PowerMockHelper.getName(), Matchers.is("bb"));
+            MatcherAssert.assertThat(PowerMockHelper.getFullName("first", "last"), Matchers.is("bb"));
 
-            MatcherAssert.assertThat(realPowerMockService.execute("aa"), Matchers.is("bbaa"));
+            MatcherAssert.assertThat(realPowerMockService.execute("first", "last"), Matchers.is("Hello, bb!"));
+            theMock.verify(() -> PowerMockHelper.getFullName(eq("first"), eq("last")), Mockito.times(2));
         }
-        MatcherAssert.assertThat(realPowerMockService.execute("aa"), Matchers.is("Super Liaa"));
+        MatcherAssert.assertThat(realPowerMockService.execute("first", "last"), Matchers.is("Hello, first last!"));
     }
 
 }

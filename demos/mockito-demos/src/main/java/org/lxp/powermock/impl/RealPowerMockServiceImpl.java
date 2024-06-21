@@ -6,8 +6,8 @@ import org.lxp.powermock.RealPowerMockService;
 public class RealPowerMockServiceImpl implements RealPowerMockService {
 
     @Override
-    public String execute(String name) {
-        return PowerMockHelper.getName() + name;
+    public String execute(String firstName, String lastName) {
+        return String.format("Hello, %s!", PowerMockHelper.getFullName(firstName, lastName));
     }
 
 }
