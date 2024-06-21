@@ -2,3 +2,4 @@
 - Verification demos of `org.hamcrest and.hamcrest` and `org.awaitility.Awaitility` libraries
 - Demos for wiremock
 - Demos for EasyRandom
+- Demos for `spring-boot-starter-test` + `OutputCaptureExtension.class`
