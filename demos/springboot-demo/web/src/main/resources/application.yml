@@ -1,6 +1,7 @@
 spring:
   application:
     name: web
+# database
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://127.0.0.1:3306/springboot-test?useUnicode=true&characterEncoding=utf-8
@@ -11,7 +12,22 @@ spring:
       pool-name: pool-web
       maximum-pool-size: 50
       minimum-idle: 10
-
+# email
+  mail:
+    host: smtp.126.com
+    username: ${mail.username}
+    password: ${mail.password}
+    port: 465
+    default-encoding: UTF-8
+    protocol: smtps
+    properties:
+      "mail.smtp.connectiontimeout": 5000
+      "mail.smtp.timeout": 3000
+      "mail.smtp.writetimeout": 5000
+      "mail.smtp.auth": true
+      "mail.smtp.starttls.enable": true
+      "mail.smtp.starttls.required": true
+# swagger
 springdoc:
   api-docs:
     path: /api-docs

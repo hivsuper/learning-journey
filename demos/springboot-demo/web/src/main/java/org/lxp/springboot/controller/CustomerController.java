@@ -51,4 +51,12 @@ public class CustomerController {
     public ResponseEntity<List<Customer>> list() {
         return ResponseEntity.ok(customerService.findAll());
     }
+
+    @Operation(
+            summary = "Send",
+            description = "Send notification")
+    @PostMapping(value = "/notify.json")
+    public ResponseEntity<Boolean> notify(@RequestParam String toAddress) {
+        return ResponseEntity.ok(customerService.notify(toAddress));
+    }
 }

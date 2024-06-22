@@ -27,6 +27,8 @@ public class CustomerService {
 
     private final CustomerMapper customerMapper;
 
+    private final EmailService emailService;
+
     @Recover
     public CompletableFuture<Integer> recover(Exception exception, String name, String email) {
         log.error(exception.getMessage(), exception);
@@ -68,5 +70,9 @@ public class CustomerService {
 
     public List<Customer> findAll() {
         return customerMapper.findAllCustomers();
+    }
+
+    public boolean notify(String toAddress) {
+        return emailService.send(toAddress, "Hello", "Hello <strong> World</strong>！");
     }
 }
