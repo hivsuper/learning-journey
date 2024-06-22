@@ -53,10 +53,10 @@ public class CustomerController {
     }
 
     @Operation(
-            summary = "Send",
+            summary = "Notify",
             description = "Send notification")
     @PostMapping(value = "/notify.json")
     public ResponseEntity<Boolean> notify(@RequestParam String toAddress) {
-        return ResponseEntity.ok(customerService.notify(toAddress));
+        return ResponseEntity.ok(customerService.sendEmail(toAddress));
     }
 }

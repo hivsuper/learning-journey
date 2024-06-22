@@ -1,6 +1,7 @@
 package org.lxp.springboot.controller;
 
 import org.junit.jupiter.api.Test;
+import org.lxp.springboot.BaseTest;
 import org.lxp.springboot.dto.Customer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -22,9 +24,9 @@ import java.util.stream.Collectors;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("IT")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CustomerControllerIT {
-    public static final MultiValueMap<String, String> CUSTOMER = new LinkedMultiValueMap<>();
+public class CustomerControllerIT extends BaseTest {
     @LocalServerPort
     private int port;
 
@@ -87,5 +89,14 @@ public class CustomerControllerIT {
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(customers.size()).isGreaterThan(0);
         assertThat(customers.stream().map(Customer::getId).collect(Collectors.toSet())).contains(-1);
+    }
+
+    @Test
+    public void testNotify() {
+        ResponseEntity<Boolean> response = restTemplate.exchange(
+                restTemplate.getRootUri() + "/notify.json?toAddress=1@1.com", HttpMethod.POST, null, new ParameterizedTypeReference<>() {
+                });
+        assertThat(response.getStatusCode().value()).isEqualTo(200);
+        assertThat(response.getBody()).isTrue();
     }
 }

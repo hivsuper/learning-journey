@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.retry.ExhaustedRetryException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 
 import javax.inject.Inject;
 import java.security.InvalidParameterException;
@@ -35,6 +34,8 @@ public class CustomerServiceTest {
     private final String EMAIL = "email";
     @MockBean
     private CustomerMapper customerMapper;
+    @MockBean
+    private EmailService emailService;
     @Inject
     private CustomerService customerService;
     @Captor
@@ -119,5 +120,12 @@ public class CustomerServiceTest {
         var exception = assertThrows(ExhaustedRetryException.class, () -> customerService.addCustomer(NAME, EMAIL), "Cannot locate recovery method");
         assertThat(exception.getCause().getClass()).isEqualTo(RuntimeException.class);
         verify(customerMapper, times(1)).add(captor.capture());
+    }
+
+    @Test
+    public void sendEmail() {
+        String emailAddress = "1@2.com";
+        customerService.sendEmail(emailAddress);
+        verify(emailService, times(1)).send(emailAddress, "Hello", "Hello <strong> World</strong>！");
     }
 }

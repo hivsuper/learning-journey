@@ -72,7 +72,7 @@ public class CustomerService {
         return customerMapper.findAllCustomers();
     }
 
-    public boolean notify(String toAddress) {
+    public boolean sendEmail(String toAddress) {
         return emailService.send(toAddress, "Hello", "Hello <strong> World</strong>！");
     }
 }

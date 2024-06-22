@@ -2,10 +2,12 @@ package org.lxp.springboot.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.lxp.springboot.BaseTest;
 import org.lxp.springboot.config.MemoryDBTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -20,10 +22,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
 @MemoryDBTest
-public class CustomerControllerTest {
+public class CustomerControllerTest extends BaseTest {
     @Inject
     private MockMvc mockMvc;
 
@@ -32,7 +35,9 @@ public class CustomerControllerTest {
             DELETE FROM customer WHERE email='555@555.com';
             """)
     public void testAdd() throws Exception {
-        ResultActions action = this.mockMvc.perform(post("/add.json").param("name", "555").param("email", "555@555.com"));
+        ResultActions action = this.mockMvc.perform(post("/add.json")
+                .param("name", "555")
+                .param("email", "555@555.com"));
         action.andExpect(status().isOk());
         action.andExpect(content().string(is("1")));
     }
@@ -65,5 +70,13 @@ public class CustomerControllerTest {
         action.andExpect(jsonPath("$.length()").value(is(3)));
         action.andExpect(jsonPath("$.[0].name").value(is("111")));
         action.andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")));
+    }
+
+    @Test
+    public void testNotify() throws Exception {
+        ResultActions action = this.mockMvc.perform(post("/notify.json")
+                .param("toAddress", "1@1.com")).andDo(print());
+        action.andExpect(status().isOk());
+        action.andExpect(content().string(Boolean.TRUE.toString()));
     }
 }

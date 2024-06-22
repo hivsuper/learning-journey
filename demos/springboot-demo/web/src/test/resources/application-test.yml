@@ -3,6 +3,17 @@ spring:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;MODE=MYSQL
 
+  mail:
+    username: user
+    password: admin
+    host: 127.0.0.1
+    port: 3025
+    protocol: smtp
+    properties:
+      "mail.smtp.auth": false
+      "mail.smtp.starttls.enable": false
+      "mail.smtp.starttls.required": false
+
   test:
     database:
       replace: NONE

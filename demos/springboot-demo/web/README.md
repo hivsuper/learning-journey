@@ -9,6 +9,7 @@ Test web application base on spring-boot.
 3. Transactional Rollback
 4. Swagger UI
 5. Lombok
+6. Send email via spring-boot-starter-mail
 	
 ## Environment 
 MySQL: 8.1.0  
