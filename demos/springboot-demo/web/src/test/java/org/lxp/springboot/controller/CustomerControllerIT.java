@@ -93,9 +93,12 @@ public class CustomerControllerIT extends BaseTest {
 
     @Test
     public void testNotify() {
-        ResponseEntity<Boolean> response = restTemplate.exchange(
-                restTemplate.getRootUri() + "/notify.json?toAddress=1@1.com", HttpMethod.POST, null, new ParameterizedTypeReference<>() {
-                });
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("toAddress", "1@1.com");
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        ResponseEntity<Boolean> response = restTemplate.postForEntity(
+                restTemplate.getRootUri() + "/notify.json", request, Boolean.class);
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(response.getBody()).isTrue();
     }
