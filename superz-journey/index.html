@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC&display=swap">
+<link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="img/favicons/favicon-16x16.png">
+<link rel="shortcut icon" href="img/favicons/favicon.ico">
+<meta name="apple-mobile-web-app-title" content="酥破的旅程">
+<meta name="application-name" content="酥破的旅程">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="img/favicons/browserconfig.xml">
+
+<title>酥破的旅程</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #e2e2e2;
+        background-image: url('img/background.jpg');
+        background-size: cover;
+        background-position: center;
+        font-family: Arial, sans-serif;
+        color: #e1b12c;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        font-family: 'Noto Serif SC', serif; /* 使用 Noto Serif SC 字体 */
+    }
+
+    header {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        text-align: center;
+        font-family: 'Noto Serif SC', serif; /* 使用 Noto Serif SC 字体 */
+    }
+
+    nav a {
+        color: #e1b12c;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+
+    main {
+        text-align: center;
+        padding: 20px;
+        flex: 1;
+    }
+
+    footer {
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 10px;
+        text-align: center;
+        font-family: 'Noto Serif SC', serif; /* 使用 Noto Serif SC 字体 */
+    }
+
+    footer a {
+        color: #e1b12c;
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        color: #e1b12c; /* 保持hover时颜色不变 */
+    }
+
+    footer a:visited {
+        color: #e1b12c; /* 保持访问过的链接颜色 */
+    }
+</style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#">首页</a>
+            <a href="https://hivsuper.github.io/about/">关于我</a>
+            <a href="https://github.com/hivsuper">更多信息</a>
+        </nav>
+    </header>
+    <main>
+        <h1>欢迎来到这里呀！</h1>
+        <p>但是这里可能什么都没有...</p>
+    </main>
+    <footer>
+        <span>&copy; <span id="footer-year"></span> 酥破的旅程 | <a href="#" id="beian-link">备案号：XXXXXX</a></span>
+    </footer>
+    <script>
+        const currentYear = new Date().getFullYear();
+        document.getElementById('footer-year').textContent = currentYear;
+    </script>
+</body>
+</html>
