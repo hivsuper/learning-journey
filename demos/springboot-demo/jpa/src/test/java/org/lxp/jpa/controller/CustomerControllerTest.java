@@ -46,6 +46,9 @@ public class CustomerControllerTest {
             INSERT INTO customer(id, name,email,created_date) VALUES(1, '111','111@yahoo.com', '2017-02-11');
             INSERT INTO customer(id, name,email,created_date) VALUES(2, '222','222@yahoo.com', '2017-02-12');
             INSERT INTO customer(id, name,email,created_date) VALUES(3, '333','333@yahoo.com', '2017-02-13');
+            
+            INSERT INTO customer_password (customer_id, password, created_date, modified_date) VALUES
+            (1, '11111a', '2024-06-28', '2024-06-30');
             """)
     public void testListByCustomerIds() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/listByCustomerIds.json")
@@ -55,6 +58,7 @@ public class CustomerControllerTest {
         action.andExpect(jsonPath("$.length()").value(is(1)));
         action.andExpect(jsonPath("$.[0].name").value(is("111")));
         action.andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")));
+        action.andExpect(jsonPath("$.[0].password.password").value(is("11111a")));
     }
 
     @Test
@@ -62,6 +66,16 @@ public class CustomerControllerTest {
             INSERT INTO customer(id, name,email,created_date) VALUES(1, '111','111@yahoo.com', '2017-02-11');
             INSERT INTO customer(id, name,email,created_date) VALUES(2, '222','222@yahoo.com', '2017-02-12');
             INSERT INTO customer(id, name,email,created_date) VALUES(3, '333','333@yahoo.com', '2017-02-13');
+            
+            INSERT INTO customer_password (customer_id, password, created_date, modified_date) VALUES
+            (1, '11111a', '2024-06-28', '2024-06-30'),
+            (2, '22222b', '2024-06-29', '2024-06-30'),
+            (3, '33333c', '2024-06-30', '2024-06-30');
+            
+            INSERT INTO customer_ops_log (customer_id, event, created_date) VALUES
+            (1, 'create password', '2024-06-28'),
+            (1, 'create password', '2024-06-29'),
+            (2, 'create password', '2024-06-30');
             """)
     public void testList() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/list.json")).andDo(print());
@@ -69,5 +83,7 @@ public class CustomerControllerTest {
         action.andExpect(jsonPath("$.length()").value(is(3)));
         action.andExpect(jsonPath("$.[0].name").value(is("111")));
         action.andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")));
+        action.andExpect(jsonPath("$.[0].password.password").value(is("11111a")));
+        action.andExpect(jsonPath("$.[0].opsLogs.[0].createdDate").value(is("2024-06-28")));
     }
 }

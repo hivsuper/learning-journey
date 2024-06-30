@@ -10,45 +10,31 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "customer")
-public class Customer {
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
+@Table(name = "customer_ops_log")
+public class OpsLog {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT
     private Integer id;
 
-    @Column
-    private String name;
-
-    @OneToOne
-    @PrimaryKeyJoinColumn // 本表的外键映射了另一个表的主键
-    private Password password;
+    @Column(name = "customer_id")
+    private Integer customerId;
 
     @Column
-    private String email;
+    private String event;
 
-    @JsonFormat(pattern = DATE_FORMAT)
+    @JsonFormat(pattern = Customer.DATE_FORMAT)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @Column(name = "created_date")
     private LocalDate createdDate;
-
-    @OneToMany
-    @JoinColumn(name = "customer_id") // 本表的外键映射了另一个表的非主键
-    private List<OpsLog> opsLogs;
 }
