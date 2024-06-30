@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: jpa
+# database
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/springboot-jpa?useUnicode=true&characterEncoding=utf-8
+    username: test-jpa
+    password: test-jpa
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: pool-jpa
+      maximum-pool-size: 50
+      minimum-idle: 10
+  # https://springdoc.cn/spring-boot-and-spring-data-jpa/
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    operationsSorter: method
+    path: /swagger-ui.html
+
+server:
+  contextPath: /jpa
+  port: 8083
+  connection-timeout: 30000
+  tomcat:
+    max-connections: 200
+    max-threads: 200
+    min-spare-threads: 100
+    uri-encoding: UTF-8
+
+# print SQL parameters
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: "TRACE"
