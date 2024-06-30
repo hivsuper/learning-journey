@@ -10,6 +10,7 @@ Test web application base on spring-boot.
 4. Swagger UI
 5. Lombok
 6. Send email via spring-boot-starter-mail
+7. Spring-retry + @Async
 	
 ## Environment 
 MySQL: 8.1.0  
