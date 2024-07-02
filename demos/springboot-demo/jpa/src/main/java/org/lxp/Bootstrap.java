@@ -1,4 +1,4 @@
-package org.lxp.jpa;
+package org.lxp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

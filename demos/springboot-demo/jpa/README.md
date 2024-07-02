@@ -9,6 +9,7 @@ Test JPA application base on spring-boot.
 3. Transactional Rollback
 4. Swagger UI
 5. Lombok
+6. Support WeChat mini program login and oauth
 	
 ## Environment 
 MySQL: 8.1.0  

@@ -47,3 +47,7 @@ logging:
         orm:
           jdbc:
             bind: "TRACE"
+
+wx:
+  appId: ${appId}
+  secret: ${secret}
