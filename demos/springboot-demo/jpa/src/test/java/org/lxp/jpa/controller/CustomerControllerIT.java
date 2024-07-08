@@ -13,8 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -33,17 +32,21 @@ public class CustomerControllerIT {
     private TestRestTemplate restTemplate;
 
     @Test
-    @Sql(statements = "TRUNCATE customer", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(statements = "TRUNCATE customer", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(statements = """
+            DELETE FROM customer_password WHERE customer_id IN(SELECT id FROM customer WHERE email='111@yahoo.com');
+            DELETE FROM customer WHERE email='111@yahoo.com';
+            """, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(statements = """
+            DELETE FROM customer_password WHERE customer_id IN(SELECT id FROM customer WHERE email='111@yahoo.com');
+            DELETE FROM customer WHERE email='111@yahoo.com';
+            """, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void add() {
-        MultiValueMap<String, String> customer = new LinkedMultiValueMap<>();
-        customer.add("name", "111");
-        customer.add("email", "111@yahoo.com");
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(customer, headers);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(restTemplate.getRootUri() + "/add.json")
+                .queryParam("name", "111")
+                .queryParam("password", "111P")
+                .queryParam("email", "111@yahoo.com");
 
-        ResponseEntity<Integer> response = restTemplate.postForEntity(restTemplate.getRootUri() + "/add.json", request, Integer.class);
+        ResponseEntity<Integer> response = restTemplate.postForEntity(builder.toUriString(), HttpEntity.EMPTY, Integer.class);
 
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(response.getBody()).isEqualTo(1);

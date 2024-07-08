@@ -23,8 +23,10 @@ public class CustomerController {
             summary = "Add an customer",
             description = "Return the added customer id.")
     @PostMapping(value = "/add.json")
-    public ResponseEntity<Integer> add(@RequestParam String name, @RequestParam String email) {
-        return ResponseEntity.ok(customerService.addCustomer(name, email));
+    public ResponseEntity<Integer> add(@RequestParam String name,
+                                       @RequestParam String email,
+                                       @RequestParam(required = false) String password) {
+        return ResponseEntity.ok(customerService.addCustomer(name, email, password));
     }
 
     @Operation(

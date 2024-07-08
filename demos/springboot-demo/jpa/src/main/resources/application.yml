@@ -46,7 +46,31 @@ logging:
       hibernate:
         orm:
           jdbc:
-            bind: "TRACE"
+            bind: TRACE
+      zalando:
+        logbook:
+          Logbook: TRACE
+
+# 设置日志输出格式为JSON
+logbook:
+  predicate:
+    exclude:
+      - path: /api-docs/**
+      - path: /swagger-ui/**
+      - path: /swagger-ui.html
+  format:
+    style: splunk
+  obfuscate:
+    headers:
+      - Authorization
+      - Cookie
+    parameters:
+      - password
+    json-body-fields:
+        - password
+  write:
+    level: TRACE
+    max-body-size: 1000
 
 wx:
   appId: ${appId}

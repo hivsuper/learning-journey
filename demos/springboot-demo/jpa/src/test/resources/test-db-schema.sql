@@ -12,7 +12,7 @@ CREATE TABLE `customer_password` (
 	`customer_id` INT(11) NOT NULL,
 	`password` VARCHAR(100) NOT NULL,
 	`created_date` DATE NOT NULL,
-	`modified_date` DATE NOT NULL,
+	`modified_date` DATE NULL,
 	PRIMARY KEY (`customer_id`)
 );;
 
