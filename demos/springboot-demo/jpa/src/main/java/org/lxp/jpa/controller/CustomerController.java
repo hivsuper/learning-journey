@@ -5,18 +5,24 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lxp.jpa.entity.Customer;
 import org.lxp.jpa.service.CustomerService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class CustomerController {
+    @Value("${spring.servlet.multipart.location}")
+    private String location;
     private final CustomerService customerService;
 
     @Operation(
@@ -43,5 +49,16 @@ public class CustomerController {
     @PostMapping(value = "/list.json")
     public ResponseEntity<List<Customer>> list() {
         return ResponseEntity.ok(customerService.findAll());
+    }
+
+    @PostMapping(path = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<String> uploadFile(@RequestParam MultipartFile file) {
+        try {
+            File destFile = new File(location + File.separator + file.getOriginalFilename()); // 指定保存的路径
+            file.transferTo(destFile);
+            return ResponseEntity.ok(destFile.getAbsolutePath());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

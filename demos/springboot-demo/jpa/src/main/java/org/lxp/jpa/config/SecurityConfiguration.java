@@ -18,7 +18,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authorize) -> authorize
                         // Allow access to Swagger
                         .requestMatchers(
-                                "/api-docs/**",
+                                "/api-docs",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()

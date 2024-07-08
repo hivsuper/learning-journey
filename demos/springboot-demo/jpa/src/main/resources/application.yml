@@ -21,6 +21,12 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: none
+  servlet:
+    multipart:
+      max-file-size: 1024KB
+      max-request-size: 1024KB
+      enabled: true
+      location: ${java.io.tmpdir}
 
 springdoc:
   api-docs:
@@ -49,9 +55,9 @@ logging:
             bind: TRACE
       zalando:
         logbook:
-          Logbook: TRACE
+          Logbook: TRACE # enable logbook log
 
-# 设置日志输出格式为JSON
+# logbook日志配置
 logbook:
   predicate:
     exclude:
