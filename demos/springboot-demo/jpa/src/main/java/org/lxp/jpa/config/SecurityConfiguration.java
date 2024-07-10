@@ -18,14 +18,15 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authorize) -> authorize
                         // Allow access to Swagger
                         .requestMatchers(
-                                "/api-docs",
+                                "/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/actuator/health"
                         ).permitAll()
-                        // Allow all other requests
                         .anyRequest().permitAll()
                 )
                 // Use basic authentication (user/pass)
+                // Find the password from log: "Using generated security password ***"
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }

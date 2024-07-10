@@ -64,11 +64,12 @@ logbook:
       - path: /api-docs/**
       - path: /swagger-ui/**
       - path: /swagger-ui.html
+      - path: /actuator/health
   format:
     style: splunk
   obfuscate:
     headers:
-      - Authorization
+#      - Authorization
       - Cookie
     parameters:
       - password
@@ -81,3 +82,12 @@ logbook:
 wx:
   appId: ${appId}
   secret: ${secret}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info:
+    git:
+      mode: full

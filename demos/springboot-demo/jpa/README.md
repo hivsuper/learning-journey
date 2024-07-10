@@ -10,6 +10,8 @@ Test JPA application base on spring-boot.
 4. Swagger UI
 5. Lombok
 6. Support WeChat mini program login and oauth
+7. logbook-spring-boot-starter
+8. spring-boot-starter-actuator
 	
 ## Environment 
 MySQL: 8.1.0  
