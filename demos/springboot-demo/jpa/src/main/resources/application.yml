@@ -27,6 +27,10 @@ spring:
       max-request-size: 1024KB
       enabled: true
       location: ${java.io.tmpdir}
+  security:
+    user:
+      name: test
+      password: test1234
 
 springdoc:
   api-docs:

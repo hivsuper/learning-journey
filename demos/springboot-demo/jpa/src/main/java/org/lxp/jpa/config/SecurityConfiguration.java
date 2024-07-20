@@ -23,6 +23,10 @@ public class SecurityConfiguration {
                                 "/swagger-ui.html",
                                 "/actuator/health"
                         ).permitAll()
+                        // eg. /actuator/info
+                        .requestMatchers(
+                                "/actuator/**"
+                        ).authenticated()
                         .anyRequest().permitAll()
                 )
                 // Use basic authentication (user/pass)
