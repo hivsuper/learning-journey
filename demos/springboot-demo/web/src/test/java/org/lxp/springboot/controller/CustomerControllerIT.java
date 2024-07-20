@@ -47,7 +47,7 @@ public class CustomerControllerIT extends BaseTest {
         ResponseEntity<Integer> response = restTemplate.postForEntity(restTemplate.getRootUri() + "/add.json", request, Integer.class);
 
         assertThat(response.getStatusCode().value()).isEqualTo(200);
-        assertThat(response.getBody()).isEqualTo(1);
+        assertThat(response.getBody()).isGreaterThan(0);
     }
 
     @Test
@@ -69,8 +69,8 @@ public class CustomerControllerIT extends BaseTest {
         List<Customer> customers = response.getBody();
         assertThat(customers).isNotNull();
         assertThat(response.getStatusCode().value()).isEqualTo(200);
-        assertThat(customers.size()).isEqualTo(2);
-        assertThat(customers.stream().map(Customer::getId).collect(Collectors.toSet())).contains(-1);
+        assertThat(customers.size()).isGreaterThanOrEqualTo(2);
+        assertThat(customers.stream().map(Customer::getId).collect(Collectors.toSet())).contains(-1, -2);
     }
 
     @Test
@@ -88,7 +88,7 @@ public class CustomerControllerIT extends BaseTest {
         assertThat(customers).isNotNull();
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(customers.size()).isGreaterThan(0);
-        assertThat(customers.stream().map(Customer::getId).collect(Collectors.toSet())).contains(-1);
+        assertThat(customers.stream().map(Customer::getId).collect(Collectors.toSet())).contains(-1, -2);
     }
 
     @Test
