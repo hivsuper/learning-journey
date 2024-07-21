@@ -12,6 +12,7 @@ Test JPA application base on spring-boot.
 6. Support WeChat mini program login and oauth
 7. logbook-spring-boot-starter
 8. spring-boot-starter-actuator
+9. Use redis via spring-boot-starter-data-redis and lettuce-core
 	
 ## Environment 
 MySQL: 8.1.0  
