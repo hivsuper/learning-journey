@@ -68,10 +68,11 @@ public class RealCaptorServiceImplTest {
     public void doThrowRuleInJupiterAssertions() {
         CaptorModel captorModel = new CaptorModel("propertyString", 1);
         Mockito.doAnswer(__ -> {
-            throw new ExecutionException(null);
+            throw new ExecutionException("s", new Throwable());
         }).when(captorService).execute(captorModel);
-        var exception = org.junit.jupiter.api.Assertions.assertThrows(ExecutionException.class, () -> realCaptorService.execute(captorModel), "s");
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(ExecutionException.class, () -> realCaptorService.execute(captorModel));
         Assertions.assertThat(exception.getClass()).isEqualTo(ExecutionException.class);
+        Assertions.assertThat(exception.getMessage()).isEqualTo("s");
     }
 
     @Test
