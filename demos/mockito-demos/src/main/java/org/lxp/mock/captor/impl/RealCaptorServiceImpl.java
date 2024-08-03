@@ -1,7 +1,6 @@
 package org.lxp.mock.captor.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
@@ -19,7 +18,7 @@ public class RealCaptorServiceImpl implements RealCaptorService {
 
     @Override
     public void batchExecute(String propertyString, int propertyInt) {
-        captorService.execute(Collections.singletonList(new CaptorModel(propertyString, propertyInt)));
+        captorService.execute(List.of(new CaptorModel(propertyString, propertyInt)));
     }
 
     @Override

@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -81,7 +80,7 @@ public class RealCaptorServiceImplTest {
         CaptorModel captorModel = new CaptorModel("propertyString", 1);
         Mockito.doAnswer(a -> {
             running.set(true);
-            return Collections.emptyList();
+            return List.of();
         }).when(captorService).execute(captorModel);
         realCaptorService.asyncExecute(captorModel);
         Awaitility.await().untilTrue(running);
@@ -94,7 +93,7 @@ public class RealCaptorServiceImplTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         Mockito.doAnswer(a -> {
             countDownLatch.countDown();
-            return Collections.emptyList();
+            return List.of();
         }).when(captorService).execute(captorModel);
         realCaptorService.asyncExecute(captorModel);
         Awaitility.await().until(() -> countDownLatch.getCount() == 0);
@@ -113,7 +112,7 @@ public class RealCaptorServiceImplTest {
     public void spy() {
         // 测试模拟
         RealCaptorService spy = Mockito.spy(new RealCaptorServiceImpl(captorService));
-        Mockito.doReturn(Collections.singletonList("1")).when(spy).execute(Mockito.eq(4));
+        Mockito.doReturn(List.of("1")).when(spy).execute(Mockito.eq(4));
         Assertions.assertThat(spy.execute(4)).containsExactly("1");
 
         // 测试真实调用
