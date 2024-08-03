@@ -13,8 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import javax.inject.Inject;
-import java.util.Arrays;
+import java.util.List;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -51,11 +52,13 @@ public class CustomerControllerTest extends BaseTest {
     public void testListByCustomerIds() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/listByCustomerIds.json")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new ObjectMapper().writeValueAsBytes(Arrays.asList(1)))).andDo(print());
+                .content(new ObjectMapper().writeValueAsBytes(List.of(1)))).andDo(print());
         action.andExpect(status().isOk());
         action.andExpect(jsonPath("$.length()").value(is(1)));
         action.andExpect(jsonPath("$.[0].name").value(is("111")));
         action.andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")));
+
+        action.andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')]").exists());
     }
 
     @Test
@@ -70,6 +73,12 @@ public class CustomerControllerTest extends BaseTest {
         action.andExpect(jsonPath("$.length()").value(is(3)));
         action.andExpect(jsonPath("$.[0].name").value(is("111")));
         action.andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")));
+
+        action.andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')]").exists())
+                .andExpect(jsonPath("$.[?(@.name == '222' && @.email == '222@yahoo.com')]").exists())
+                .andExpect(jsonPath("$.[?(@.name == '333' && @.email == '333@yahoo.com')]").exists());
+
+        action.andExpect(jsonPath("$.[*].id").value(containsInAnyOrder(1, 2, 3)));
     }
 
     @Test

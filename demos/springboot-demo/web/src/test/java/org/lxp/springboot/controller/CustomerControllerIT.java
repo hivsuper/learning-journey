@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("IT")
@@ -58,9 +57,9 @@ public class CustomerControllerIT extends BaseTest {
     @Sql(statements = "DELETE FROM customer WHERE id IN(-1, -2)", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void listByCustomerIds() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<List<Integer>> requestEntity = new HttpEntity<>(singletonList(-1), headers);
+        HttpEntity<List<Integer>> requestEntity = new HttpEntity<>(List.of(-1), headers);
 
         ResponseEntity<List<Customer>> response = restTemplate.exchange(
                 restTemplate.getRootUri() + "/list.json", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<>() {

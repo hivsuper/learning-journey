@@ -12,8 +12,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import javax.inject.Inject;
-import java.util.Arrays;
+import java.util.List;
 
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -48,19 +50,21 @@ public class CustomerControllerTest {
             INSERT INTO customer(id, name,email,created_date) VALUES(1, '111','111@yahoo.com', '2017-02-11');
             INSERT INTO customer(id, name,email,created_date) VALUES(2, '222','222@yahoo.com', '2017-02-12');
             INSERT INTO customer(id, name,email,created_date) VALUES(3, '333','333@yahoo.com', '2017-02-13');
-                        
+
             INSERT INTO customer_password (customer_id, password, created_date, modified_date) VALUES
             (1, '11111a', '2024-06-28', '2024-06-30');
             """)
     public void testListByCustomerIds() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/listByCustomerIds.json")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(new ObjectMapper().writeValueAsBytes(Arrays.asList(1)))).andDo(print());
+                .content(new ObjectMapper().writeValueAsBytes(List.of(1)))).andDo(print());
         action.andExpect(status().isOk());
         action.andExpect(jsonPath("$.length()").value(is(1)));
         action.andExpect(jsonPath("$.[0].name").value(is("111")));
         action.andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")));
         action.andExpect(jsonPath("$.[0].password.password").value(is("11111a")));
+
+        action.andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')]").exists());
     }
 
     @Test
@@ -68,12 +72,12 @@ public class CustomerControllerTest {
             INSERT INTO customer(id, name,email,created_date) VALUES(1, '111','111@yahoo.com', '2017-02-11');
             INSERT INTO customer(id, name,email,created_date) VALUES(2, '222','222@yahoo.com', '2017-02-12');
             INSERT INTO customer(id, name,email,created_date) VALUES(3, '333','333@yahoo.com', '2017-02-13');
-                        
+
             INSERT INTO customer_password (customer_id, password, created_date, modified_date) VALUES
             (1, '11111a', '2024-06-28', '2024-06-30'),
             (2, '22222b', '2024-06-29', '2024-06-30'),
             (3, '33333c', '2024-06-30', '2024-06-30');
-                        
+
             INSERT INTO customer_ops_log (customer_id, event, created_date) VALUES
             (1, 'create password', '2024-06-28'),
             (1, 'create password', '2024-06-29'),
@@ -87,5 +91,11 @@ public class CustomerControllerTest {
         action.andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")));
         action.andExpect(jsonPath("$.[0].password.password").value(is("11111a")));
         action.andExpect(jsonPath("$.[0].opsLogs.[0].createdDate").value(is("2024-06-28")));
+
+        action.andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')].opsLogs.length()").value(contains(2)))
+                .andExpect(jsonPath("$.[?(@.name == '222' && @.email == '222@yahoo.com')].opsLogs.length()").value(contains(1)))
+                .andExpect(jsonPath("$.[?(@.name == '333' && @.email == '333@yahoo.com')]").exists());
+
+        action.andExpect(jsonPath("$.[*].id").value(containsInAnyOrder(1, 2, 3)));
     }
 }
