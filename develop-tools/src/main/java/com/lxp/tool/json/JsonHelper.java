@@ -3,6 +3,7 @@ package com.lxp.tool.json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.experimental.UtilityClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import java.util.Optional;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 
+@UtilityClass
 public class JsonHelper {
     private static final Logger LOG = LoggerFactory.getLogger(JsonHelper.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

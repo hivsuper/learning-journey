@@ -1,5 +1,7 @@
 package com.lxp.tool.algorithm;
 
+import lombok.experimental.UtilityClass;
+
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -14,6 +16,7 @@ import javax.crypto.Cipher;
 /**
  * <a href="https://blog.csdn.net/qq_18870023/article/details/52596808">java加解密之RSA使用</a>
  */
+@UtilityClass
 public class RSAHelper {
     private static final String ALGORITHM = "RSA";
     private static final String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCEAM61WD8qUILgHpc0SPQ+qZ4pI99gg/heNNxnThbMDwKIZ9OmOCzUig63JU9SpLtubWs80dWvUfckYtMStSRLApxIq2wF+STcP6JQd86etWEfyKWFOeAg/xfCVlWvEFJGes8m4p1Xz0nilluzRF7Uugh6iT3GnjPkxbYUYG2frwIDAQAB";

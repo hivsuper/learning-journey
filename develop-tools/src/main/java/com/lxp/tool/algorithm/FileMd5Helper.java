@@ -1,11 +1,13 @@
 package com.lxp.tool.algorithm;
 
+import lombok.experimental.UtilityClass;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+@UtilityClass
 public class FileMd5Helper {
     public static String getMD5(String file) {
         String md5Hex;

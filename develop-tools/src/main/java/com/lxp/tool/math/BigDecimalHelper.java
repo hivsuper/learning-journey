@@ -1,14 +1,13 @@
 package com.lxp.tool.math;
 
+import lombok.experimental.UtilityClass;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+@UtilityClass
 public class BigDecimalHelper {
     private static final int DEF_DIV_SCALE = 10;
-
-    private BigDecimalHelper() {
-        throw new RuntimeException("BigDecimalHelper can't be initialized");
-    }
 
     public static double add(double value1, double value2) {
         BigDecimal b1 = BigDecimal.valueOf(value1);

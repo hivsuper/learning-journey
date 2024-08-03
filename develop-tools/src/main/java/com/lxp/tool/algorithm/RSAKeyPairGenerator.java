@@ -1,5 +1,6 @@
 package com.lxp.tool.algorithm;
 
+import lombok.experimental.UtilityClass;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.bcpg.CompressionAlgorithmTags;
 import org.bouncycastle.bcpg.HashAlgorithmTags;
@@ -39,6 +40,7 @@ import java.util.List;
 /**
  * <a href="https://github.com/bcgit/bc-java/blob/main/pg/src/main/java/org/bouncycastle/openpgp/examples/RSAKeyPairGenerator.java">RSAKeyPairGenerator.java</a>
  */
+@UtilityClass
 public class RSAKeyPairGenerator {
 
     private static final int SIG_HASH = HashAlgorithmTags.SHA512;

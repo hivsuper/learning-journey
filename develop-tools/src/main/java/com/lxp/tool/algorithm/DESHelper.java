@@ -1,17 +1,19 @@
 package com.lxp.tool.algorithm;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import lombok.experimental.UtilityClass;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * <a href="http://www.cnblogs.com/pengxl/p/3967040.html">...</a>
  */
+@UtilityClass
 public class DESHelper {
     private static final String DES = "DES";
     private static final String DES_CBC_PKCS5_PADDING = "DES/CBC/PKCS5Padding";
