@@ -55,10 +55,11 @@ public class CustomerService {
     }
 
     private Integer doAddCustomer(String name, String email) {
-        Customer customer = new Customer();
-        customer.setName(name);
-        customer.setEmail(email);
-        customer.setCreatedDate(Calendar.getInstance().getTime());
+        Customer customer = Customer.builder().name(name)
+                .email(email)
+                .name(name)
+                .createdDate(Calendar.getInstance().getTime())
+                .build();
         customerMapper.add(customer);
         log.info("add customer:{} successfully", customer.getId());
         return customer.getId();

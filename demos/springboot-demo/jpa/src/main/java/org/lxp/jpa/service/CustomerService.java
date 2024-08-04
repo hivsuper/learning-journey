@@ -21,21 +21,20 @@ public class CustomerService {
 
     @Transactional
     public Integer addCustomer(String name, String email, String password) {
-        Integer integer = doAddCustomer(name, email, password);
-        return integer;
+        return doAddCustomer(name, email, password);
     }
 
     private Integer doAddCustomer(String name, String email, String password) {
-        Customer customer = new Customer();
-        customer.setName(name);
-        customer.setEmail(email);
-        customer.setCreatedDate(LocalDate.now());
+        Customer customer = Customer.builder()
+                .name(name)
+                .email(email)
+                .createdDate(LocalDate.now())
+                .build();
         customerRepository.save(customer);
 
-        Password p = new Password();
-        p.setCustomerId(customer.getId());
-        p.setPassword(password);
-        p.setCreatedDate(LocalDate.now());
+        Password p = Password.builder()
+                .customerId(customer.getId())
+                .password(password).createdDate(LocalDate.now()).build();
         passwordRepository.save(p);
 
         log.info("add customer:{} successfully", customer.getId());
