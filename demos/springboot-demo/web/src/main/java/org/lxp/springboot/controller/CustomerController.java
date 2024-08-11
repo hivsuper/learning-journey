@@ -38,7 +38,7 @@ public class CustomerController {
 
     @Operation(
             summary = "Query Customers by Customer Ids",
-            description = "Return the account list by customer ids.")
+            description = "Return the customer list by customer ids.")
     @PostMapping(value = "/listByCustomerIds.json")
     public ResponseEntity<List<Customer>> list(@RequestBody List<Integer> customerIds) {
         return ResponseEntity.ok(customerService.findCustomerByIds(customerIds));
@@ -46,7 +46,7 @@ public class CustomerController {
 
     @Operation(
             summary = "Query All Customers",
-            description = "Return the account list.")
+            description = "Return the customer list.")
     @PostMapping(value = "/list.json")
     public ResponseEntity<List<Customer>> list() {
         return ResponseEntity.ok(customerService.findAll());
