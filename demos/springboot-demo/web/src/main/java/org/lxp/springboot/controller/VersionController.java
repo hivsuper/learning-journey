@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated(forRemoval = true, since = "spring-boot-starter-actuator")
 @Slf4j
 @Data
 @Configuration
