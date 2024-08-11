@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lxp.springboot.dao.CustomerMapper;
 import org.lxp.springboot.dto.Customer;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
@@ -16,6 +17,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
+
+import static org.lxp.springboot.config.CachingConfig.CUSTOMER_CACHE;
 
 @Slf4j
 @Service
@@ -67,6 +70,12 @@ public class CustomerService {
 
     public List<Customer> findCustomerByIds(List<Integer> customerIds) {
         return customerMapper.findByIds(customerIds);
+    }
+
+    @Cacheable(value = CUSTOMER_CACHE, key = "#customerId")
+    public Customer findCustomerById(Integer customerId) {
+        List<Customer> list = customerMapper.findByIds(List.of(customerId));
+        return list.isEmpty() ? null : list.get(0);
     }
 
     public List<Customer> findAll() {

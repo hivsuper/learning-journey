@@ -11,6 +11,7 @@ Test web application base on spring-boot.
 5. Lombok
 6. Send email via spring-boot-starter-mail
 7. Spring-retry + @Async
+8. spring-boot-starter-cache
 	
 ## Environment 
 MySQL: 8.1.0  

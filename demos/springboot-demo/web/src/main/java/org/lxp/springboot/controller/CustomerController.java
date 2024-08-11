@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.lxp.springboot.dto.Customer;
 import org.lxp.springboot.service.CustomerService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +43,14 @@ public class CustomerController {
     @PostMapping(value = "/listByCustomerIds.json")
     public ResponseEntity<List<Customer>> list(@RequestBody List<Integer> customerIds) {
         return ResponseEntity.ok(customerService.findCustomerByIds(customerIds));
+    }
+
+    @Operation(
+            summary = "Query Customers by Customer Id",
+            description = "Return the customer by customer id.")
+    @GetMapping(value = "/findCustomerById.json")
+    public ResponseEntity<Customer> findCustomerById(@RequestParam Integer customerId) {
+        return ResponseEntity.ok(customerService.findCustomerById(customerId));
     }
 
     @Operation(
