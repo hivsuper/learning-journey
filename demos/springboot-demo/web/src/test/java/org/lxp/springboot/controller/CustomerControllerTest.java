@@ -21,6 +21,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -76,7 +77,9 @@ public class CustomerControllerTest extends BaseTest {
             INSERT INTO customer(id, name,email,created_date) VALUES(3, '333','333@yahoo.com', '2017-02-13');
             """)
     public void testFindCustomerById() throws Exception {
-        assertNull(cacheManager.getCache(CachingConfig.CUSTOMER_CACHE).get(1));
+        final var cache = cacheManager.getCache(CachingConfig.CUSTOMER_CACHE);
+        assertNotNull(cache);
+        assertNull(cache.get(1));
 
         ResultActions action = this.mockMvc.perform(get("/findCustomerById.json")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -88,7 +91,10 @@ public class CustomerControllerTest extends BaseTest {
 
         action.andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')]").exists());
 
-        final var customer = (Customer) cacheManager.getCache(CachingConfig.CUSTOMER_CACHE).get(1).get();
+        final var result = cache.get(1);
+        assertNotNull(result);
+        final var customer = (Customer) result.get();
+        assertNotNull(customer);
         assertEquals(1, customer.getId());
         assertEquals("111", customer.getName());
         assertEquals("111@yahoo.com", customer.getEmail());
