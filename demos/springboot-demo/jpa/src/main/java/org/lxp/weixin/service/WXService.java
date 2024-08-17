@@ -5,15 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lxp.weixin.exception.WXException;
 import org.lxp.weixin.response.Jscode2sessionResponse;
-import org.lxp.weixin.response.UserInfoResponse;
-import org.lxp.weixin.util.AesCbcUtil;
 import org.lxp.weixin.util.JsonHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 @Slf4j
@@ -35,18 +32,12 @@ public class WXService {
                         "&secret=" + secret + "&js_code=" + jsCode + "&grant_type=authorization_code")
                 .retrieve()
                 .bodyToMono(String.class);
-        String sesseionId = jscode2sessionMono.block();
-        log.debug("sessionId={}", sesseionId);
-        Jscode2sessionResponse response = JsonHelper.toObject(Jscode2sessionResponse.class, sesseionId);
+        String sessionId = jscode2sessionMono.block();
+        log.debug("sessionId={}", sessionId);
+        Jscode2sessionResponse response = JsonHelper.toObject(Jscode2sessionResponse.class, sessionId);
         if (Objects.nonNull(response.getErrCode())) {
             throw new WXException(response.getErrCode(), response.getErrMsg());
         }
         return response;
-    }
-
-    public UserInfoResponse getUserInfo(String encryptedData, String iv, String jsCode) throws JsonProcessingException {
-        String userInfo = AesCbcUtil.decrypt(encryptedData, get(jsCode).getSessionKey(), iv, StandardCharsets.UTF_8.name());
-        log.info("decryptedData: {}", userInfo);
-        return JsonHelper.toObject(UserInfoResponse.class, userInfo);
     }
 }
