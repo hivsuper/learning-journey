@@ -99,10 +99,6 @@ logbook:
     level: TRACE
     max-body-size: 1000
 
-wx:
-  appId: ${appId}
-  secret: ${secret}
-
 management:
   endpoints:
     web:

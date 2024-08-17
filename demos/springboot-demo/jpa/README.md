@@ -9,11 +9,10 @@ Test JPA application base on spring-boot.
 3. Transactional Rollback
 4. Swagger UI
 5. Lombok
-6. Support WeChat mini program login and oauth
-7. logbook-spring-boot-starter
-8. spring-boot-starter-actuator
-9. Use redis via spring-boot-starter-data-redis and lettuce-core
-10. Integrate with easy-captcha for verification
+6. logbook-spring-boot-starter
+7. spring-boot-starter-actuator
+8. Use redis via spring-boot-starter-data-redis and lettuce-core
+9. Integrate with easy-captcha for verification
 	
 ## Environment 
 MySQL: 8.1.0  
