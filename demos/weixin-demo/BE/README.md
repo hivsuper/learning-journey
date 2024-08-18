@@ -34,3 +34,10 @@ mvn clean package
 | web         | http://127.0.0.1:8084/swagger-ui/index.html |
 
 Switch environment by activating profile `-Dspring.profiles.active=local`
+
+- The actuator endpoints
+
+| Endpoint Name | Endpoint Address                      |
+|---------------|---------------------------------------|
+| Health Check  | http://127.0.0.1:8084/actuator/health |
+| Info          | http://127.0.0.1:8084/actuator/info   |

@@ -17,7 +17,7 @@ springdoc:
     path: /swagger-ui.html
 
 server:
-  contextPath: /jpa
+  contextPath: /wx-service
   port: 8084
   connection-timeout: 30000
   tomcat:
