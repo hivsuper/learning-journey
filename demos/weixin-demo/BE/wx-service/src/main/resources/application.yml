@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: wx-service
+  security:
+    user:
+      name: test
+      password: test1234
+  info:
+    git:
+      location: classpath:git.properties
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    operationsSorter: method
+    path: /swagger-ui.html
+
+server:
+  contextPath: /jpa
+  port: 8084
+  connection-timeout: 30000
+  tomcat:
+    max-connections: 200
+    max-threads: 200
+    min-spare-threads: 100
+    uri-encoding: UTF-8
+
+# print SQL parameters
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: TRACE
+      zalando:
+        logbook:
+          Logbook: TRACE # enable logbook log
+
+# logbook日志配置
+logbook:
+  predicate:
+    exclude:
+      - path: /api-docs/**
+      - path: /swagger-ui/**
+      - path: /swagger-ui.html
+      - path: /actuator/health
+  format:
+    style: splunk
+  obfuscate:
+    headers:
+#      - Authorization
+      - Cookie
+    parameters:
+      - password
+    json-body-fields:
+        - password
+  write:
+    level: TRACE
+    max-body-size: 1000
+
+wx:
+  appId: ${appId}
+  secret: ${secret}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info:
+    git:
+      mode: full
