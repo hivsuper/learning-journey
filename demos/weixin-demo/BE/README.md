@@ -10,6 +10,8 @@ Backend app for weixin service.
 4. Support WeChat mini program login and oauth
 5. logbook-spring-boot-starter
 6. spring-boot-starter-actuator
+7. Database Migrations with Flyway 
+8. spring-boot-starter-data-jpa and @EnableJpaAuditing
 	
 ## Environment 
 MySQL: 8.1.0  
@@ -18,6 +20,8 @@ JAVA: openjdk version "21.0.2" 2024-01-16
 ## Install and verify this project
 - Use maven commands
 ```shell
+## DB migrate
+Run DBMigration in wx-migration
 ## Create git.properties
 git-commit-id:revision
 ## Run Unit Tests

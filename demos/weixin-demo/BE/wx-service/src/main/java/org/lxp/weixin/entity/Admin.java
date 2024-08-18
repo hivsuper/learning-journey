@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,10 +18,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -28,6 +31,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "admins")
+@EntityListeners(AuditingEntityListener.class)
 public class Admin {
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     @Id
@@ -43,6 +47,7 @@ public class Admin {
 
     @OneToOne
     @PrimaryKeyJoinColumn
+    @CreatedBy
     private Admin createdBy;
 
     @JsonFormat(pattern = DATE_FORMAT)
@@ -50,12 +55,12 @@ public class Admin {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column(name = "created_at")
     @CreatedDate
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @JsonFormat(pattern = DATE_FORMAT)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column(name = "modified_at")
     @LastModifiedDate
-    private LocalDate modifiedAt;
+    private LocalDateTime modifiedAt;
 }
