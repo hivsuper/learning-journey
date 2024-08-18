@@ -6,7 +6,11 @@ import lombok.Getter;
 public class WXException extends RuntimeException {
     private Integer errorCode;
 
-    public WXException(Integer errorCode, String message) {
+    public WXException(ErrorCodeEnum errorCode) {
+        this(errorCode.code, errorCode.message);
+    }
+
+    private WXException(Integer errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }

@@ -30,6 +30,7 @@
         <zalando.version>3.9.0</zalando.version>
         <springdoc-openapi.version>2.5.0</springdoc-openapi.version>
         <commons-compress.version>1.26.2</commons-compress.version>
+        <flyway.version>10.17.1</flyway.version>
     </properties>
     
     <dependencyManagement>

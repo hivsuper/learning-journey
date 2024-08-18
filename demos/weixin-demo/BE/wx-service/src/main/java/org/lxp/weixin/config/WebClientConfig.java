@@ -24,7 +24,7 @@ public class WebClientConfig {
 
     @Bean
     public WebClient webClient() {
-        ConnectionProvider provider = ConnectionProvider
+        final var provider = ConnectionProvider
                 .builder("wx-client")
                 // 等待超时时间
                 .pendingAcquireTimeout(Duration.ofSeconds(10))
@@ -35,7 +35,7 @@ public class WebClientConfig {
                 // 最大等待连接数量
                 .pendingAcquireMaxCount(-1)
                 .build();
-        HttpClient httpClient = HttpClient.create(provider)
+        final var httpClient = HttpClient.create(provider)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 6000)
                 .option(ChannelOption.SO_KEEPALIVE, true)
                 .responseTimeout(Duration.ofSeconds(6))

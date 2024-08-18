@@ -17,8 +17,4 @@ public class Jscode2sessionResponse {
     private String openId;
     @JsonProperty("errcode")
     private Integer errCode;
-
-    public SessionResponse transform() {
-        return new SessionResponse(sessionKey, unionId, openId);
-    }
 }

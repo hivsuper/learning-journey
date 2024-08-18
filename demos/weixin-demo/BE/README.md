@@ -4,7 +4,7 @@
 2. Install `Lombok` plugin and [set](https://www.baeldung.com/lombok-ide)
 ## Test Scope
 Backend app for weixin service.  
-1. SpringBoot
+1. SpringBoot & spring-boot-dependencies
 2. Swagger UI
 3. Lombok
 4. Support WeChat mini program login and oauth

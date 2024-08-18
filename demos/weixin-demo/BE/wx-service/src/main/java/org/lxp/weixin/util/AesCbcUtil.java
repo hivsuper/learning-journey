@@ -19,18 +19,18 @@ public class AesCbcUtil {
 
     public static String decrypt(String data, String key, String iv, String encodingFormat) {
         //被加密的数据
-        byte[] dataByte = Base64.decode(data);
+        final var dataByte = Base64.decode(data);
         //加密秘钥
-        byte[] keyByte = Base64.decode(key);
+        final var keyByte = Base64.decode(key);
         //偏移量
-        byte[] ivByte = Base64.decode(iv);
+        final var ivByte = Base64.decode(iv);
         try {
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
-            SecretKeySpec spec = new SecretKeySpec(keyByte, "AES");
-            AlgorithmParameters parameters = AlgorithmParameters.getInstance("AES");
+            final var cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+            final var spec = new SecretKeySpec(keyByte, "AES");
+            final var parameters = AlgorithmParameters.getInstance("AES");
             parameters.init(new IvParameterSpec(ivByte));
             cipher.init(Cipher.DECRYPT_MODE, spec, parameters);// 初始化
-            byte[] resultByte = cipher.doFinal(dataByte);
+            final var resultByte = cipher.doFinal(dataByte);
             if (Objects.nonNull(resultByte) && resultByte.length > 0) {
                 return new String(resultByte, encodingFormat);
             }
