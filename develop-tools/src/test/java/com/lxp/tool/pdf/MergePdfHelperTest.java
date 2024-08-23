@@ -1,9 +1,8 @@
 package com.lxp.tool.pdf;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.InputStream;
@@ -13,25 +12,28 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class MergePdfHelperTest {
     private final String packageName = "com/lxp/tool/pdf/";
     private final String destinationFile = "result.pdf";
     private String absolutePath;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         URL url = MergePdfHelperTest.class.getClassLoader().getResource(packageName);
-        Assert.assertNotNull(url);
+        assertNotNull(url);
         File file = new File(url.getFile());
         absolutePath = file.getAbsolutePath() + File.separator;
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         File file = new File(absolutePath + destinationFile);
         System.out.println(file.getAbsolutePath());
         if (file.exists()) {
-            Assert.assertTrue(file.delete());
+            assertTrue(file.delete());
         }
     }
 

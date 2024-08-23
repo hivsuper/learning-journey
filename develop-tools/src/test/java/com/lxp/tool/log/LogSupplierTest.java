@@ -1,11 +1,10 @@
 package com.lxp.tool.log;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -18,15 +17,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(MockitoExtension.class)
 public class LogSupplierTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogSupplierTest.class);
     private ExecutorService executorService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         executorService = Executors.newFixedThreadPool(2);
     }
@@ -46,9 +46,9 @@ public class LogSupplierTest {
         Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logSupplier).setLogContext();
         Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logSupplier).clearLogContext();
 
-        List<CompletableFuture<String>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.supplyAsync(logSupplier, executorService)).collect(Collectors.toList());
+        List<CompletableFuture<String>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.supplyAsync(logSupplier, executorService)).toList();
         futures.forEach(CompletableFuture::join);
-        Assert.assertEquals("[setLogContext, clearLogContext]", set.toString());
+        assertEquals("[setLogContext, clearLogContext]", set.toString());
     }
 
 }

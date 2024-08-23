@@ -4,10 +4,9 @@ import org.bouncycastle.bcpg.ArmoredInputStream;
 import org.bouncycastle.openpgp.PGPPrivateKey;
 import org.bouncycastle.openpgp.PGPPublicKey;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -17,30 +16,34 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OpenPGPHelperTest {
     private String publicKeyFile;
     private String privateKeyFile;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         final String packageName = "com/lxp/tool/algorithm/";
         URL url = OpenPGPHelperTest.class.getClassLoader().getResource(packageName);
-        Assert.assertNotNull(url);
+        assertNotNull(url);
         File file = new File(url.getFile());
         final String absolutePath = file.getAbsolutePath() + File.separator;
         publicKeyFile = absolutePath + "public_key.asc";
         privateKeyFile = absolutePath + "private_key.asc";
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
-        Arrays.asList(publicKeyFile, privateKeyFile).forEach(key -> {
+        List.of(publicKeyFile, privateKeyFile).forEach(key -> {
             File file = new File(key);
             System.out.println(file.getAbsolutePath());
             if (file.exists()) {
-                Assert.assertTrue(file.delete());
+                assertTrue(file.delete());
             }
         });
     }
@@ -62,7 +65,7 @@ public class OpenPGPHelperTest {
 
             OpenPGPHelper.getInstance().encryptAndSign(resultOutputStream, inputStream, publicKey, privateKey, identify);
             response = Base64.toBase64String(resultOutputStream.toByteArray());
-            Assert.assertNotNull(response);
+            assertNotNull(response);
         }
 
         try (InputStream inputStream = new ByteArrayInputStream(Base64.decode(response));
@@ -70,7 +73,7 @@ public class OpenPGPHelperTest {
              InputStream privateKeyIn = new ArmoredInputStream(new FileInputStream(privateKeyFile));
              BufferedInputStream publicKeyIn = new BufferedInputStream(new FileInputStream(publicKeyFile))) {
             OpenPGPHelper.getInstance().decryptAndVerify(inputStream, resultOutputStream, publicKeyIn, privateKeyIn, password);
-            Assert.assertEquals(payload, resultOutputStream.toString());
+            assertEquals(payload, resultOutputStream.toString());
         }
     }
 }

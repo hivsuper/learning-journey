@@ -1,12 +1,12 @@
 package com.lxp.tool.crawler;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.matching.RegexPattern;
 import com.github.tomakehurst.wiremock.matching.UrlPattern;
 import org.apache.http.HttpStatus;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,6 +18,7 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
@@ -25,7 +26,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JEP321HttpClientHelperTest {
     public static final String TEXT_PLAIN_CHARSET_UTF_8 = "text/plain;charset=UTF-8";
@@ -33,14 +34,20 @@ public class JEP321HttpClientHelperTest {
     public static final String RESULT = "hahaha";
     private final String crawlerUrl = "http://127.0.0.1:8080/crawler-test";
     private final int maxTotalConnection = 10;
-    @Rule
-    public WireMockRule forecastIoService = new WireMockRule(8080);
+    private final WireMockServer wireMockServer = new WireMockServer();
 
-    @Before
+    @BeforeEach
     public void setUp() {
+        wireMockServer.start();
+        configureFor("127.0.0.1", 8080);
         stubFor(get(new UrlPattern(new RegexPattern("/crawler-test(.*)"), true))
                 .withHeader(CONTENT_TYPE, containing(TEXT_PLAIN_CHARSET_UTF_8))
                 .willReturn(ok(RESULT).withFixedDelay(10).withStatus(HttpStatus.SC_OK)));
+    }
+
+    @AfterEach
+    public void tearDown() {
+        wireMockServer.stop();
     }
 
     @Test
@@ -92,7 +99,6 @@ public class JEP321HttpClientHelperTest {
                 .uri(URI.create("http://10.255.255.1")).GET().build();
         HttpClient httpClient = helper.getHttpClientWithTimeout(1);
         HttpConnectTimeoutException thrown = assertThrows(
-                "Expected send() to throw HttpConnectTimeoutException, but it didn't",
                 HttpConnectTimeoutException.class,
                 () -> httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString()));
         assertThat(thrown.getMessage()).contains("timed out");
