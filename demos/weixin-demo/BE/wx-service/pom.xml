@@ -82,7 +82,7 @@
         
         <dependency>
             <groupId>org.lxp</groupId>
-            <artifactId>wx-migration-changelog</artifactId>
+            <artifactId>wx-dbm-changelog</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

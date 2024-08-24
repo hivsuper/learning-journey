@@ -9,8 +9,8 @@
     <name>weixin</name>
     <description>Demo project for Spring Boot weixin</description>
     <modules>
-        <module>wx-migration</module>
-        <module>wx-migration-changelog</module>
+        <module>wx-dbm</module>
+        <module>wx-dbm-changelog</module>
         <module>wx-service</module>
     </modules>
     <properties>

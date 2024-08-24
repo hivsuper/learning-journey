@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>wx-migration</artifactId>
+    <artifactId>wx-dbm</artifactId>
 
     <dependencies>
         <dependency>
@@ -32,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>org.lxp</groupId>
-            <artifactId>wx-migration-changelog</artifactId>
+            <artifactId>wx-dbm-changelog</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

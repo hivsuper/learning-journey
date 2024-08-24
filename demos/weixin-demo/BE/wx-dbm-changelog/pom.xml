@@ -9,6 +9,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     
-    <artifactId>wx-migration-changelog</artifactId>
+    <artifactId>wx-dbm-changelog</artifactId>
 
 </project>
