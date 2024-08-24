@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  db:
+    image: mysql
+    container_name: wx-db
+    environment:
+      - MYSQL_DATABASE=springboot-wx
+      - MYSQL_ROOT_PASSWORD=test-wx
+      - MYSQL_USER=test-wx
+      - MYSQL_PASSWORD=test-wx
+    volumes:
+      - ./db_data:/var/lib/mysql
+      - ./db_init/:/docker-entrypoint-initdb.d/
+    ports:
+      - "3307:3306"

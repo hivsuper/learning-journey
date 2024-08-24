@@ -12,6 +12,7 @@ Backend app for weixin service.
 6. spring-boot-starter-actuator
 7. Database Migrations with Flyway 
 8. spring-boot-starter-data-jpa and @EnableJpaAuditing
+9. spring-boot-docker-compose
 	
 ## Environment 
 MySQL: 8.1.0  
