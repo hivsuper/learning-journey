@@ -1,21 +1,24 @@
 package com.lxp.tool.math;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BigDecimalHelperTest {
     private final double num_1 = 1.05;
     private final double num_2 = 0.5;
 
-    @Test
-    public void testAdd() {
-        assertThat(BigDecimalHelper.add(num_1, num_2)).isEqualTo(1.55);
+    @ParameterizedTest
+    @MethodSource("provideDoublesForAdd")
+    public void testAdd(double num_1, double num_2, double expected) {
+        assertThat(BigDecimalHelper.add(num_1, num_2)).isEqualTo(expected);
     }
 
     @Test
@@ -44,28 +47,48 @@ public class BigDecimalHelperTest {
                 .isInstanceOf(IllegalAccessException.class).hasMessage("scale can't be less than 0");
     }
 
-    @Test
-    public void equals() {
-        assertFalse(BigDecimalHelper.equals(BigDecimal.valueOf(110, 2), new BigDecimal(1.1)));
-        assertTrue(BigDecimalHelper.equals(BigDecimal.valueOf(110, 2), new BigDecimal("1.10")));
-        assertTrue(BigDecimalHelper.equals(BigDecimal.valueOf(1.10), new BigDecimal("1.1")));
+    @ParameterizedTest
+    @MethodSource("provideDoublesForEquals")
+    public void equals(BigDecimal num_1, BigDecimal num_2, boolean expected) {
+        assertThat(BigDecimalHelper.equals(num_1, num_2)).isEqualTo(expected);
     }
 
-    @Test
-    public void compare() {
-        // Greater Than
-        assertThat(BigDecimalHelper.compare(BigDecimal.valueOf(111, 2), BigDecimal.valueOf(1.1))).isGreaterThan(0);
-        assertThat(BigDecimalHelper.compare(BigDecimal.valueOf(111, 2), new BigDecimal("1.10"))).isGreaterThan(0);
-        assertThat(BigDecimalHelper.compare(BigDecimal.valueOf(1.11), new BigDecimal("1.1"))).isGreaterThan(0);
+    @ParameterizedTest
+    @MethodSource("provideDoublesForCompare")
+    public void compare(BigDecimal num_1, BigDecimal num_2, int expected) {
+        assertThat(BigDecimalHelper.compare(num_1, num_2)).isEqualTo(expected);
+    }
 
-        // Equals
-        assertThat(BigDecimalHelper.compare(BigDecimal.valueOf(110, 2), BigDecimal.valueOf(1.1))).isEqualTo(0);
-        assertThat(BigDecimalHelper.compare(BigDecimal.valueOf(110, 2), new BigDecimal("1.10"))).isEqualTo(0);
-        assertThat(BigDecimalHelper.compare(BigDecimal.valueOf(1.10), new BigDecimal("1.1"))).isEqualTo(0);
+    private static Stream<Arguments> provideDoublesForAdd() {
+        return Stream.of(
+                Arguments.of(1.05, 0.5, 1.55),
+                Arguments.of(-1.5, 0.5, -1),
+                Arguments.of(-0.5, 0.5, 0)
+        );
+    }
 
-        // Less Than
-        assertThat(BigDecimalHelper.compare(BigDecimal.valueOf(109, 2), BigDecimal.valueOf(1.1))).isLessThan(0);
-        assertThat(BigDecimalHelper.compare(BigDecimal.valueOf(109, 2), new BigDecimal("1.10"))).isLessThan(0);
-        assertThat(BigDecimalHelper.compare(BigDecimal.valueOf(1.09), new BigDecimal("1.1"))).isLessThan(0);
+    private static Stream<Arguments> provideDoublesForEquals() {
+        return Stream.of(
+                Arguments.of(BigDecimal.valueOf(110, 2), new BigDecimal(1.1), false),
+                Arguments.of(BigDecimal.valueOf(110, 2), new BigDecimal("1.10"), true),
+                Arguments.of(BigDecimal.valueOf(1.10), new BigDecimal("1.1"), true)
+        );
+    }
+
+    private static Stream<Arguments> provideDoublesForCompare() {
+        return Stream.of(
+                // Greater Than
+                Arguments.of(BigDecimal.valueOf(111, 2), BigDecimal.valueOf(1.1), 1),
+                Arguments.of(BigDecimal.valueOf(111, 2), new BigDecimal("1.10"), 1),
+                Arguments.of(BigDecimal.valueOf(1.11), new BigDecimal("1.1"), 1),
+                // Equals
+                Arguments.of(BigDecimal.valueOf(110, 2), BigDecimal.valueOf(1.1), 0),
+                Arguments.of(BigDecimal.valueOf(110, 2), new BigDecimal("1.10"), 0),
+                Arguments.of(BigDecimal.valueOf(1.10), new BigDecimal("1.1"), 0),
+                // Less Than
+                Arguments.of(BigDecimal.valueOf(109, 2), BigDecimal.valueOf(1.1), -1),
+                Arguments.of(BigDecimal.valueOf(109, 2), new BigDecimal("1.10"), -1),
+                Arguments.of(BigDecimal.valueOf(1.09), new BigDecimal("1.1"), -1)
+        );
     }
 }
