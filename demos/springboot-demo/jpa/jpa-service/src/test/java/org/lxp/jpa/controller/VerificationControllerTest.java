@@ -6,12 +6,11 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.lxp.jpa.config.RedisContainerInitializer;
+import org.lxp.jpa.BaseTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -24,9 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-@ContextConfiguration(initializers = RedisContainerInitializer.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class VerificationControllerTest {
+class VerificationControllerTest extends BaseTest {
     @Inject
     private MockMvc mockMvc;
     private static String key;

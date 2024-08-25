@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = CustomerService.class)
-public class CustomerServiceTest {
+class CustomerServiceTest {
     private final String NAME = "name";
     private final String EMAIL = "email";
     private final String PASSWORD = "password";
@@ -40,7 +40,7 @@ public class CustomerServiceTest {
     private ArgumentCaptor<Password> passwordCaptor;
 
     @Test
-    public void addCustomer() {
+    void addCustomer() {
         MDC.put("key", "addCustomer");
         customerService.addCustomer(NAME, EMAIL, PASSWORD);
 
@@ -52,7 +52,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void addCustomerWhenThrowInvalidParameterException() {
+    void addCustomerWhenThrowInvalidParameterException() {
         doAnswer((invocation) -> {
             throw new InvalidParameterException("test");
         }).when(customerRepository).save(any(Customer.class));

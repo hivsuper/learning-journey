@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("IT")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CustomerControllerIT {
+class CustomerControllerIT {
     @LocalServerPort
     private int port;
 

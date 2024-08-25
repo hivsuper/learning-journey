@@ -1,12 +1,16 @@
-package org.lxp.jpa.config;
+package org.lxp.jpa;
 
 import org.junit.jupiter.api.AfterEach;
+import org.lxp.jpa.config.MySQLContainerInitializer;
+import org.lxp.jpa.config.RedisContainerInitializer;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ContextConfiguration;
 
 import javax.inject.Inject;
 
 import static org.lxp.jpa.config.MySQLContainerInitializer.DB_NAME;
 
+@ContextConfiguration(initializers = {MySQLContainerInitializer.class, RedisContainerInitializer.class})
 public class BaseTest {
     @Inject
     private JdbcTemplate jdbcTemplate;

@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ExceptionControllerTest {
+class ExceptionControllerTest {
     @Inject
     private MockMvc mockMvc;
 

@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-@ContextConfiguration(initializers = RedisContainerInitializer.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class RedisControllerTest {
     @Inject
