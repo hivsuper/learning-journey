@@ -79,12 +79,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        
-        <dependency>
-            <groupId>org.lxp</groupId>
-            <artifactId>wx-dbm-changelog</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
     
     <build>
