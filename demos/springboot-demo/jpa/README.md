@@ -20,7 +20,7 @@ JAVA: openjdk version "21.0.2" 2024-01-16
 
 ## Install and verify this project
 - Run `docker-compose.yml`
-- Run `DBMigration` in `wx-dbm` module
+- Run `DBMigration` in `jpa-dbm` module
 - Use maven commands
 ```shell
 ## Create git.properties
