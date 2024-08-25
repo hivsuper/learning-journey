@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  db:
+    image: mysql
+    container_name: jpa-db
+    environment:
+      - MYSQL_DATABASE=springboot-jpa
+      - MYSQL_ROOT_PASSWORD=test-jpa
+      - MYSQL_USER=test-jpa
+      - MYSQL_PASSWORD=test-jpa
+    volumes:
+      - ./db_data:/var/lib/mysql
+    ports:
+      - "3308:3306"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "16379:6379"
+
+volumes:
+  db_data:

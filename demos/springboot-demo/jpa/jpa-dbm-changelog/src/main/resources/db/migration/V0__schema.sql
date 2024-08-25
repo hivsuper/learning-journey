@@ -1,12 +1,3 @@
--- 创建数据库
-CREATE DATABASE IF NOT EXISTS `springboot-jpa`;
-USE `springboot-jpa`;
-
--- 创建用户并授予权限
-CREATE USER IF NOT EXISTS 'test-jpa'@'%' IDENTIFIED BY 'test-jpa';
-GRANT ALL PRIVILEGES ON `springboot-jpa`.* TO 'test-jpa'@'%';
-FLUSH PRIVILEGES;
-
 -- 创建新表
 DROP TABLE IF EXISTS customer;
 CREATE TABLE `customer` (

@@ -2,7 +2,9 @@ package org.lxp.jpa.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.lxp.jpa.response.RtnResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,8 +18,9 @@ import java.io.IOException;
 public class ExceptionController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public void handleError(Exception exception, HttpServletResponse response) throws IOException {
+    public ResponseEntity<RtnResponse> handleError(Exception exception, HttpServletResponse response) throws IOException {
         log.error(exception.getMessage(), exception);
-        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        final var rtn = new RtnResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
+        return ResponseEntity.internalServerError().body(rtn);
     }
 }
