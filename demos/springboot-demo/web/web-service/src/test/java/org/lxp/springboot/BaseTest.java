@@ -5,12 +5,15 @@ import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.lxp.springboot.config.MySQLContainerInitializer;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ContextConfiguration;
 
 import javax.inject.Inject;
 
 import static org.lxp.springboot.config.MySQLContainerInitializer.DB_NAME;
 
+@ContextConfiguration(initializers = MySQLContainerInitializer.class)
 public class BaseTest {
     @Inject
     private JdbcTemplate jdbcTemplate;
