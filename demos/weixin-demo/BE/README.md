@@ -23,8 +23,6 @@ JAVA: openjdk version "21.0.2" 2024-01-16
 - Run `DBMigration` in `wx-dbm` module
 - Use maven commands
 ```shell
-## DB migrate
-Run DBMigration in wx-migration
 ## Create git.properties
 git-commit-id:revision
 ## Run Unit Tests
