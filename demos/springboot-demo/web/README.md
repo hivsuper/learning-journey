@@ -18,6 +18,8 @@ MySQL: 8.1.0
 JAVA: openjdk version "21.0.2" 2024-01-16  
 
 ## Install and verify this project
+- Run `docker-compose.yml`
+- Run `DBMigration` in `web-dbm` module
 - Use maven commands
 ```shell
 ## Create git.properties

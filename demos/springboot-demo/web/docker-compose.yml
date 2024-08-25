@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  db:
+    image: mysql
+    container_name: web-db
+    environment:
+      - MYSQL_DATABASE=springboot-test
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+    volumes:
+      - ./db_data:/var/lib/mysql
+      - ./db_init/:/docker-entrypoint-initdb.d/
+    ports:
+      - "3309:3306"
