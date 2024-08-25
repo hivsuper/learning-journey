@@ -20,7 +20,7 @@ public class ExceptionControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testHandleError() throws Exception {
+    void testHandleError() throws Exception {
         this.mockMvc.perform(post("/WERUIOPIUYGRFDGFHGKJLKJHGTYI")).andExpect(status().isNotFound());
         this.mockMvc.perform(get("/WERUIOPIUYGRFDGFHGKJLKJHGTYI")).andExpect(status().isNotFound());
     }

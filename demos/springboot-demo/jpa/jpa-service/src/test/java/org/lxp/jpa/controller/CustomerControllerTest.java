@@ -2,11 +2,13 @@ package org.lxp.jpa.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.lxp.jpa.config.MemoryDBTest;
+import org.lxp.jpa.config.BaseTest;
+import org.lxp.jpa.config.MySQLContainerInitializer;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -26,17 +28,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-@MemoryDBTest
-public class CustomerControllerTest {
+@ContextConfiguration(initializers = MySQLContainerInitializer.class)
+public class CustomerControllerTest extends BaseTest {
     @Inject
     private MockMvc mockMvc;
 
     @Test
     @Sql(statements = """
-            DELETE FROM customer_password WHERE customer_id IN(SELECT id FROM customer WHERE email='555@555.com');
-            DELETE FROM customer WHERE email='555@555.com';
+            TRUNCATE TABLE customer_password;
+            TRUNCATE TABLE customer;
             """)
-    public void testAdd() throws Exception {
+    void testAdd() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/add.json")
                 .param("name", "555")
                 .param("password", "555P")
@@ -54,7 +56,7 @@ public class CustomerControllerTest {
             INSERT INTO customer_password (customer_id, password, created_date, modified_date) VALUES
             (1, '11111a', '2024-06-28', '2024-06-30');
             """)
-    public void testListByCustomerIds() throws Exception {
+    void testListByCustomerIds() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/listByCustomerIds.json")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new ObjectMapper().writeValueAsBytes(List.of(1)))).andDo(print());
@@ -82,8 +84,8 @@ public class CustomerControllerTest {
             (1, 'create password', '2024-06-28'),
             (1, 'create password', '2024-06-29'),
             (2, 'create password', '2024-06-30');
-            """)
-    public void testList() throws Exception {
+            """, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void testList() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/list.json")).andDo(print());
         action.andExpect(status().isOk());
         action.andExpect(jsonPath("$.length()").value(is(3)));

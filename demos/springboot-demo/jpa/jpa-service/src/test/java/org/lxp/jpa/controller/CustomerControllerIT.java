@@ -39,7 +39,7 @@ public class CustomerControllerIT {
             DELETE FROM customer_password WHERE customer_id IN(SELECT id FROM customer WHERE email='111@yahoo.com');
             DELETE FROM customer WHERE email='111@yahoo.com';
             """, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void add() {
+    void add() {
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(restTemplate.getRootUri() + "/add.json")
                 .queryParam("name", "111")
                 .queryParam("password", "111P")
@@ -57,7 +57,7 @@ public class CustomerControllerIT {
             INSERT INTO customer(id, name,email,created_date) VALUES(-2, '222','222@yahoo.com', '2017-02-22');
             """, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(statements = "DELETE FROM customer WHERE id IN(-1, -2)", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void listByCustomerIds() {
+    void listByCustomerIds() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -80,7 +80,7 @@ public class CustomerControllerIT {
             INSERT INTO customer(id, name,email,created_date) VALUES(-2, '222','222@yahoo.com', '2017-02-22');
             """, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(statements = "DELETE FROM customer WHERE id IN(-1, -2)", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void testList() {
+    void testList() {
         ResponseEntity<List<Customer>> response = restTemplate.exchange(
                 restTemplate.getRootUri() + "/list.json", HttpMethod.POST, null, new ParameterizedTypeReference<>() {
                 });

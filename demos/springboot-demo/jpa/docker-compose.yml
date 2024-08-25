@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   db:
-    image: mysql
+    image: mysql:8.1
     container_name: jpa-db
     environment:
       - MYSQL_DATABASE=springboot-jpa
