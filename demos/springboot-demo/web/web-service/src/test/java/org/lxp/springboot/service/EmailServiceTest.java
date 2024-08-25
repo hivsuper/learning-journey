@@ -25,7 +25,7 @@ class EmailServiceTest extends BaseTest {
     private EmailService emailService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         URL url = EmailServiceTest.class.getClassLoader().getResource("");
         Assert.assertNotNull(url);
         File file = new File(url.getFile());

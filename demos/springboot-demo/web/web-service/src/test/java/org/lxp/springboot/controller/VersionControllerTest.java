@@ -19,12 +19,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource("classpath:git-test.properties")
-public class VersionControllerTest {
+class VersionControllerTest {
     @Inject
     private MockMvc mockMvc;
 
     @Test
-    public void version() throws Exception {
+    void version() throws Exception {
         ResultActions action = this.mockMvc.perform(get("/version"));
         action.andExpect(status().isOk());
         action.andExpect(jsonPath("$.abbrev").value(is("76ed7e7")));

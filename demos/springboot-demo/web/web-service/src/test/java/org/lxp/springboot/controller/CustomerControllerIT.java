@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("IT")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CustomerControllerIT extends BaseTest {
+class CustomerControllerIT extends BaseTest {
     @LocalServerPort
     private int port;
 
@@ -35,7 +35,7 @@ public class CustomerControllerIT extends BaseTest {
     @Test
     @Sql(statements = "TRUNCATE customer", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(statements = "TRUNCATE customer", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void add() {
+    void add() {
         MultiValueMap<String, String> customer = new LinkedMultiValueMap<>();
         customer.add("name", "111");
         customer.add("email", "111@yahoo.com");
@@ -55,7 +55,7 @@ public class CustomerControllerIT extends BaseTest {
             INSERT INTO customer(id, name,email,created_date) VALUES(-2, '222','222@yahoo.com', '2017-02-22');
             """, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(statements = "DELETE FROM customer WHERE id IN(-1, -2)", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void listByCustomerIds() {
+    void listByCustomerIds() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -78,7 +78,7 @@ public class CustomerControllerIT extends BaseTest {
             INSERT INTO customer(id, name,email,created_date) VALUES(-2, '222','222@yahoo.com', '2017-02-22');
             """, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(statements = "DELETE FROM customer WHERE id IN(-1, -2)", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void testList() {
+    void testList() {
         ResponseEntity<List<Customer>> response = restTemplate.exchange(
                 restTemplate.getRootUri() + "/list.json", HttpMethod.POST, null, new ParameterizedTypeReference<>() {
                 });
@@ -91,7 +91,7 @@ public class CustomerControllerIT extends BaseTest {
     }
 
     @Test
-    public void testNotify() {
+    void testNotify() {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("toAddress", "1@1.com");
         HttpHeaders headers = new HttpHeaders();

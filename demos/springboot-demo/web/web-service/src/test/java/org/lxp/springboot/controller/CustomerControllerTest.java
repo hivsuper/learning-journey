@@ -4,13 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.lxp.springboot.BaseTest;
 import org.lxp.springboot.config.CachingConfig;
-import org.lxp.springboot.config.MemoryDBTest;
+import org.lxp.springboot.config.MySQLContainerInitializer;
 import org.lxp.springboot.dto.Customer;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -33,8 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-@MemoryDBTest
-public class CustomerControllerTest extends BaseTest {
+@ContextConfiguration(initializers = MySQLContainerInitializer.class)
+class CustomerControllerTest extends BaseTest {
     @Inject
     private MockMvc mockMvc;
     @Inject
@@ -42,9 +43,9 @@ public class CustomerControllerTest extends BaseTest {
 
     @Test
     @Sql(statements = """
-            DELETE FROM customer WHERE email='555@555.com';
+            TRUNCATE TABLE customer;
             """)
-    public void testAdd() throws Exception {
+    void testAdd() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/add.json")
                 .param("name", "555")
                 .param("email", "555@555.com"));
@@ -58,7 +59,7 @@ public class CustomerControllerTest extends BaseTest {
             INSERT INTO customer(id, name,email,created_date) VALUES(2, '222','222@yahoo.com', '2017-02-12');
             INSERT INTO customer(id, name,email,created_date) VALUES(3, '333','333@yahoo.com', '2017-02-13');
             """)
-    public void testListByCustomerIds() throws Exception {
+    void testListByCustomerIds() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/listByCustomerIds.json")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new ObjectMapper().writeValueAsBytes(List.of(1)))).andDo(print());
@@ -76,7 +77,7 @@ public class CustomerControllerTest extends BaseTest {
             INSERT INTO customer(id, name,email,created_date) VALUES(2, '222','222@yahoo.com', '2017-02-12');
             INSERT INTO customer(id, name,email,created_date) VALUES(3, '333','333@yahoo.com', '2017-02-13');
             """)
-    public void testFindCustomerById() throws Exception {
+    void testFindCustomerById() throws Exception {
         final var cache = cacheManager.getCache(CachingConfig.CUSTOMER_CACHE);
         assertNotNull(cache);
         assertNull(cache.get(1));
@@ -106,7 +107,7 @@ public class CustomerControllerTest extends BaseTest {
             INSERT INTO customer(id, name,email,created_date) VALUES(2, '222','222@yahoo.com', '2017-02-12');
             INSERT INTO customer(id, name,email,created_date) VALUES(3, '333','333@yahoo.com', '2017-02-13');
             """)
-    public void testList() throws Exception {
+    void testList() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/list.json")).andDo(print());
         action.andExpect(status().isOk());
         action.andExpect(jsonPath("$.length()").value(is(3)));
@@ -121,7 +122,7 @@ public class CustomerControllerTest extends BaseTest {
     }
 
     @Test
-    public void testNotify() throws Exception {
+    void testNotify() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/notify.json")
                 .param("toAddress", "1@1.com")).andDo(print());
         action.andExpect(status().isOk());

@@ -18,9 +18,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class AsyncConfigTest {
+class AsyncConfigTest {
     @Test
-    public void getAsyncExecutor() {
+    void getAsyncExecutor() {
         final String key = "key";
         final String value = "value";
         AsyncConfig asyncConfig = new AsyncConfig();
@@ -42,7 +42,7 @@ public class AsyncConfigTest {
     }
 
     @Test
-    public void getAsyncUncaughtExceptionHandler() {
+    void getAsyncUncaughtExceptionHandler() {
         assertThat(new AsyncConfig().getAsyncUncaughtExceptionHandler()).isInstanceOf(CustomAsyncExceptionHandler.class);
     }
 }

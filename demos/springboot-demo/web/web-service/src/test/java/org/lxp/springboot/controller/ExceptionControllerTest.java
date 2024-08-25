@@ -15,12 +15,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ExceptionControllerTest {
+class ExceptionControllerTest {
     @Inject
     private MockMvc mockMvc;
 
     @Test
-    public void testHandleError() throws Exception {
+    void testHandleError() throws Exception {
         this.mockMvc.perform(post("/WERUIOPIUYGRFDGFHGKJLKJHGTYI")).andExpect(status().isNotFound());
         this.mockMvc.perform(get("/WERUIOPIUYGRFDGFHGKJLKJHGTYI")).andExpect(status().isNotFound());
     }

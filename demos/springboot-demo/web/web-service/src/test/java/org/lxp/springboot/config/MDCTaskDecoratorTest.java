@@ -15,25 +15,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 @ExtendWith(MockitoExtension.class)
-public class MDCTaskDecoratorTest {
+class MDCTaskDecoratorTest {
     private static final String MAIN = "main";
     private static final String SUB = "sub";
     private static final String VALUE = "value";
     private CountDownLatch countDownLatch;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         countDownLatch = new CountDownLatch(1);
         MDC.clear();
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         MDC.clear();
     }
 
     @Test
-    public void decorateWhenMainThreadHasContext() {
+    void decorateWhenMainThreadHasContext() {
         MDC.put(MAIN, VALUE);
 
         threadPoolTaskExecutor().execute(getRunnable());
@@ -44,7 +44,7 @@ public class MDCTaskDecoratorTest {
     }
 
     @Test
-    public void decorateWhenMainThreadHasNoContext() {
+    void decorateWhenMainThreadHasNoContext() {
         threadPoolTaskExecutor().execute(getRunnable());
         await().until(() -> countDownLatch.getCount() == 0);
 

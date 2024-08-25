@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 @ActiveProfiles("test")
 @SpringBootTest(classes = CustomerService.class)
 @ContextConfiguration(classes = AsyncConfig.class)
-public class CustomerServiceTest {
+class CustomerServiceTest {
     private final String NAME = "name";
     private final String EMAIL = "email";
     @MockBean
@@ -42,12 +42,12 @@ public class CustomerServiceTest {
     private ArgumentCaptor<Customer> captor;
 
     @Test
-    public void recover() throws ExecutionException, InterruptedException {
+    void recover() throws ExecutionException, InterruptedException {
         assertThat(customerService.recover(new RuntimeException(), NAME, EMAIL).get()).isEqualTo(1);
     }
 
     @Test
-    public void addCustomerAsync() {
+    void addCustomerAsync() {
         MDC.put("key", "addCustomerAsync");
         Future<Integer> future = customerService.addCustomerAsync(NAME, EMAIL);
         await().until(future::isDone);
@@ -58,7 +58,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void addCustomerAsyncWhenThrowInvalidParameterException() throws ExecutionException, InterruptedException {
+    void addCustomerAsyncWhenThrowInvalidParameterException() throws ExecutionException, InterruptedException {
         doAnswer((invocation) -> {
             throw new InvalidParameterException("test");
         }).when(customerMapper).add(any(Customer.class));
@@ -73,7 +73,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void addCustomerAsyncWhenThrowRuntimeException() throws ExecutionException, InterruptedException {
+    void addCustomerAsyncWhenThrowRuntimeException() throws ExecutionException, InterruptedException {
         doAnswer((invocation) -> {
             throw new RuntimeException("test");
         }).when(customerMapper).add(any(Customer.class));
@@ -88,7 +88,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void addCustomer() {
+    void addCustomer() {
         MDC.put("key", "addCustomer");
         customerService.addCustomer(NAME, EMAIL);
 
@@ -98,7 +98,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void addCustomerWhenThrowInvalidParameterException() {
+    void addCustomerWhenThrowInvalidParameterException() {
         doAnswer((invocation) -> {
             throw new InvalidParameterException("test");
         }).when(customerMapper).add(any(Customer.class));
@@ -112,7 +112,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void addCustomerWhenThrowRuntimeException() {
+    void addCustomerWhenThrowRuntimeException() {
         doAnswer((invocation) -> {
             throw new RuntimeException("test");
         }).when(customerMapper).add(any(Customer.class));
@@ -123,7 +123,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void sendEmail() {
+    void sendEmail() {
         String emailAddress = "1@2.com";
         customerService.sendEmail(emailAddress);
         verify(emailService, times(1)).send(emailAddress, "Hello", "Hello <strong> World</strong>！");
