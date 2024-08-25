@@ -17,3 +17,4 @@ target/
 *.tfstate
 *.tfstate.backup
 */node_modules/
+db_data/
