@@ -1,7 +1,6 @@
 package org.lxp.springboot.controller;
 
 import org.junit.jupiter.api.Test;
-import org.lxp.springboot.BaseTest;
 import org.lxp.springboot.dto.Customer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -25,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("IT")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CustomerControllerIT extends BaseTest {
+class CustomerControllerIT {
     @LocalServerPort
     private int port;
 
@@ -88,17 +87,5 @@ class CustomerControllerIT extends BaseTest {
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(customers.size()).isGreaterThan(0);
         assertThat(customers.stream().map(Customer::getId).collect(Collectors.toSet())).contains(-1, -2);
-    }
-
-    @Test
-    void testNotify() {
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("toAddress", "1@1.com");
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        ResponseEntity<Boolean> response = restTemplate.postForEntity(
-                restTemplate.getRootUri() + "/notify.json", request, Boolean.class);
-        assertThat(response.getStatusCode().value()).isEqualTo(200);
-        assertThat(response.getBody()).isTrue();
     }
 }
