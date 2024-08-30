@@ -1,5 +1,6 @@
 package org.lxp.jpa.config;
 
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.testcontainers.containers.GenericContainer;
@@ -19,7 +20,9 @@ public class RedisContainerInitializer implements ApplicationContextInitializer<
 
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
-        System.setProperty("spring.data.redis.host", redisContainer.getHost());
-        System.setProperty("spring.data.redis.port", String.valueOf(redisContainer.getMappedPort(6379)));
+        TestPropertyValues.of(
+                "spring.data.redis.host=" + redisContainer.getHost(),
+                "spring.data.redis.port=" + redisContainer.getMappedPort(6379)
+        ).applyTo(applicationContext);
     }
 }
