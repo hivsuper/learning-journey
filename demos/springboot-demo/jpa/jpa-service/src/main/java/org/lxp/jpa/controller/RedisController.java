@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.CompletableFuture;
+
 @RestController
 @RequestMapping("/redis")
 @RequiredArgsConstructor
@@ -16,18 +18,18 @@ public class RedisController {
     private final StringRedisTemplate stringRedisTemplate;
 
     @PostMapping("/add")
-    public ResponseEntity<Void> set(String key, String value) {
+    public CompletableFuture<ResponseEntity<Void>> set(String key, String value) {
         stringRedisTemplate.opsForValue().set(key, value);
-        return ResponseEntity.ok().build();
+        return CompletableFuture.completedFuture(ResponseEntity.ok().build());
     }
 
     @GetMapping("/get")
-    public ResponseEntity<String> get(String key) {
-        return ResponseEntity.ok(stringRedisTemplate.opsForValue().get(key));
+    public CompletableFuture<ResponseEntity<String>> get(String key) {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(stringRedisTemplate.opsForValue().get(key)));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Boolean> delete(String key) {
-        return ResponseEntity.ok(stringRedisTemplate.delete(key));
+    public CompletableFuture<ResponseEntity<Boolean>> delete(String key) {
+        return CompletableFuture.completedFuture(ResponseEntity.ok(stringRedisTemplate.delete(key)));
     }
 }
