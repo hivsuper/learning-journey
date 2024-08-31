@@ -17,6 +17,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -31,10 +32,6 @@ class CustomerControllerTest extends BaseTest {
     private MockMvc mockMvc;
 
     @Test
-    @Sql(statements = """
-            TRUNCATE TABLE customer_password;
-            TRUNCATE TABLE customer;
-            """)
     void testAdd() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/add.json")
                 .param("name", "555")
@@ -64,6 +61,30 @@ class CustomerControllerTest extends BaseTest {
         action.andExpect(jsonPath("$.[0].password.password").value(is("11111a")));
 
         action.andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')]").exists());
+    }
+
+    @Test
+    @Sql(statements = """
+            INSERT INTO customer(id, name,email,created_date) VALUES(1, '111','111@yahoo.com', '2017-02-11');
+            INSERT INTO customer(id, name,email,created_date) VALUES(2, '222','222@yahoo.com', '2017-02-12');
+            INSERT INTO customer(id, name,email,created_date) VALUES(3, '333','333@yahoo.com', '2017-02-13');
+
+            INSERT INTO customer_password (customer_id, password, created_date, modified_date) VALUES
+            (2, '22222a', '2024-06-28', '2024-06-30');
+            """)
+    void testListByPage() throws Exception {
+        ResultActions action = this.mockMvc.perform(get("/listByPage.json")
+                .param("pageNumber", "1")
+                .param("pageSize", "1")).andDo(print());
+        action.andExpect(status().isOk());
+        action.andExpect(jsonPath("$.totalElements").value(is(3)));
+        action.andExpect(jsonPath("$.totalPages").value(is(3)));
+        action.andExpect(jsonPath("$.content.length()").value(is(1)));
+        action.andExpect(jsonPath("$.content.[0].name").value(is("222")));
+        action.andExpect(jsonPath("$.content.[0].email").value(is("222@yahoo.com")));
+        action.andExpect(jsonPath("$.content.[0].password.password").value(is("22222a")));
+
+        action.andExpect(jsonPath("$.content.[?(@.name == '222' && @.email == '222@yahoo.com')]").exists());
     }
 
     @Test

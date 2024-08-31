@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.lxp.jpa.entity.Customer;
 import org.lxp.jpa.service.CustomerService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,15 +38,23 @@ public class CustomerController {
     }
 
     @Operation(
-            summary = "Query Customers by Customer Ids",
+            summary = "Query customers by Customer Ids",
             description = "Return the customer list by customer ids.")
     @PostMapping(value = "/listByCustomerIds.json")
-    public ResponseEntity<List<Customer>> list(@RequestBody List<Integer> customerIds) {
+    public ResponseEntity<List<Customer>> listByCustomerIds(@RequestBody List<Integer> customerIds) {
         return ResponseEntity.ok(customerService.findCustomerByIds(customerIds));
     }
 
     @Operation(
-            summary = "Query All Customers",
+            summary = "Query Customer page",
+            description = "Return the customer page.")
+    @GetMapping(value = "/listByPage.json")
+    public ResponseEntity<Page<Customer>> listByPage(@RequestParam int pageNumber, @RequestParam int pageSize) {
+        return ResponseEntity.ok(customerService.findAll(pageNumber, pageSize));
+    }
+
+    @Operation(
+            summary = "Query all customers",
             description = "Return the customer list.")
     @PostMapping(value = "/list.json")
     public ResponseEntity<List<Customer>> list() {

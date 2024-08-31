@@ -6,6 +6,8 @@ import org.lxp.jpa.entity.Customer;
 import org.lxp.jpa.entity.Password;
 import org.lxp.jpa.repository.CustomerRepository;
 import org.lxp.jpa.repository.PasswordRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,10 @@ public class CustomerService {
 
     public List<Customer> findCustomerByIds(List<Integer> customerIds) {
         return customerRepository.findAllById(customerIds);
+    }
+
+    public Page<Customer> findAll(final int pageNumber, final int pageSize) {
+        return customerRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
 
     public List<Customer> findAll() {

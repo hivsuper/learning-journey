@@ -39,9 +39,6 @@ class CustomerControllerTest extends BaseTest {
     private CacheManager cacheManager;
 
     @Test
-    @Sql(statements = """
-            TRUNCATE TABLE customer;
-            """)
     void testAdd() throws Exception {
         ResultActions action = this.mockMvc.perform(post("/add.json")
                 .param("name", "555")
