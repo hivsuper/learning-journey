@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 import javax.inject.Inject;
 
@@ -33,7 +32,7 @@ class VerificationControllerTest extends BaseTest {
     @Test
     @Order(1)
     void generate() throws Exception {
-        ResultActions action = this.mockMvc.perform(post("/verification/generate")
+        final var action = this.mockMvc.perform(post("/verification/generate")
                 .param("key", "aaaa")
                 .param("value", "1111"));
         action.andExpect(status().isOk());
@@ -44,11 +43,11 @@ class VerificationControllerTest extends BaseTest {
     @Test
     @Order(2)
     void verify() throws Exception {
-        ResultActions action = this.mockMvc.perform(post("/verification/verify")
+        final var action = this.mockMvc.perform(post("/verification/verify")
                 .param("verifyCodeKey", key)
                 .param("verifyCode", "bbbb"));
-        action.andExpect(status().is5xxServerError());
-        action.andExpect(jsonPath("$.code").value(HttpStatus.INTERNAL_SERVER_ERROR.value()));
-        action.andExpect(jsonPath("$.data").value("Verification code unmatched"));
+        action.andExpect(status().is5xxServerError())
+                .andExpect(jsonPath("$.code").value(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+                .andExpect(jsonPath("$.data").value("Verification code unmatched"));
     }
 }

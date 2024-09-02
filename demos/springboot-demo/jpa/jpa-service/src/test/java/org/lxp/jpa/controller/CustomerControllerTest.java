@@ -2,6 +2,9 @@ package org.lxp.jpa.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.lxp.jpa.BaseTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -33,12 +35,31 @@ class CustomerControllerTest extends BaseTest {
 
     @Test
     void testAdd() throws Exception {
-        ResultActions action = this.mockMvc.perform(post("/add.json")
+        final var action = this.mockMvc.perform(post("/add.json")
                 .param("name", "555")
                 .param("password", "555P")
                 .param("email", "555@555.com"));
-        action.andExpect(status().isOk());
-        action.andExpect(content().string(is("1")));
+        action.andExpect(status().isOk())
+                .andExpect(content().string(is("1")));
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+            "null, 555P, 555@555.com, Required parameter 'name' is not present.",
+            "'', 555P, 555@555.com, Validation failure",
+            "'  ', 555P, 555@555.com, Validation failure",
+            "555, null, 555@555.com, Required parameter 'email' is not present.",
+            "555, '', 555@555.com, Validation failure",
+            "555, '  ', 555@555.com, Validation failure",
+            "555, 555P, null, Validation failure"
+    }, nullValues = "null")
+    void testAddWithNullOrEmptyParameters(String name, String email, String password, String expectedMessage) throws Exception {
+        final var action = this.mockMvc.perform(post("/add.json")
+                .param("name", name)
+                .param("password", password)
+                .param("email", email));
+        action.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.detail").value(is(expectedMessage)));
     }
 
     @Test
@@ -51,16 +72,26 @@ class CustomerControllerTest extends BaseTest {
             (1, '11111a', '2024-06-28', '2024-06-30');
             """)
     void testListByCustomerIds() throws Exception {
-        ResultActions action = this.mockMvc.perform(post("/listByCustomerIds.json")
+        final var action = this.mockMvc.perform(post("/listByCustomerIds.json")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(new ObjectMapper().writeValueAsBytes(List.of(1)))).andDo(print());
-        action.andExpect(status().isOk());
-        action.andExpect(jsonPath("$.length()").value(is(1)));
-        action.andExpect(jsonPath("$.[0].name").value(is("111")));
-        action.andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")));
-        action.andExpect(jsonPath("$.[0].password.password").value(is("11111a")));
+        action.andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(is(1)))
+                .andExpect(jsonPath("$.[0].name").value(is("111")))
+                .andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")))
+                .andExpect(jsonPath("$.[0].password.password").value(is("11111a")))
 
-        action.andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')]").exists());
+                .andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')]").exists());
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    void testListByCustomerIdsWithNullOrEmptyIds(List<Integer> customerIds) throws Exception {
+        final var action = this.mockMvc.perform(post("/listByCustomerIds.json")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(new ObjectMapper().writeValueAsBytes(customerIds))).andDo(print());
+        action.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.title").value("Bad Request"));
     }
 
     @Test
@@ -73,18 +104,18 @@ class CustomerControllerTest extends BaseTest {
             (2, '22222a', '2024-06-28', '2024-06-30');
             """)
     void testListByPage() throws Exception {
-        ResultActions action = this.mockMvc.perform(get("/listByPage.json")
+        final var action = this.mockMvc.perform(get("/listByPage.json")
                 .param("pageNumber", "1")
                 .param("pageSize", "1")).andDo(print());
-        action.andExpect(status().isOk());
-        action.andExpect(jsonPath("$.totalElements").value(is(3)));
-        action.andExpect(jsonPath("$.totalPages").value(is(3)));
-        action.andExpect(jsonPath("$.content.length()").value(is(1)));
-        action.andExpect(jsonPath("$.content.[0].name").value(is("222")));
-        action.andExpect(jsonPath("$.content.[0].email").value(is("222@yahoo.com")));
-        action.andExpect(jsonPath("$.content.[0].password.password").value(is("22222a")));
+        action.andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements").value(is(3)))
+                .andExpect(jsonPath("$.totalPages").value(is(3)))
+                .andExpect(jsonPath("$.content.length()").value(is(1)))
+                .andExpect(jsonPath("$.content.[0].name").value(is("222")))
+                .andExpect(jsonPath("$.content.[0].email").value(is("222@yahoo.com")))
+                .andExpect(jsonPath("$.content.[0].password.password").value(is("22222a")))
 
-        action.andExpect(jsonPath("$.content.[?(@.name == '222' && @.email == '222@yahoo.com')]").exists());
+                .andExpect(jsonPath("$.content.[?(@.name == '222' && @.email == '222@yahoo.com')]").exists());
     }
 
     @Test
@@ -104,18 +135,18 @@ class CustomerControllerTest extends BaseTest {
             (2, 'create password', '2024-06-30');
             """, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void testList() throws Exception {
-        ResultActions action = this.mockMvc.perform(post("/list.json")).andDo(print());
-        action.andExpect(status().isOk());
-        action.andExpect(jsonPath("$.length()").value(is(3)));
-        action.andExpect(jsonPath("$.[0].name").value(is("111")));
-        action.andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")));
-        action.andExpect(jsonPath("$.[0].password.password").value(is("11111a")));
-        action.andExpect(jsonPath("$.[0].opsLogs.[0].createdDate").value(is("2024-06-28")));
+        final var action = this.mockMvc.perform(post("/list.json")).andDo(print());
+        action.andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(is(3)))
+                .andExpect(jsonPath("$.[0].name").value(is("111")))
+                .andExpect(jsonPath("$.[0].email").value(is("111@yahoo.com")))
+                .andExpect(jsonPath("$.[0].password.password").value(is("11111a")))
+                .andExpect(jsonPath("$.[0].opsLogs.[0].createdDate").value(is("2024-06-28")))
 
-        action.andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')].opsLogs.length()").value(contains(2)))
+                .andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')].opsLogs.length()").value(contains(2)))
                 .andExpect(jsonPath("$.[?(@.name == '222' && @.email == '222@yahoo.com')].opsLogs.length()").value(contains(1)))
-                .andExpect(jsonPath("$.[?(@.name == '333' && @.email == '333@yahoo.com')]").exists());
+                .andExpect(jsonPath("$.[?(@.name == '333' && @.email == '333@yahoo.com')]").exists())
 
-        action.andExpect(jsonPath("$.[*].id").value(containsInAnyOrder(1, 2, 3)));
+                .andExpect(jsonPath("$.[*].id").value(containsInAnyOrder(1, 2, 3)));
     }
 }

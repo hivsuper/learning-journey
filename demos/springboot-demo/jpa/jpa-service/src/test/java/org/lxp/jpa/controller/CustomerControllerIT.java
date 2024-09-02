@@ -40,12 +40,12 @@ class CustomerControllerIT {
             DELETE FROM customer WHERE email='111@yahoo.com';
             """, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void add() {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(restTemplate.getRootUri() + "/add.json")
+        final var builder = UriComponentsBuilder.fromUriString(restTemplate.getRootUri() + "/add.json")
                 .queryParam("name", "111")
                 .queryParam("password", "111P")
                 .queryParam("email", "111@yahoo.com");
 
-        ResponseEntity<Integer> response = restTemplate.postForEntity(builder.toUriString(), HttpEntity.EMPTY, Integer.class);
+        final var response = restTemplate.postForEntity(builder.toUriString(), HttpEntity.EMPTY, Integer.class);
 
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(response.getBody()).isGreaterThan(0);
@@ -58,16 +58,16 @@ class CustomerControllerIT {
             """, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(statements = "DELETE FROM customer WHERE id IN(-1, -2)", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void listByCustomerIds() {
-        HttpHeaders headers = new HttpHeaders();
+        final var headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<List<Integer>> requestEntity = new HttpEntity<>(List.of(-1), headers);
+        final var requestEntity = new HttpEntity<>(List.of(-1), headers);
 
         ResponseEntity<List<Customer>> response = restTemplate.exchange(
                 restTemplate.getRootUri() + "/list.json", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<>() {
                 });
 
-        List<Customer> customers = response.getBody();
+        final var customers = response.getBody();
         assertThat(customers).isNotNull();
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(customers.size()).isGreaterThanOrEqualTo(2);
@@ -85,7 +85,7 @@ class CustomerControllerIT {
                 restTemplate.getRootUri() + "/list.json", HttpMethod.POST, null, new ParameterizedTypeReference<>() {
                 });
 
-        List<Customer> customers = response.getBody();
+        final var customers = response.getBody();
         assertThat(customers).isNotNull();
         assertThat(response.getStatusCode().value()).isEqualTo(200);
         assertThat(customers.size()).isGreaterThan(0);

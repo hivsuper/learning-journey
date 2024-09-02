@@ -22,22 +22,22 @@ public class VerificationService {
     private final StringRedisTemplate redisTemplate;
 
     public VerificationCodeDto generate() {
-        Captcha captcha = new ArithmeticCaptcha();
-        String verificationCodeKey = UUID.randomUUID().toString();
-        String verificationCode = captcha.text();
-        VerificationCodeDto verificationCodeDto = new VerificationCodeDto(verificationCodeKey, captcha.toBase64(), verificationCode);
+        final var captcha = new ArithmeticCaptcha();
+        final var verificationCodeKey = UUID.randomUUID().toString();
+        final var verificationCode = captcha.text();
+        final var verificationCodeDto = new VerificationCodeDto(verificationCodeKey, captcha.toBase64(), verificationCode);
         redisTemplate.opsForValue().set(verificationCodeKey, verificationCode, timeout, TimeUnit.SECONDS);
         return verificationCodeDto;
     }
 
     public void verify(VerificationDto verificationDto) {
-        String inputCode = verificationDto.getVerifyCode();
+        final var inputCode = verificationDto.getVerifyCode();
         if (Optional.ofNullable(
                         redisTemplate.getExpire(verificationDto.getVerifyCodeKey(), TimeUnit.SECONDS))
                 .orElse(-1L) < 0) {
             throw new RuntimeException("Verification code is expired");
         }
-        String verificationCode = redisTemplate.opsForValue().get(verificationDto.getVerifyCodeKey());
+        final var verificationCode = redisTemplate.opsForValue().get(verificationDto.getVerifyCodeKey());
         redisTemplate.delete(verificationDto.getVerifyCodeKey());
         Assert.notNull(verificationCode, "verificationCode should never be null");
         if (!verificationCode.equalsIgnoreCase(inputCode)) {

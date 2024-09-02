@@ -57,7 +57,7 @@ class CustomerServiceTest {
             throw new InvalidParameterException("test");
         }).when(customerRepository).save(any(Customer.class));
 
-        var exception = assertThrows(InvalidParameterException.class, () -> customerService.addCustomer(NAME, EMAIL, PASSWORD), "test");
+        final var exception = assertThrows(InvalidParameterException.class, () -> customerService.addCustomer(NAME, EMAIL, PASSWORD), "test");
 
         assertThat(exception.getClass()).isEqualTo(InvalidParameterException.class);
         verify(customerRepository, times(1)).save(captor.capture());

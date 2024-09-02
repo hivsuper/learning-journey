@@ -1,6 +1,9 @@
 package org.lxp.jpa.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lxp.jpa.entity.Customer;
@@ -31,9 +34,9 @@ public class CustomerController {
             summary = "Add an customer",
             description = "Return the added customer id.")
     @PostMapping(value = "/add.json")
-    public ResponseEntity<Integer> add(@RequestParam String name,
-                                       @RequestParam String email,
-                                       @RequestParam(required = false) String password) {
+    public ResponseEntity<Integer> add(@RequestParam @NotBlank String name,
+                                       @RequestParam @NotBlank String email,
+                                       @RequestParam(required = false) @NotNull String password) {
         return ResponseEntity.ok(customerService.addCustomer(name, email, password));
     }
 
@@ -41,7 +44,7 @@ public class CustomerController {
             summary = "Query customers by Customer Ids",
             description = "Return the customer list by customer ids.")
     @PostMapping(value = "/listByCustomerIds.json")
-    public ResponseEntity<List<Customer>> listByCustomerIds(@RequestBody List<Integer> customerIds) {
+    public ResponseEntity<List<Customer>> listByCustomerIds(@RequestBody @NotEmpty List<Integer> customerIds) {
         return ResponseEntity.ok(customerService.findCustomerByIds(customerIds));
     }
 

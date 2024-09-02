@@ -27,14 +27,14 @@ public class CustomerService {
     }
 
     private Integer doAddCustomer(String name, String email, String password) {
-        Customer customer = Customer.builder()
+        final var customer = Customer.builder()
                 .name(name)
                 .email(email)
                 .createdDate(LocalDate.now())
                 .build();
         customerRepository.save(customer);
 
-        Password p = Password.builder()
+        final var p = Password.builder()
                 .customerId(customer.getId())
                 .password(password).createdDate(LocalDate.now()).build();
         passwordRepository.save(p);
