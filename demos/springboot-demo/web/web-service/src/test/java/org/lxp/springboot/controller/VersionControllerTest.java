@@ -26,10 +26,10 @@ class VersionControllerTest {
     @Test
     void version() throws Exception {
         ResultActions action = this.mockMvc.perform(get("/version"));
-        action.andExpect(status().isOk());
-        action.andExpect(jsonPath("$.abbrev").value(is("76ed7e7")));
-        action.andExpect(jsonPath("$.full").value(is("76ed7e788e2e02c839424ad1a59eb84bff598bc3")));
-        action.andExpect(jsonPath("$.messageShort").value(is("update README.md")));
-        action.andExpect(jsonPath("$.time").value(is("2024-06-09T23:21:32+0800")));
+        action.andExpect(status().isOk())
+                .andExpect(jsonPath("$.abbrev").value(is("76ed7e7")))
+                .andExpect(jsonPath("$.full").value(is("76ed7e788e2e02c839424ad1a59eb84bff598bc3")))
+                .andExpect(jsonPath("$.messageShort").value(is("update README.md")))
+                .andExpect(jsonPath("$.time").value(is("2024-06-09T23:21:32+0800")));
     }
 }

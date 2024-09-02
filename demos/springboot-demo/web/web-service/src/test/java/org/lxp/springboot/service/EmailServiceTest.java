@@ -9,7 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,10 +25,10 @@ class EmailServiceTest extends BaseTest {
 
     @BeforeEach
     void setUp() {
-        URL url = EmailServiceTest.class.getClassLoader().getResource("");
+        final var url = EmailServiceTest.class.getClassLoader().getResource("");
         Assert.assertNotNull(url);
-        File file = new File(url.getFile());
-        final String absolutePath = file.getAbsolutePath() + File.separator;
+        final var file = new File(url.getFile());
+        final var absolutePath = file.getAbsolutePath() + File.separator;
         attachmentPath = absolutePath + attachment;
     }
 

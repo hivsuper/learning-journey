@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.MDC;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -21,13 +20,13 @@ import static org.mockito.Mockito.verify;
 class AsyncConfigTest {
     @Test
     void getAsyncExecutor() {
-        final String key = "key";
-        final String value = "value";
-        AsyncConfig asyncConfig = new AsyncConfig();
-        Executor executor = asyncConfig.getAsyncExecutor();
+        final var key = "key";
+        final var value = "value";
+        final var asyncConfig = new AsyncConfig();
+        final var executor = asyncConfig.getAsyncExecutor();
         MDC.put(key, value);
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        Logger logger = Mockito.mock(Logger.class);
+        final var countDownLatch = new CountDownLatch(1);
+        final var logger = Mockito.mock(Logger.class);
 
         assertThat(executor).isNotNull();
         executor.execute(() -> {
@@ -36,7 +35,7 @@ class AsyncConfigTest {
         });
         await().until(() -> countDownLatch.getCount() == 0);
 
-        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+        final var argumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(logger, times(1)).info(eq("{},{}"), argumentCaptor.capture(), eq(value));
         assertThat(argumentCaptor.getValue()).startsWith("asyncExecutor-");
     }

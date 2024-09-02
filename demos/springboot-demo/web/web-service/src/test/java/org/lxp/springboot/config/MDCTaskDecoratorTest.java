@@ -54,7 +54,7 @@ class MDCTaskDecoratorTest {
     }
 
     private Executor threadPoolTaskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        final var executor = new ThreadPoolTaskExecutor();
         executor.setTaskDecorator(new MDCTaskDecorator());
         executor.initialize();
         return executor;

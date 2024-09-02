@@ -16,7 +16,7 @@ public class CachingConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        SimpleCacheManager cacheManager = new SimpleCacheManager();
+        final var cacheManager = new SimpleCacheManager();
         cacheManager.setCaches(List.of(new ConcurrentMapCache(CUSTOMER_CACHE)));
         return cacheManager;
     }

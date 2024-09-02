@@ -1,6 +1,7 @@
 package org.lxp.springboot.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lxp.springboot.dto.Customer;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RestController
@@ -24,16 +26,15 @@ public class CustomerController {
             summary = "Add an customer asynchronously",
             description = "Return the added customer id.")
     @PostMapping(value = "/addAsync.json")
-    public ResponseEntity<Void> addAsync(@RequestParam String name, @RequestParam String email) {
-        customerService.addCustomerAsync(name, email);
-        return ResponseEntity.ok().build();
+    public CompletableFuture<Integer> addAsync(@RequestParam String name, @RequestParam String email) {
+        return customerService.addCustomerAsync(name, email);
     }
 
     @Operation(
             summary = "Add an customer",
             description = "Return the added customer id.")
     @PostMapping(value = "/add.json")
-    public ResponseEntity<Integer> add(@RequestParam String name, @RequestParam String email) {
+    public ResponseEntity<Integer> add(@RequestParam @NotBlank String name, @RequestParam @NotBlank String email) {
         return ResponseEntity.ok(customerService.addCustomer(name, email));
     }
 

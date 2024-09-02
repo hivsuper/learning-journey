@@ -16,7 +16,6 @@ import java.security.InvalidParameterException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 import static org.lxp.springboot.config.CachingConfig.CUSTOMER_CACHE;
 
@@ -43,8 +42,8 @@ public class CustomerService {
             maxAttemptsExpression = RETRY_MAX_ATTEMPTS,
             backoff = @Backoff(delayExpression = RETRY_MAX_DELAY), recover = RECOVER)
     @Transactional
-    public Future<Integer> addCustomerAsync(String name, String email) {
-        Future<Integer> future = CompletableFuture.completedFuture(doAddCustomer(name, email));
+    public CompletableFuture<Integer> addCustomerAsync(String name, String email) {
+        final var future = CompletableFuture.completedFuture(doAddCustomer(name, email));
         return future;
     }
 
@@ -53,12 +52,12 @@ public class CustomerService {
             backoff = @Backoff(delayExpression = RETRY_MAX_DELAY))
     @Transactional
     public Integer addCustomer(String name, String email) {
-        Integer integer = doAddCustomer(name, email);
+        final var integer = doAddCustomer(name, email);
         return integer;
     }
 
     private Integer doAddCustomer(String name, String email) {
-        Customer customer = Customer.builder().name(name)
+        final var customer = Customer.builder().name(name)
                 .email(email)
                 .name(name)
                 .createdDate(Calendar.getInstance().getTime())
@@ -74,7 +73,7 @@ public class CustomerService {
 
     @Cacheable(value = CUSTOMER_CACHE, key = "#customerId")
     public Customer findCustomerById(Integer customerId) {
-        List<Customer> list = customerMapper.findByIds(List.of(customerId));
+        final var list = customerMapper.findByIds(List.of(customerId));
         return list.isEmpty() ? null : list.get(0);
     }
 

@@ -16,7 +16,6 @@ import org.springframework.test.context.ContextConfiguration;
 import javax.inject.Inject;
 import java.security.InvalidParameterException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -49,7 +48,7 @@ class CustomerServiceTest {
     @Test
     void addCustomerAsync() {
         MDC.put("key", "addCustomerAsync");
-        Future<Integer> future = customerService.addCustomerAsync(NAME, EMAIL);
+        final var future = customerService.addCustomerAsync(NAME, EMAIL);
         await().until(future::isDone);
 
         verify(customerMapper, times(1)).add(captor.capture());
@@ -63,7 +62,7 @@ class CustomerServiceTest {
             throw new InvalidParameterException("test");
         }).when(customerMapper).add(any(Customer.class));
 
-        Future<Integer> future = customerService.addCustomerAsync(NAME, EMAIL);
+        final var future = customerService.addCustomerAsync(NAME, EMAIL);
         await().until(future::isDone);
 
         assertThat(future.get()).isGreaterThan(0);
@@ -78,7 +77,7 @@ class CustomerServiceTest {
             throw new RuntimeException("test");
         }).when(customerMapper).add(any(Customer.class));
 
-        Future<Integer> future = customerService.addCustomerAsync(NAME, EMAIL);
+        final var future = customerService.addCustomerAsync(NAME, EMAIL);
         await().until(future::isDone);
 
         assertThat(future.get()).isGreaterThan(0);
@@ -103,7 +102,7 @@ class CustomerServiceTest {
             throw new InvalidParameterException("test");
         }).when(customerMapper).add(any(Customer.class));
 
-        var exception = assertThrows(ExhaustedRetryException.class, () -> customerService.addCustomer(NAME, EMAIL), "test");
+        final var exception = assertThrows(ExhaustedRetryException.class, () -> customerService.addCustomer(NAME, EMAIL), "test");
 
         assertThat(exception.getCause().getClass()).isEqualTo(InvalidParameterException.class);
         verify(customerMapper, times(2)).add(captor.capture());
@@ -117,14 +116,14 @@ class CustomerServiceTest {
             throw new RuntimeException("test");
         }).when(customerMapper).add(any(Customer.class));
 
-        var exception = assertThrows(ExhaustedRetryException.class, () -> customerService.addCustomer(NAME, EMAIL), "Cannot locate recovery method");
+        final var exception = assertThrows(ExhaustedRetryException.class, () -> customerService.addCustomer(NAME, EMAIL), "Cannot locate recovery method");
         assertThat(exception.getCause().getClass()).isEqualTo(RuntimeException.class);
         verify(customerMapper, times(1)).add(captor.capture());
     }
 
     @Test
     void sendEmail() {
-        String emailAddress = "1@2.com";
+        final var emailAddress = "1@2.com";
         customerService.sendEmail(emailAddress);
         verify(emailService, times(1)).send(emailAddress, "Hello", "Hello <strong> World</strong>！");
     }

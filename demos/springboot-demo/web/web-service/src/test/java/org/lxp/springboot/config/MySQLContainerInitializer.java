@@ -26,7 +26,7 @@ public class MySQLContainerInitializer implements ApplicationContextInitializer<
         System.setProperty("spring.datasource.username", mysqlContainer.getUsername());
         System.setProperty("spring.datasource.password", mysqlContainer.getPassword());
 
-        Flyway flyway = Flyway.configure()
+        final var flyway = Flyway.configure()
                 .dataSource(mysqlContainer.getJdbcUrl(), mysqlContainer.getUsername(), mysqlContainer.getPassword())
                 .load();
         flyway.migrate();
