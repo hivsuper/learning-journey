@@ -1,11 +1,11 @@
 package org.lxp.jpa.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.lxp.jpa.dto.CustomerDto;
 import org.lxp.jpa.entity.Customer;
 import org.lxp.jpa.service.CustomerService;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,10 +35,12 @@ public class CustomerController {
             summary = "Add an customer",
             description = "Return the added customer id.")
     @PostMapping(value = "/add.json")
-    public ResponseEntity<Integer> add(@RequestParam @NotBlank String name,
-                                       @RequestParam @NotBlank String email,
-                                       @RequestParam(required = false) @NotNull String password) {
-        return ResponseEntity.ok(customerService.addCustomer(name, email, password));
+    public ResponseEntity<Integer> add(@Valid @ModelAttribute CustomerDto customerDto) {
+        return ResponseEntity.ok(customerService.addCustomer(
+                customerDto.getName(),
+                customerDto.getEmail(),
+                customerDto.getPassword()
+        ));
     }
 
     @Operation(

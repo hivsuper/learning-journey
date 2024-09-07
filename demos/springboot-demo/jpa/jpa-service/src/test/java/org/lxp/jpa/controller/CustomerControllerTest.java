@@ -45,21 +45,32 @@ class CustomerControllerTest extends BaseTest {
 
     @ParameterizedTest
     @CsvSource(value = {
-            "null, 555P, 555@555.com, Required parameter 'name' is not present.",
-            "'', 555P, 555@555.com, Validation failure",
-            "'  ', 555P, 555@555.com, Validation failure",
-            "555, null, 555@555.com, Required parameter 'email' is not present.",
-            "555, '', 555@555.com, Validation failure",
-            "555, '  ', 555@555.com, Validation failure",
-            "555, 555P, null, Validation failure"
+            "null, 555P, 555@555.com, must not be blank, name, null",
+            "'', 555P, 555@555.com, must not be blank, name, ''",
+            "'  ', 555P, 555@555.com, must not be blank, name, '  '",
+            "555, null, 555@555.com, must not be null, password, null",
+            "555, 555P, null, email can't be null or empty, email, null",
+            "555, 555P, '', 'must match \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\"', email, ''",
+            "555, 555P, '  ', 'must match \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\"', email, '  '",
+            "555, 555P, @555.com, 'must match \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\"', email, @555.com",
+            "555, 555P, 555@, 'must match \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\"', email, 555@"
     }, nullValues = "null")
-    void testAddWithNullOrEmptyParameters(String name, String email, String password, String expectedMessage) throws Exception {
+    void testAddWithNullOrEmptyParameters(
+            String name,
+            String password,
+            String email,
+            String expectedMessage,
+            String field,
+            String value
+    ) throws Exception {
         final var action = this.mockMvc.perform(post("/add.json")
                 .param("name", name)
                 .param("password", password)
                 .param("email", email));
         action.andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.detail").value(is(expectedMessage)));
+                .andExpect(jsonPath("$.data.reason").value(is(expectedMessage)))
+                .andExpect(jsonPath("$.data.field").value(is(field)))
+                .andExpect(jsonPath("$.data.value").value(is(value)));
     }
 
     @Test
