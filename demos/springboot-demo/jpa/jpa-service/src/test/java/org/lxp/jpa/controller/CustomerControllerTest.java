@@ -1,6 +1,7 @@
 package org.lxp.jpa.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -43,6 +44,7 @@ class CustomerControllerTest extends BaseTest {
                 .andExpect(content().string(is("1")));
     }
 
+    @DisplayName("Fail to add customer when name, email or password is blank")
     @ParameterizedTest
     @CsvSource(value = {
             "null, 555P, 555@555.com, must not be blank, name, null",
@@ -95,6 +97,7 @@ class CustomerControllerTest extends BaseTest {
                 .andExpect(jsonPath("$.[?(@.name == '111' && @.email == '111@yahoo.com')]").exists());
     }
 
+    @DisplayName("Fail to list customers when customerIds is null or empty")
     @ParameterizedTest
     @NullAndEmptySource
     void testListByCustomerIdsWithNullOrEmptyIds(List<Integer> customerIds) throws Exception {
