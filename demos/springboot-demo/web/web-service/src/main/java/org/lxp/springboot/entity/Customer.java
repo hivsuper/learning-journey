@@ -1,4 +1,4 @@
-package org.lxp.springboot.dto;
+package org.lxp.springboot.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

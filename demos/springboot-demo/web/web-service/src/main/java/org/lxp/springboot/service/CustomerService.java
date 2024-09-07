@@ -3,7 +3,7 @@ package org.lxp.springboot.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.lxp.springboot.dao.CustomerMapper;
-import org.lxp.springboot.dto.Customer;
+import org.lxp.springboot.entity.Customer;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;

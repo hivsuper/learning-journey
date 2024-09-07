@@ -1,7 +1,7 @@
 package org.lxp.springboot.controller;
 
 import org.junit.jupiter.api.Test;
-import org.lxp.springboot.dto.Customer;
+import org.lxp.springboot.entity.Customer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;

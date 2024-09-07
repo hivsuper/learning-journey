@@ -3,7 +3,7 @@ package org.lxp.springboot.service;
 import org.junit.jupiter.api.Test;
 import org.lxp.springboot.config.AsyncConfig;
 import org.lxp.springboot.dao.CustomerMapper;
-import org.lxp.springboot.dto.Customer;
+import org.lxp.springboot.entity.Customer;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.slf4j.MDC;

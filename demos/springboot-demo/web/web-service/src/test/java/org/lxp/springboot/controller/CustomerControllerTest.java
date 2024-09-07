@@ -1,12 +1,13 @@
 package org.lxp.springboot.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.lxp.springboot.BaseTest;
 import org.lxp.springboot.config.CachingConfig;
-import org.lxp.springboot.dto.Customer;
+import org.lxp.springboot.entity.Customer;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
@@ -53,6 +54,34 @@ class CustomerControllerTest extends BaseTest {
                 .andExpect(content().string(is("1")));
     }
 
+    @DisplayName("Fail to add customer asynchronously when name or email is blank")
+    @ParameterizedTest
+    @CsvSource(value = {
+            "null, 555@555.com, must not be blank, name, null",
+            "'', 555@555.com, must not be blank, name, ''",
+            "'  ', 555@555.com, must not be blank, name, '  '",
+            "555, null, email can't be null or empty, email, null",
+            "555, '', 'must match \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\"', email, ''",
+            "555, '  ', 'must match \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\"', email, '  '",
+            "555, @555.com, 'must match \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\"', email, @555.com",
+            "555, 555@, 'must match \"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\"', email, 555@"
+    }, nullValues = "null")
+    void testAddAsyncWithNullOrEmptyParameters(
+            String name,
+            String email,
+            String expectedMessage,
+            String field,
+            String value
+    ) throws Exception {
+        final var action = this.mockMvc.perform(post("/addAsync.json")
+                .param("name", name)
+                .param("email", email));
+        action.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.reason").value(is(expectedMessage)))
+                .andExpect(jsonPath("$.field").value(is(field)))
+                .andExpect(jsonPath("$.value").value(is(value)));
+    }
+
     @Test
     void testAdd() throws Exception {
         final var action = this.mockMvc.perform(post("/add.json")
@@ -62,6 +91,7 @@ class CustomerControllerTest extends BaseTest {
                 .andExpect(content().string(is("1")));
     }
 
+    @DisplayName("Fail to add customer when name or email is blank")
     @ParameterizedTest
     @CsvSource(value = {
             "null, 555@555.com, Required parameter 'name' is not present.",
