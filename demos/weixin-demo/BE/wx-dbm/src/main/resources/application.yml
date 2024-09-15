@@ -4,6 +4,3 @@ spring:
     username: test-wx
     password: test-wx
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-  flyway:
-    baseline-on-migrate: true

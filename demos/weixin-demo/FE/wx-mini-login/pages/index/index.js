@@ -69,10 +69,25 @@ Page({
         if (res.code) {
           //发起网络请求
           wx.request({
-            url: 'http://127.0.0.1:8084/wx/sessionId',
-            data: {
-              jsCode: res.code
-            },
+            url: 'http://127.0.0.1:8084/wx/login',
+            method: 'POST',
+            header: {'Content-Type': 'application/x-www-form-urlencoded'},
+            data: 'jsCode='+res.code,
+            success (data) {
+              console.log(data.data);
+              wx.request({
+                url: 'http://127.0.0.1:8084/user/my-profile',
+                method: "GET",
+                header: {
+                  'content-type': 'application/json',
+                  'Authorization': 'Bearer ' + data.data
+                },
+                success (data) {
+                  console.log(data);
+                  console.log(data.data + '登录成功！')
+                }
+              })
+            }
           })
         } else {
           console.log('登录失败！' + res.errMsg)

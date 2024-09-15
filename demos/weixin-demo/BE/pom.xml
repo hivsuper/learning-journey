@@ -12,6 +12,8 @@
         <module>wx-dbm</module>
         <module>wx-dbm-changelog</module>
         <module>wx-service</module>
+        <module>wx-admin</module>
+        <module>wx-common</module>
     </modules>
     <properties>
         <java.version>21</java.version>
@@ -31,6 +33,8 @@
         <springdoc-openapi.version>2.5.0</springdoc-openapi.version>
         <commons-compress.version>1.26.2</commons-compress.version>
         <flyway.version>10.17.1</flyway.version>
+        <spring-session.version>3.3.2</spring-session.version>
+        <io-jsonwebtoken.version>0.11.5</io-jsonwebtoken.version>
     </properties>
     
     <dependencyManagement>

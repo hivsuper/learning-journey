@@ -1,6 +1,6 @@
 spring:
   application:
-    name: wx-service
+    name: wx-admin
   # database
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -28,6 +28,27 @@ spring:
   info:
     git:
       location: classpath:git.properties
+  data:
+    redis:
+      host: localhost     # Redis服务器地址
+      port: 16380          # Redis服务器连接端口
+      password: 123456    # Redis服务器连接密码（默认为空）
+      database: 0         # Redis数据库索引（默认为0）
+      timeout: 60s        # 连接空闲超过N(s秒、ms毫秒，不加单位时使用毫秒)后关闭，0为禁用，这里配置值和tcp-keepalive值一致
+      # Lettuce连接池配置
+      lettuce:
+        pool:
+          max-active: 10  # 允许最大连接数，默认8（负值表示没有限制），推荐值：大于cpu * 2，通常为(cpu * 2) + 2
+          max-idle: 8     # 最大空闲连接数，默认8，推荐值：cpu * 2
+          min-idle: 0     # 最小空闲连接数，默认0
+          max-wait: 5s    # 连接用完时，新的请求等待时间(s秒、ms毫秒)，超过该时间抛出异常，默认-1（负值表示没有限制）
+  session:
+    store-type: redis
+    redis:
+      namespace: test:spring:session
+    servlet:
+      session:
+        timeout: 600
 
 springdoc:
   api-docs:
@@ -37,14 +58,18 @@ springdoc:
     path: /swagger-ui.html
 
 server:
-  contextPath: /wx-service
-  port: 8084
+  contextPath: /wx-admin
+  port: 8085
   connection-timeout: 30000
   tomcat:
     max-connections: 200
     max-threads: 200
     min-spare-threads: 100
     uri-encoding: UTF-8
+  servlet:
+    session:
+      ## Session 过期时间，默认单位为 s
+      timeout: 600
 
 # print SQL parameters
 logging:
@@ -70,19 +95,15 @@ logbook:
     style: splunk
   obfuscate:
     headers:
-#      - Authorization
+      #      - Authorization
       - Cookie
     parameters:
       - password
     json-body-fields:
-        - password
+      - password
   write:
     level: TRACE
     max-body-size: 1000
-
-wx:
-  appId: ${appId}
-  secret: ${secret}
 
 management:
   endpoints:
@@ -92,7 +113,3 @@ management:
   info:
     git:
       mode: full
-
-jwt:
-  secret: and0LVRFU1Qtc2VjcmV0and0LVRFU1Qtc2VjcmV0and0LVRFU1Qtc2VjcmV0and0LVRFU1Qtc2VjcmV0and0LVRFU1Qtc2VjcmV0and0LVRFU1Qtc2VjcmV0 #JWT加解密使用的密钥【私钥】 jwt-TEST-secret * 7
-  expire: 604800 #JWT的超期限时间(60*60*24*7)
