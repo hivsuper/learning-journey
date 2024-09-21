@@ -12,4 +12,4 @@ CREATE TABLE admins (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB;
 
-INSERT INTO admins (id, username, password, role, created_at) VALUES (1, 'root', '$2a$10$EBtKSguK4sFKbwHdYR/HQenEWl0GW6i8cF/5bQiqGgUkGZ6vx7eL6', 'admin', NOW());
+INSERT INTO admins (id, username, password, role, created_at) VALUES (1, 'root', '$2a$10$EBtKSguK4sFKbwHdYR/HQenEWl0GW6i8cF/5bQiqGgUkGZ6vx7eL6', 'ADMIN', NOW());

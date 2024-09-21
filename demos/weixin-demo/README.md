@@ -37,7 +37,7 @@ mvn clean package
 | Module Name | Swagger Address                             |
 |-------------|---------------------------------------------|
 | wx-service  | http://127.0.0.1:8084/swagger-ui/index.html |
-| admin       | http://127.0.0.1:8085/swagger-ui/index.html |
+| wx-admin    | http://127.0.0.1:8085/swagger-ui/index.html |
 
 Switch environment by activating profile `-Dspring.profiles.active=local`
 
