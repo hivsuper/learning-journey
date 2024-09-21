@@ -75,15 +75,16 @@
             <version>${zalando.version}</version>
         </dependency>
         
+        <!-- spring-session -->
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
             <version>${spring-session.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-            <version>2.12.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>${spring-session.version}</version>
         </dependency>
     </dependencies>
     
