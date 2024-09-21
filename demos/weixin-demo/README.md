@@ -1,4 +1,4 @@
-# web
+# weixin-demo
 ## Prerequisites
 1. Install `IntelliJ IDEA 2024.1 (Community Edition)`
 2. Install `Lombok` plugin and [set](https://www.baeldung.com/lombok-ide)
@@ -27,8 +27,6 @@ JAVA: openjdk version "21.0.2" 2024-01-16
 git-commit-id:revision
 ## Run Unit Tests
 mvn test
-## Run Integration Tests
-mvn install -DskipUTs=true failsafe:integration-test -DskipITs=false
 ## Package
 mvn clean package
 ```
