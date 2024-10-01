@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  db:
+    image: mysql
+    container_name: gradle-db
+    environment:
+      - MYSQL_DATABASE=gradle-demo
+      - MYSQL_ROOT_PASSWORD=test-gradle
+      - MYSQL_USER=test-gradle
+      - MYSQL_PASSWORD=test-gradle
+    volumes:
+      - ./db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"

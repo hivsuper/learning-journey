@@ -1,2 +1,5 @@
 rootProject.name = 'gradle-demo'
+include 'gradle-dbm'
+include 'gradle-dbm-changelog'
+include 'gradle-service'
 

@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: jpa
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/gradle-demo?useUnicode=true&characterEncoding=utf-8
+    username: test-gradle
+    password: test-gradle
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: pool-jpa
+      maximum-pool-size: 50
+      minimum-idle: 10
+  # https://springdoc.cn/spring-boot-and-spring-data-jpa/
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+  security:
+    user:
+      name: test
+      password: test1234
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    operationsSorter: method
+    path: /swagger-ui.html
+
+server:
+  contextPath: /jpa
+  port: 8083
+  connection-timeout: 30000
+  tomcat:
+    max-connections: 200
+    max-threads: 200
+    min-spare-threads: 100
+    uri-encoding: UTF-8
