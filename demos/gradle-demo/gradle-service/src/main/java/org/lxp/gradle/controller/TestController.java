@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.lxp.gradle.dto.TestTableDto;
 import org.lxp.gradle.entity.TestTable;
 import org.lxp.gradle.repository.TestTableRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,8 +17,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -40,7 +40,7 @@ public class TestController {
 
     @Operation(summary = "Query entries")
     @GetMapping(value = "/findAll")
-    public ResponseEntity<List<TestTable>> list() {
-        return ResponseEntity.ok(testTableRepository.findAll());
+    public ResponseEntity<Page<TestTable>> list(@RequestParam int pageNumber, @RequestParam int pageSize) {
+        return ResponseEntity.ok(testTableRepository.findAll(PageRequest.of(pageNumber, pageSize)));
     }
 }
