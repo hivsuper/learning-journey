@@ -4,7 +4,7 @@
 2. Usage of `spring-boot-starter-validation`
 3. Usage of `spring-boot-starter-data-jpa`
 4. Usage of `org.testcontainers:testcontainers`
-5. Usage of `postgreSQL` - TODO
+5. Usage of `postgreSQL`
 
 ## Environment
 MySQL: 8.1.0  
