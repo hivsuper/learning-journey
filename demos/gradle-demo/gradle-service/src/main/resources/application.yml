@@ -2,17 +2,19 @@ spring:
   application:
     name: jpa
   datasource:
-    url: jdbc:mysql://127.0.0.1:3307/gradle-demo?useUnicode=true&characterEncoding=utf-8
-    username: test-gradle
-    password: test-gradle
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://127.0.0.1:15432/postgres?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+    driver-class-name: org.postgresql.Driver
     hikari:
-      pool-name: pool-jpa
+      pool-name: pool-gradle
       maximum-pool-size: 50
       minimum-idle: 10
+  liquibase:
+    enabled: false
   # https://springdoc.cn/spring-boot-and-spring-data-jpa/
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     properties:
       hibernate:
@@ -33,7 +35,7 @@ springdoc:
 
 server:
   contextPath: /jpa
-  port: 8083
+  port: 8088
   connection-timeout: 30000
   tomcat:
     max-connections: 200

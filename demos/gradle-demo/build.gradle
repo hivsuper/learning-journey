@@ -25,6 +25,8 @@ subprojects {
         implementation platform('org.springframework.boot:spring-boot-dependencies:3.3.4')
         implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
 
+        implementation 'org.postgresql:postgresql:42.7.4'
+
         compileOnly 'org.projectlombok:lombok:1.18.32'
         annotationProcessor 'org.projectlombok:lombok:1.18.32'
         testCompileOnly 'org.projectlombok:lombok:1.18.32'

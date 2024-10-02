@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    implementation 'com.mysql:mysql-connector-j'
+    implementation 'org.postgresql:postgresql'
     implementation 'org.liquibase:liquibase-core:4.29.2'
 
     implementation project(':gradle-dbm-changelog')

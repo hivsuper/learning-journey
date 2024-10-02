@@ -2,17 +2,17 @@ package org.lxp.gradle.config;
 
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
-public class MySQLContainerInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class PostgreSQLContainerInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     public static final String DB_NAME = "gradle-demo";
 
-    private static final MySQLContainer<?> mysqlContainer;
+    private static final PostgreSQLContainer<?> mysqlContainer;
 
     static {
-        mysqlContainer = new MySQLContainer<>(DockerImageName.parse("mysql:8.1"))
+        mysqlContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres:17-alpine"))
                 .withUsername("testuser")
                 .withPassword("testpass")
                 .withDatabaseName(DB_NAME);
