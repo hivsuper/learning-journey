@@ -17,4 +17,4 @@ JAVA: openjdk version "21.0.2" 2024-01-16
 
 | Module Name | Swagger Address                             |
 |-------------|---------------------------------------------|
-| web         | http://127.0.0.1:8083/swagger-ui/index.html |
+| web         | http://127.0.0.1:8088/swagger-ui/index.html |

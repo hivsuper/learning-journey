@@ -1,6 +1,6 @@
 spring:
   application:
-    name: jpa
+    name: gradle
   datasource:
     url: jdbc:postgresql://127.0.0.1:15432/postgres?useUnicode=true&characterEncoding=utf-8
     username: root
@@ -34,7 +34,7 @@ springdoc:
     path: /swagger-ui.html
 
 server:
-  contextPath: /jpa
+  contextPath: /gradle
   port: 8088
   connection-timeout: 30000
   tomcat:
