@@ -7,7 +7,7 @@
 5. Usage of `postgreSQL`
 
 ## Environment
-MySQL: 8.1.0  
+PostgreSQL: 17
 JAVA: openjdk version "21.0.2" 2024-01-16
 
 ## Install and verify this project

@@ -9,20 +9,20 @@ public class PostgreSQLContainerInitializer implements ApplicationContextInitial
 
     public static final String DB_NAME = "gradle-demo";
 
-    private static final PostgreSQLContainer<?> mysqlContainer;
+    private static final PostgreSQLContainer<?> postgreSQLContainer;
 
     static {
-        mysqlContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres:17-alpine"))
+        postgreSQLContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres:17-alpine"))
                 .withUsername("testuser")
                 .withPassword("testpass")
                 .withDatabaseName(DB_NAME);
-        mysqlContainer.start();
+        postgreSQLContainer.start();
     }
 
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
-        System.setProperty("spring.datasource.url", mysqlContainer.getJdbcUrl());
-        System.setProperty("spring.datasource.username", mysqlContainer.getUsername());
-        System.setProperty("spring.datasource.password", mysqlContainer.getPassword());
+        System.setProperty("spring.datasource.url", postgreSQLContainer.getJdbcUrl());
+        System.setProperty("spring.datasource.username", postgreSQLContainer.getUsername());
+        System.setProperty("spring.datasource.password", postgreSQLContainer.getPassword());
     }
 }
