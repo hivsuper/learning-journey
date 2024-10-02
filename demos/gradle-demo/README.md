@@ -3,7 +3,7 @@
 1. Usage of `gradle`
 2. Usage of `spring-boot-starter-validation`
 3. Usage of `spring-boot-starter-data-jpa`
-4. Usage of `org.testcontainers:testcontainers` - TODO
+4. Usage of `org.testcontainers:testcontainers`
 5. Usage of `postgreSQL` - TODO
 
 ## Environment

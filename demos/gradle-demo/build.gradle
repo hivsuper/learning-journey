@@ -14,16 +14,14 @@ allprojects {
 subprojects {
     apply plugin: 'java'
 
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+
     compileJava {
         options.compilerArgs << '-parameters'
     }
 
     dependencies {
-        testImplementation platform('org.junit:junit-bom:5.10.0')
-        testImplementation 'org.junit.jupiter:junit-jupiter'
-
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
         implementation platform('org.springframework.boot:spring-boot-dependencies:3.3.4')
         implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
 
