@@ -15,5 +15,8 @@
             <column name="updated_at" type="datetime"/>
         </createTable>
     </changeSet>
+    <changeSet id="2" author="Super.Li">
+        <sqlFile path="classpath:db/changelog/scripts/2024-10-03-2320.sql"/>
+    </changeSet>
 
 </databaseChangeLog>
