@@ -18,3 +18,7 @@ JAVA: openjdk version "21.0.2" 2024-01-16
 | Module Name | Swagger Address                             |
 |-------------|---------------------------------------------|
 | web         | http://127.0.0.1:8088/swagger-ui/index.html |
+
+## Package and deploy
+- Run `./gradlew bootJar` to package fat jars
+- Deploy and start with `java -jar xxx.jar`

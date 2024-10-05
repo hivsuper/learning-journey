@@ -1,3 +1,12 @@
+pluginManagement {
+    repositories {
+        // aliyun repository for gradle plugin
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        // default repository
+        gradlePluginPortal()
+    }
+}
+
 rootProject.name = 'gradle-demo'
 include 'gradle-dbm'
 include 'gradle-dbm-changelog'

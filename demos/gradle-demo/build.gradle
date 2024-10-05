@@ -1,21 +1,36 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.3.4'
+    id 'io.spring.dependency-management' version "1.1.6"
 }
 
 allprojects {
-    group = 'org.lxp'
+    group = 'org.lxp.gradle'
     version = '1.0-SNAPSHOT'
 
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        mavenLocal()
         mavenCentral()
     }
 }
 
 subprojects {
     apply plugin: 'java'
-
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
 
     compileJava {
         options.compilerArgs << '-parameters'
@@ -32,8 +47,10 @@ subprojects {
         testCompileOnly 'org.projectlombok:lombok:1.18.32'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
     }
+
+    test {
+        useJUnitPlatform()
+    }
 }
 
-test {
-    useJUnitPlatform()
-}
+bootJar { enabled = false }
