@@ -45,3 +45,6 @@ Switch environment by activating profile `-Dspring.profiles.active=local`
 |---------------|---------------------------------------|
 | Health Check  | http://127.0.0.1:8084/actuator/health |
 | Info          | http://127.0.0.1:8084/actuator/info   |
+
+## Reference
+- https://github.com/hezhongfeng/spring-security
