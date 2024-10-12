@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.lxp.gradle.BaseTest;
 import org.lxp.gradle.dto.TestTableDto;
+import org.lxp.gradle.entity.Address;
 import org.lxp.gradle.entity.TestTable;
 import org.lxp.gradle.repository.TestTableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,11 @@ class TestControllerTest extends BaseTest {
     @DisplayName("Add an entry")
     @Test
     void testAdd() throws Exception {
-        final var action = this.mockMvc.perform(post("/add").param("name", "555"));
+        final var action = this.mockMvc.perform(post("/add")
+                .param("name", "555")
+                .param("postCode", "200")
+                .param("city", "BBB")
+        );
         action.andExpect(status().isOk()).andExpect(content().string(is("1")));
     }
 
@@ -81,9 +86,11 @@ class TestControllerTest extends BaseTest {
     @Test
     void testListByPage() throws Exception {
         // Given
-        List.of("111", "222", "333").forEach(name -> {
-            testTableRepository.save(TestTable.builder().name(name).build());
-        });
+        List.of("111", "222", "333").forEach(name -> testTableRepository.save(TestTable.builder()
+                .name(name)
+                .address(Address.builder().postCode(name).city(name).build())
+                .build()
+        ));
         // Execution
         final var action = this.mockMvc.perform(get("/findAll")
                 .param("pageNumber", "0")
@@ -94,6 +101,8 @@ class TestControllerTest extends BaseTest {
                 .andExpect(jsonPath("$.totalElements").value(is(3)))
                 .andExpect(jsonPath("$.totalPages").value(is(2)))
                 .andExpect(jsonPath("$.content.length()").value(is(2)))
-                .andExpect(jsonPath("$.content.*.name").value(containsInAnyOrder("111", "222")));
+                .andExpect(jsonPath("$.content.*.name").value(containsInAnyOrder("111", "222")))
+                .andExpect(jsonPath("$.content.*.address.postCode").value(containsInAnyOrder("111", "222")))
+                .andExpect(jsonPath("$.content.*.address.city").value(containsInAnyOrder("111", "222")));
     }
 }

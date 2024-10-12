@@ -18,5 +18,11 @@
     <changeSet id="2" author="Super.Li">
         <sqlFile path="classpath:db/changelog/scripts/2024-10-03-2320.sql"/>
     </changeSet>
+    <changeSet id="3" author="Super.Li">
+        <addColumn tableName="test_table">
+            <column name="address" type="json"/>
+        </addColumn>
+        <sqlFile path="classpath:db/changelog/scripts/2024-10-12-2331.sql"/>
+    </changeSet>
 
 </databaseChangeLog>

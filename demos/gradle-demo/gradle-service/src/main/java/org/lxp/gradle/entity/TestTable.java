@@ -17,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -36,6 +38,10 @@ public class TestTable {
 
     @Column
     private String name;
+
+    @Column(columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Address address;
 
     @JsonFormat(pattern = DATE_FORMAT)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
