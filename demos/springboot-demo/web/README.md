@@ -35,6 +35,6 @@ mvn clean package
 
 | Module Name | Swagger Address                                  |
 |-------------|--------------------------------------------------|
-| web         | http://127.0.0.1:8082/swagger-ui/index.html      |
+| web-service | http://127.0.0.1:8082/swagger-ui/index.html      |
 
 Switch environment by activating profile `-Dspring.profiles.active=local`
