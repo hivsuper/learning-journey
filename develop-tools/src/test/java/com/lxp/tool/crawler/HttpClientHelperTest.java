@@ -84,14 +84,16 @@ public class HttpClientHelperTest {
         stubFor(get(urlEqualTo("/crawler-test2")).willReturn(aResponse().withFixedDelay(1).withStatus(HttpStatus.SC_OK)));
         helper = new CloseableHttpClientHelper();
         final int size = helper.maxTotalConnection;
-        ExecutorService executorService = Executors.newFixedThreadPool(size * 10);
-        IntStream.range(0, size * 10).forEach(index -> CompletableFuture.runAsync(() -> {
-            try {
-                helper.get(crawlerUrl);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }, executorService));
-        assertThrows(ConnectionPoolTimeoutException.class, () -> helper.get("http://127.0.0.1:8080/crawler-test2"));
+        try (ExecutorService executorService = Executors.newFixedThreadPool(size * 10)) {
+
+            IntStream.range(0, size * 10).forEach(index -> CompletableFuture.runAsync(() -> {
+                try {
+                    helper.get(crawlerUrl);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }, executorService));
+            assertThrows(ConnectionPoolTimeoutException.class, () -> helper.get("http://127.0.0.1:8080/crawler-test2"));
+        }
     }
 }

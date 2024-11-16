@@ -9,7 +9,6 @@ import org.lxp.mock.inject.mock.RealInjectService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -21,7 +20,6 @@ public class RealInjectServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
         Mockito.when(injectService.getName()).thenReturn("Super Li");
     }
 

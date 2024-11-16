@@ -3,6 +3,9 @@ package com.lxp.tool.json;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,14 +14,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import static com.lxp.tool.json.JsonHelper.toObject;
+import static java.nio.file.Files.readAllLines;
+import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -46,35 +49,45 @@ public class JsonHelperTest {
 
     @Test
     public void testToString() {
-        assertEquals("{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}",
-                JsonHelper.toString(testJsonVo));
+        assertEquals(
+                "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}",
+                JsonHelper.toString(testJsonVo)
+        );
     }
 
     @Test
     public void shouldReturnNullWhenPassString() {
-        assertNull(JsonHelper.toObject(TestJsonVo.class, ""));
+        assertNull(toObject(TestJsonVo.class, ""));
     }
 
     @Test
     public void shouldReturnObjectWhenPassString() {
-        assertEquals(testJsonVo.toString(), JsonHelper.toObject(TestJsonVo.class,
-                        "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}")
-                .toString());
+        assertEquals(
+                testJsonVo.toString(),
+                toObject(
+                        TestJsonVo.class,
+                        "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}"
+                ).toString()
+        );
     }
 
     @Test
     public void shouldReturnTypeObjectWhenPassString() {
         TypeReference<List<TestJsonVo>> reference = new TypeReference<>() {
         };
-        assertEquals(Collections.singletonList(testJsonVo).toString(), JsonHelper.toObject(reference,
-                        "[{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}]")
-                .toString());
+        assertEquals(
+                List.of(testJsonVo).toString(),
+                toObject(
+                        reference,
+                        "[{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}]"
+                ).toString()
+        );
     }
 
     @Test
     public void shouldReturnObjectWhenPassInputStream() throws IOException {
         try (InputStream inputStream = JsonHelperTest.class.getResourceAsStream("/JsonHepler.json")) {
-            assertEquals(testJsonVo.toString(), JsonHelper.toObject(TestJsonVo.class, inputStream).toString());
+            assertEquals(testJsonVo.toString(), toObject(TestJsonVo.class, inputStream).toString());
         }
     }
 
@@ -82,23 +95,31 @@ public class JsonHelperTest {
     public void shouldReturnTypeObjectWhenPassInputStream() throws IOException, URISyntaxException {
         TypeReference<List<TestJsonVo>> reference = new TypeReference<>() {
         };
-        String content = String.format("[%s]", Files.lines(Paths.get(JsonHelperTest.class.getResource("/JsonHepler.json").toURI()), StandardCharsets.UTF_8).collect(Collectors.joining()));
+        String content = String.format("[%s]",
+                String.join(
+                        "",
+                        readAllLines(
+                                Paths.get(requireNonNull(JsonHelperTest.class.getResource("/JsonHepler.json")).toURI()),
+                                StandardCharsets.UTF_8
+                        )
+                )
+        );
         try (InputStream inputStream = new ByteArrayInputStream(content.getBytes())) {
-            assertEquals(Collections.singletonList(testJsonVo).toString(), JsonHelper.toObject(reference, inputStream).toString());
+            assertEquals(List.of(testJsonVo).toString(), toObject(reference, inputStream).toString());
         }
     }
 
     @Test
     public void shouldPropertyDoubleWhenPassDouble() throws IOException, URISyntaxException {
-        assertEquals(testJsonVo.toString(), JsonHelper.toObject(TestJsonVo.class,
-                        "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}")
+        assertEquals(testJsonVo.toString(), toObject(TestJsonVo.class,
+                "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}")
                 .toString());
     }
 
     @Test
     public void shouldPropertyDoubleWhenPassFloat() throws IOException, URISyntaxException {
-        assertEquals(testJsonVo.toString(), JsonHelper.toObject(TestJsonVo.class,
-                        "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyFloat\":0.56}")
+        assertEquals(testJsonVo.toString(), toObject(TestJsonVo.class,
+                "{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyFloat\":0.56}")
                 .toString());
     }
 
@@ -107,6 +128,9 @@ public class JsonHelperTest {
         assertEquals("{\"propertyString\":\"a\",\"propertyBoolean\":false,\"propertyInt\":1,\"propertyDouble\":0.56}", JsonHelper.toString(testJsonVo));
     }
 
+    @Setter
+    @Getter
+    @ToString
     private static class TestJsonVo {
         private String propertyString;
         private boolean propertyBoolean;
@@ -114,46 +138,5 @@ public class JsonHelperTest {
         @JsonProperty("propertyDouble")
         @JsonAlias("propertyFloat")
         private double propertyDouble;
-
-        public String getPropertyString() {
-            return propertyString;
-        }
-
-        public void setPropertyString(String propertyString) {
-            this.propertyString = propertyString;
-        }
-
-        public boolean isPropertyBoolean() {
-            return propertyBoolean;
-        }
-
-        public void setPropertyBoolean(boolean propertyBoolean) {
-            this.propertyBoolean = propertyBoolean;
-        }
-
-        public int getPropertyInt() {
-            return propertyInt;
-        }
-
-        public void setPropertyInt(int propertyInt) {
-            this.propertyInt = propertyInt;
-        }
-
-        public double getPropertyDouble() {
-            return propertyDouble;
-        }
-
-        public void setPropertyDouble(double propertyDouble) {
-            this.propertyDouble = propertyDouble;
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("TestJsonVo [propertyString=").append(getPropertyString()).append(", propertyBoolean=")
-                    .append(isPropertyBoolean()).append(", propertyInt=").append(getPropertyInt())
-                    .append(", propertyDouble=").append(getPropertyDouble()).append("]");
-            return builder.toString();
-        }
     }
 }

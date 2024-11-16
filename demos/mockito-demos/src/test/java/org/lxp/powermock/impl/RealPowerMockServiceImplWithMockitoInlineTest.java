@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.eq;
 
 
 /**
- * https://frontbackend.com/java/how-to-mock-static-methods-with-mockito
+ * <a href="https://frontbackend.com/java/how-to-mock-static-methods-with-mockito">how-to-mock-static-methods-with-mockito</a>
  */
 public class RealPowerMockServiceImplWithMockitoInlineTest {
     private RealPowerMockService realPowerMockService;

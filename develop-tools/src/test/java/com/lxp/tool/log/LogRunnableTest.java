@@ -16,7 +16,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +43,7 @@ public class LogRunnableTest {
             Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logRunnable).setLogContext();
             Mockito.doAnswer(invocation -> set.add(invocation.getMethod().getName())).when(logRunnable).clearLogContext();
 
-            List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(logRunnable, executorService)).collect(Collectors.toList());
+            List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(logRunnable, executorService)).toList();
             futures.forEach(CompletableFuture::join);
             assertEquals("[setLogContext, clearLogContext]", set.toString());
             LOGGER.info("test finish");
@@ -57,7 +56,7 @@ public class LogRunnableTest {
     public void testRunnableWithoutCatchException() {
         Logger logger = Mockito.mock(Logger.class);
         AtomicInteger counter = new AtomicInteger(0);
-        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(new LogRunnable(RunnabeTestHelper.getRunnable(counter)), executorService)).collect(Collectors.toList());
+        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(new LogRunnable(RunnabeTestHelper.getRunnable(counter)), executorService)).toList();
         try {
             futures.forEach(CompletableFuture::join);
         } catch (Exception e) {
@@ -70,7 +69,7 @@ public class LogRunnableTest {
     @Test
     public void testRunnableWithCatchException() {
         AtomicInteger counter = new AtomicInteger(0);
-        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(new LogRunnable(RunnabeTestHelper.getRunnableWithCatchException(counter)), executorService)).collect(Collectors.toList());
+        List<CompletableFuture<Void>> futures = IntStream.rangeClosed(0, 4).mapToObj(index -> CompletableFuture.runAsync(new LogRunnable(RunnabeTestHelper.getRunnableWithCatchException(counter)), executorService)).toList();
         futures.forEach(CompletableFuture::join);
         assertEquals(5, counter.get());
     }

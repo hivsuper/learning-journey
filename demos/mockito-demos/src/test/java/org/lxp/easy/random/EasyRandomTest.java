@@ -2,7 +2,6 @@ package org.lxp.easy.random;
 
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.jeasy.random.api.Randomizer;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,14 +15,14 @@ public class EasyRandomTest {
         EasyRandom easyRandom = new EasyRandom();
         TestEntity entity = easyRandom.nextObject(TestEntity.class);
         assertThat(entity.getField1()).isNotNull();
-        assertThat(entity.getField2()).isIn(TestEnum.values());
+        assertThat(TestEnum.values()).contains(entity.getField2());
     }
 
     @Test
     public void testEasyRandomParameters() {
         EasyRandomParameters parameters = new EasyRandomParameters();
-        parameters.setStringLengthRange(new EasyRandomParameters.Range(3, 3));
-        parameters.randomize(TestEnum.class, (Randomizer) () -> TestEnum.A);
+        parameters.setStringLengthRange(new EasyRandomParameters.Range<>(3, 3));
+        parameters.randomize(TestEnum.class, () -> TestEnum.A);
         EasyRandom easyRandom = new EasyRandom(parameters);
         TestEntity entity = easyRandom.nextObject(TestEntity.class);
         assertThat(entity.getField1()).isNotNull();

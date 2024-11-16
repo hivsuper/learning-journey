@@ -69,7 +69,7 @@ public class BigDecimalHelperTest {
 
     private static Stream<Arguments> provideDoublesForEquals() {
         return Stream.of(
-                Arguments.of(BigDecimal.valueOf(110, 2), new BigDecimal(1.1), false),
+                Arguments.of(BigDecimal.valueOf(110, 2), BigDecimal.valueOf(1.1), false),
                 Arguments.of(BigDecimal.valueOf(110, 2), new BigDecimal("1.10"), true),
                 Arguments.of(BigDecimal.valueOf(1.10), new BigDecimal("1.1"), true)
         );

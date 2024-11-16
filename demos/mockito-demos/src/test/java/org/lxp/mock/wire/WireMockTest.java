@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * https://www.baeldung.com/introduction-to-wiremock
+ * <a href="https://www.baeldung.com/introduction-to-wiremock">introduction-to-wiremock</a>
  */
 @ExtendWith(MockitoExtension.class)
 public class WireMockTest {
@@ -51,13 +51,14 @@ public class WireMockTest {
         configureFor("localhost", 8080);
         stubFor(get(urlEqualTo("/baeldung")).willReturn(aResponse().withBody(body)));
 
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/baeldung"))
-                .build();
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/baeldung"))
+                    .build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertThat(response.body()).isEqualTo(body);
+            assertThat(response.body()).isEqualTo(body);
+        }
     }
 
     @Test
@@ -69,14 +70,16 @@ public class WireMockTest {
                 .willReturn(aResponse()
                         .withStatus(503)));
 
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/baeldung/wiremock"))
-                .build();
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
 
-        verify(getRequestedFor(urlEqualTo("/baeldung/wiremock")));
-        assertEquals(503, response.statusCode());
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/baeldung/wiremock"))
+                    .build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            verify(getRequestedFor(urlEqualTo("/baeldung/wiremock")));
+            assertEquals(503, response.statusCode());
+        }
     }
 
     @Test
@@ -91,13 +94,14 @@ public class WireMockTest {
                 .willReturn(aResponse()
                         .withStatus(503)));
 
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/baeldung/wiremock"))
-                .build();
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/baeldung/wiremock"))
+                    .build();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        verify(getRequestedFor(urlEqualTo("/baeldung/wiremock")));
-        assertEquals(200, response.statusCode());
+            verify(getRequestedFor(urlEqualTo("/baeldung/wiremock")));
+            assertEquals(200, response.statusCode());
+        }
     }
 }
