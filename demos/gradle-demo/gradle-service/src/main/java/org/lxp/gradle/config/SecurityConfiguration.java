@@ -20,8 +20,13 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 "/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/actuator/health"
                         ).permitAll()
+                        // eg. /actuator/info
+                        .requestMatchers(
+                                "/actuator/**"
+                        ).authenticated()
                         .anyRequest().permitAll()
                 )
                 // Use basic authentication (user/pass)

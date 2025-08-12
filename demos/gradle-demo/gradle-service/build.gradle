@@ -14,12 +14,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
     implementation 'org.postgresql:postgresql'
     implementation 'com.vladmihalcea:hibernate-types-60:2.21.1'
 
     implementation 'org.liquibase:liquibase-core:4.29.2'
     implementation project(':gradle-dbm-changelog')
+
+    // Observability
+    implementation("io.micrometer:micrometer-tracing-bridge-otel")
+    implementation("org.zalando:logbook-spring-boot-starter:3.9.0")
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
